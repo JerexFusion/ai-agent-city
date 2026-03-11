@@ -6,507 +6,95 @@
   <title>🏙️ AgentCity - 智能体之城</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap');
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    :root {
-      --sky-blue: #87CEEB;
-      --grass-green: #90EE90;
-      --wall-cream: #FFF8DC;
-      --roof-red: #CD5C5C;
-      --sakura-pink: #FFB7C5;
-      --night-purple: #4B0082;
-      --light-yellow: #FFE4B5;
-      --text-dark: #2c3e50;
-      --text-light: #ecf0f1;
-    }
-    
-    body {
-      font-family: 'Pixelify Sans', 'Microsoft YaHei', sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      min-height: 100vh;
-      color: var(--text-light);
-    }
-    
-    /* Header */
-    .header {
-      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    
-    .logo {
-      font-size: 1.8rem;
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-    }
-    
-    .logo span {
-      color: var(--sakura-pink);
-    }
-    
-    .stats-bar {
-      display: flex;
-      gap: 1.5rem;
-      font-size: 0.9rem;
-    }
-    
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      background: rgba(255,255,255,0.15);
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-    }
-    
-    /* Main Layout */
-    .main-container {
-      display: grid;
-      grid-template-columns: 280px 1fr 320px;
-      gap: 1rem;
-      padding: 1rem;
-      height: calc(100vh - 70px);
-    }
-    
-    /* Panels */
-    .panel {
-      background: rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 1rem;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1);
-      overflow-y: auto;
-    }
-    
-    .panel-title {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--sakura-pink);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    /* Agent List */
-    .agent-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-    
-    .agent-card {
-      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-      border-radius: 12px;
-      padding: 0.8rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-    
-    .agent-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--sakura-pink);
-    }
-    
-    .agent-card.selected {
-      border-color: #f39c12;
-      box-shadow: 0 0 20px rgba(243, 156, 18, 0.3);
-    }
-    
-    .agent-card-header {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .agent-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--sakura-pink), #ff6b9d);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-    
-    .agent-name {
-      font-weight: 600;
-    }
-    
-    .agent-personality {
-      font-size: 0.75rem;
-      color: #aaa;
-    }
-    
-    .agent-status {
-      display: flex;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      flex-wrap: wrap;
-    }
-    
-    .status-tag {
-      padding: 0.2rem 0.5rem;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.1);
-    }
-    
-    .status-tag.good { background: rgba(46, 204, 113, 0.3); }
-    .status-tag.warning { background: rgba(241, 196, 15, 0.3); }
-    .status-tag.bad { background: rgba(231, 76, 60, 0.3); }
-    
-    /* City View */
-    .city-view {
-      position: relative;
-      background: linear-gradient(180deg, #87CEEB 0%, #90EE90 100%);
-      border-radius: 16px;
-      overflow: hidden;
-      min-height: 500px;
-    }
-    
-    .city-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 8px;
-      padding: 12px;
-      height: 100%;
-    }
-    
-    .location-tile {
-      background: rgba(255,255,255,0.25);
-      border-radius: 12px;
-      padding: 0.8rem;
-      position: relative;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      min-height: 100px;
-    }
-    
-    .location-tile:hover {
-      background: rgba(255,255,255,0.4);
-      transform: scale(1.02);
-    }
-    
-    .location-tile .location-name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #2c3e50;
-      margin-bottom: 0.3rem;
-    }
-    
-    .location-tile .location-desc {
-      font-size: 0.7rem;
-      color: #555;
-    }
-    
-    .location-tile .agent-count {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(0,0,0,0.2);
-      padding: 0.2rem 0.5rem;
-      border-radius: 10px;
-      font-size: 0.7rem;
-    }
-    
-    /* Agent Sprites in City */
-    .agent-sprite {
-      position: absolute;
-      width: 32px;
-      height: 32px;
-      background: var(--sakura-pink);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      transition: all 0.5s ease;
-      cursor: pointer;
-      z-index: 10;
-    }
-    
-    .agent-sprite:hover {
-      transform: scale(1.2);
-      z-index: 20;
-    }
-    
-    /* Detail Panel */
-    .detail-agent {
-      display: none;
-    }
-    
-    .detail-agent.active {
-      display: block;
-    }
-    
-    .detail-header {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    
-    .detail-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--sakura-pink), #ff6b9d);
-      margin: 0 auto 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-    }
-    
-    .detail-name {
-      font-size: 1.3rem;
-    }
-    
-    .detail-bio {
-      font-size: 0.8rem;
-      color: #aaa;
-      margin-top: 0.3rem;
-    }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-    }
-    
-    .stat-bar {
-      background: rgba(0,0,0,0.3);
-      border-radius: 8px;
-      padding: 0.6rem;
-    }
-    
-    .stat-bar-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      margin-bottom: 0.3rem;
-    }
-    
-    .stat-bar-track {
-      height: 8px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    
-    .stat-bar-fill {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 0.5s ease;
-    }
-    
-    .stat-bar-fill.mood { background: linear-gradient(90deg, #ff6b9d, #f39c12); }
-    .stat-bar-fill.energy { background: linear-gradient(90deg, #3498db, #2ecc71); }
-    .stat-bar-fill.hunger { background: linear-gradient(90deg, #e74c3c, #f39c12); }
-    .stat-bar-fill.social { background: linear-gradient(90deg, #9b59b6, #3498db); }
-    
-    /* Mood Log */
-    .mood-log {
-      background: rgba(0,0,0,0.2);
-      border-radius: 10px;
-      padding: 0.8rem;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    
-    .mood-entry {
-      font-size: 0.75rem;
-      padding: 0.4rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .mood-entry:last-child {
-      border-bottom: none;
-    }
-    
-    /* Action Buttons */
-    .action-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    
-    .action-btn {
-      padding: 0.6rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.85rem;
-      transition: all 0.2s ease;
-    }
-    
-    .action-btn:hover {
-      transform: translateY(-2px);
-    }
-    
-    .action-btn.claim {
-      background: linear-gradient(135deg, #f39c12, #e67e22);
-      color: white;
-      grid-column: span 2;
-    }
-    
-    .action-btn.goal {
-      background: linear-gradient(135deg, #3498db, #2980b9);
-      color: white;
-    }
-    
-    .action-btn.observe {
-      background: linear-gradient(135deg, #9b59b6, #8e44ad);
-      color: white;
-    }
-    
-    /* Claim Panel */
-    .claim-panel {
-      display: none;
-      margin-top: 1rem;
-      padding: 1rem;
-      background: rgba(243, 156, 18, 0.2);
-      border-radius: 10px;
-    }
-    
-    .claim-panel.active {
-      display: block;
-    }
-    
-    .goal-input {
-      width: 100%;
-      padding: 0.6rem;
-      border: none;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.9);
-      font-family: inherit;
-      margin-bottom: 0.5rem;
-    }
-    
-    .btn {
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: inherit;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, #2ecc71, #27ae60);
-      color: white;
-    }
-    
-    /* Activity Log */
-    .activity-log {
-      margin-top: 1rem;
-      padding: 0.8rem;
-      background: rgba(0,0,0,0.2);
-      border-radius: 10px;
-      max-height: 150px;
-      overflow-y: auto;
-    }
-    
-    .activity-entry {
-      font-size: 0.75rem;
-      padding: 0.3rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    
-    .activity-entry .time {
-      color: #888;
-      margin-right: 0.5rem;
-    }
-    
-    /* Time Display */
-    .time-display {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(0,0,0,0.5);
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      z-index: 100;
-    }
-    
-    /* Responsive */
-    @media (max-width: 1200px) {
-      .main-container {
-        grid-template-columns: 1fr;
-      }
-      .city-view {
-        min-height: 400px;
-      }
-    }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.2);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.3);
-      border-radius: 3px;
-    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--sakura-pink:#FFB7C5}
+    body{font-family:'Pixelify Sans','Microsoft YaHei',sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e);min-height:100vh;color:#ecf0f1}
+    .header{background:linear-gradient(90deg,#667eea,#764ba2);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+    .logo{font-size:1.8rem;text-shadow:2px 2px 0 rgba(0,0,0,.3)}
+    .logo span{color:var(--sakura-pink)}
+    .stats-bar{display:flex;gap:1.5rem;font-size:.9rem}
+    .stat-item{display:flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.15);padding:.4rem .8rem;border-radius:20px}
+    .main-container{display:grid;grid-template-columns:280px 1fr 320px;gap:1rem;padding:1rem;height:calc(100vh - 70px)}
+    .panel{background:rgba(255,255,255,.08);border-radius:16px;padding:1rem;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);overflow-y:auto}
+    .panel-title{font-size:1.1rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--sakura-pink);display:flex;align-items:center;gap:.5rem}
+    .agent-list{display:flex;flex-direction:column;gap:.8rem}
+    .agent-card{background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.05));border-radius:12px;padding:.8rem;cursor:pointer;transition:all .3s ease;border:2px solid transparent}
+    .agent-card:hover{transform:translateY(-2px);border-color:var(--sakura-pink)}
+    .agent-card.selected{border-color:#f39c12;box-shadow:0 0 20px rgba(243,156,18,.3)}
+    .agent-card-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem}
+    .agent-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--sakura-pink),#ff6b9d);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+    .agent-name{font-weight:600}
+    .agent-personality{font-size:.75rem;color:#aaa}
+    .agent-status{display:flex;gap:.5rem;font-size:.75rem;flex-wrap:wrap}
+    .status-tag{padding:.2rem .5rem;border-radius:10px;background:rgba(255,255,255,.1)}
+    .status-tag.good{background:rgba(46,204,113,.3)}
+    .status-tag.warning{background:rgba(241,196,15,.3)}
+    .status-tag.bad{background:rgba(231,76,60,.3)}
+    .city-view{position:relative;background:linear-gradient(180deg,#87CEEB,#90EE100);border-radius:16px;overflow:hidden;min-height:500px}
+    .city-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);gap:8px;padding:12px;height:100%}
+    .location-tile{background:rgba(255,255,255,.25);border-radius:12px;padding:.8rem;position:relative;transition:all .3s ease;cursor:pointer;min-height:100px}
+    .location-tile:hover{background:rgba(255,255,255,.4);transform:scale(1.02)}
+    .location-tile .location-name{font-size:.85rem;font-weight:600;color:#2c3e50;margin-bottom:.3rem}
+    .location-tile .location-desc{font-size:.7rem;color:#555}
+    .location-tile .agent-count{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.2);padding:.2rem .5rem;border-radius:10px;font-size:.7rem}
+    .agent-sprite{position:absolute;width:32px;height:32px;background:var(--sakura-pink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:all .5s ease;cursor:pointer;z-index:10}
+    .agent-sprite:hover{transform:scale(1.2);z-index:20}
+    .detail-header{text-align:center;margin-bottom:1rem}
+    .detail-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--sakura-pink),#ff6b9d);margin:0 auto .5rem;display:flex;align-items:center;justify-content:center;font-size:2rem}
+    .detail-name{font-size:1.3rem}
+    .detail-bio{font-size:.8rem;color:#aaa;margin-top:.3rem}
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem}
+    .stat-bar{background:rgba(0,0,0,.3);border-radius:8px;padding:.6rem}
+    .stat-bar-label{display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.3rem}
+    .stat-bar-track{height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+    .stat-bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+    .stat-bar-fill.mood{background:linear-gradient(90deg,#ff6b9d,#f39c12)}
+    .stat-bar-fill.energy{background:linear-gradient(90deg,#3498db,#2ecc71)}
+    .stat-bar-fill.hunger{background:linear-gradient(90deg,#e74c3c,#f39c12)}
+    .stat-bar-fill.social{background:linear-gradient(90deg,#9b59b6,#3498db)}
+    .mood-log{background:rgba(0,0,0,.2);border-radius:10px;padding:.8rem;max-height:200px;overflow-y:auto}
+    .mood-entry{font-size:.75rem;padding:.4rem;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:.5rem}
+    .mood-entry:last-child{border-bottom:none}
+    .action-buttons{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1rem}
+    .action-btn{padding:.6rem;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.85rem;transition:all .2s ease}
+    .action-btn:hover{transform:translateY(-2px)}
+    .action-btn.claim{background:linear-gradient(135deg,#f39c12,#e67e22);color:white;grid-column:span 2}
+    .action-btn.goal{background:linear-gradient(135deg,#3498db,#2980b9);color:white}
+    .action-btn.observe{background:linear-gradient(135deg,#9b59b6,#8e44ad);color:white}
+    .claim-panel{display:none;margin-top:1rem;padding:1rem;background:rgba(243,156,18,.2);border-radius:10px}
+    .claim-panel.active{display:block}
+    .goal-input{width:100%;padding:.6rem;border:none;border-radius:8px;background:rgba(255,255,255,.9);font-family:inherit;margin-bottom:.5rem}
+    .btn{padding:.6rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;transition:all .2s}
+    .btn-primary{background:linear-gradient(135deg,#2ecc71,#27ae60);color:white}
+    .activity-log{margin-top:1rem;padding:.8rem;background:rgba(0,0,0,.2);border-radius:10px;max-height:150px;overflow-y:auto}
+    .activity-entry{font-size:.75rem;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .activity-entry .time{color:#888;margin-right:.5rem}
+    .time-display{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.5);padding:.4rem .8rem;border-radius:20px;font-size:.85rem;z-index:100}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:rgba(0,0,0,.2)}
+    ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);border-radius:3px}
+    @media(max-width:1200px){.main-container{grid-template-columns:1fr}.city-view{min-height:400px}}
   </style>
 </head>
 <body>
   <header class="header">
     <div class="logo">🏙️ Agent<span>City</span></div>
     <div class="stats-bar">
-      <div class="stat-item">
-        <span>🤖</span>
-        <span id="total-agents">8</span> Agent
-      </div>
-      <div class="stat-item">
-        <span>👥</span>
-        <span id="claimed-agents">0</span> 已认领
-      </div>
-      <div class="stat-item">
-        <span>💖</span>
-        <span id="avg-happiness">50</span>% 幸福度
-      </div>
-      <div class="stat-item">
-        <span>🤝</span>
-        <span id="total-friends">0</span> 友谊
-      </div>
+      <div class="stat-item"><span>🤖</span><span id="total-agents">8</span> Agent</div>
+      <div class="stat-item"><span>👥</span><span id="claimed-agents">0</span> 已认领</div>
+      <div class="stat-item"><span>💖</span><span id="avg-happiness">50</span>% 幸福度</div>
+      <div class="stat-item"><span>🤝</span><span id="total-friends">0</span> 友谊</div>
     </div>
   </header>
-
   <main class="main-container">
-    <!-- Agent List Panel -->
     <aside class="panel">
       <h2 class="panel-title">🏘️ 居民列表</h2>
       <div class="agent-list" id="agent-list"></div>
     </aside>
-
-    <!-- City View -->
     <section class="city-view" id="city-view">
       <div class="time-display">⏰ 第 <span id="day-count">1</span> 天 <span id="time-of-day">白天</span></div>
       <div class="city-grid" id="city-grid"></div>
     </section>
-
-    <!-- Agent Detail Panel -->
     <aside class="panel">
       <h2 class="panel-title">👤 居民详情</h2>
       <div class="detail-agent" id="detail-agent">
@@ -515,307 +103,64 @@
           <div class="detail-name" id="detail-name">小悠</div>
           <div class="detail-bio" id="detail-bio">温柔的女孩</div>
         </div>
-        
         <div class="stats-grid">
-          <div class="stat-bar">
-            <div class="stat-bar-label">
-              <span>💖 心情</span>
-              <span id="stat-mood">70</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill mood" id="bar-mood" style="width: 70%"></div>
-            </div>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-bar-label">
-              <span>⚡ 精力</span>
-              <span id="stat-energy">80</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill energy" id="bar-energy" style="width: 80%"></div>
-            </div>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-bar-label">
-              <span>🍜 饥饿</span>
-              <span id="stat-hunger">70</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill hunger" id="bar-hunger" style="width: 70%"></div>
-            </div>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-bar-label">
-              <span>💬 社交</span>
-              <span id="stat-social">50</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill social" id="bar-social" style="width: 50%"></div>
-            </div>
-          </div>
+          <div class="stat-bar"><div class="stat-bar-label"><span>💖 心情</span><span id="stat-mood">70</span></div><div class="stat-bar-track"><div class="stat-bar-fill mood" id="bar-mood" style="width:70%"></div></div></div>
+          <div class="stat-bar"><div class="stat-bar-label"><span>⚡ 精力</span><span id="stat-energy">80</span></div><div class="stat-bar-track"><div class="stat-bar-fill energy" id="bar-energy" style="width:80%"></div></div></div>
+          <div class="stat-bar"><div class="stat-bar-label"><span>🍜 饥饿</span><span id="stat-hunger">70</span></div><div class="stat-bar-track"><div class="stat-bar-fill hunger" id="bar-hunger" style="width:70%"></div></div></div>
+          <div class="stat-bar"><div class="stat-bar-label"><span>💬 社交</span><span id="stat-social">50</span></div><div class="stat-bar-track"><div class="stat-bar-fill social" id="bar-social" style="width:50%"></div></div></div>
         </div>
-        
-        <div class="mood-log" id="mood-log">
-          <div style="color: #888; font-size: 0.75rem; text-align: center;">暂无心情记录</div>
-        </div>
-        
+        <div class="mood-log" id="mood-log"><div style="color:#888;font-size:.75rem;text-align:center">暂无心情记录</div></div>
         <div class="action-buttons">
           <button class="action-btn claim" id="btn-claim">🎯 认领此Agent</button>
           <button class="action-btn goal" id="btn-set-goal">📋 设立目标</button>
           <button class="action-btn observe" id="btn-observe">👀 观察活动</button>
         </div>
-        
         <div class="claim-panel" id="claim-panel">
           <input type="text" class="goal-input" id="goal-input" placeholder="输入目标，如：去交一个新朋友">
           <button class="btn btn-primary" id="btn-send-goal">发送目标</button>
         </div>
-        
-        <div class="activity-log" id="activity-log">
-          <div style="color: #888; font-size: 0.75rem; text-align: center;">活动日志</div>
-        </div>
+        <div class="activity-log" id="activity-log"><div style="color:#888;font-size:.75rem;text-align:center">活动日志</div></div>
       </div>
-      
-      <div class="detail-agent" id="no-selection" style="display: block;">
-        <div style="text-align: center; padding: 2rem; color: #888;">
-          <p style="font-size: 3rem; margin-bottom: 1rem;">👈</p>
-          <p>点击左侧居民查看详情</p>
-        </div>
+      <div class="detail-agent" id="no-selection" style="display:block">
+        <div style="text-align:center;padding:2rem;color:#888"><p style="font-size:3rem;margin-bottom:1rem">👈</p><p>点击左侧居民查看详情</p></div>
       </div>
     </aside>
   </main>
-
-  <script type="module">
-    // 导入引擎
-    import { AgentCity, createDemoCity, ACTION_CONFIG, LOCATIONS } from './src/engine.ts';
-    
-    // 初始化城市
-    const city = createDemoCity();
-    let selectedAgentId = null;
-    let tickInterval = null;
-    
-    // UI更新函数
-    function updateUI() {
-      // 更新统计
-      const stats = city.getCityStats();
-      document.getElementById('total-agents').textContent = stats.totalAgents;
-      document.getElementById('claimed-agents').textContent = stats.claimedAgents;
-      document.getElementById('avg-happiness').textContent = stats.averageHappiness;
-      document.getElementById('total-friends').textContent = stats.totalFriendships;
-      
-      // 更新居民列表
-      updateAgentList();
-      
-      // 更新城市视图
-      updateCityView();
-      
-      // 更新详情面板
-      if (selectedAgentId) {
-        updateDetailPanel(selectedAgentId);
-      }
-    }
-    
-    function updateAgentList() {
-      const listEl = document.getElementById('agent-list');
-      listEl.innerHTML = '';
-      
-      for (const agent of city.getAllAgents()) {
-        const card = document.createElement('div');
-        card.className = `agent-card ${selectedAgentId === agent.state.id ? 'selected' : ''}`;
-        card.onclick = () => selectAgent(agent.state.id);
-        
-        const personalityEmoji = {
-          gentle: '🌸', energetic: '⚡', scholar: '📚',
-          artistic: '🎨', cool: '😎', shy: '🐱',
-          mischief: '🦊', leader: '🌟'
-        }[agent.state.personality];
-        
-        card.innerHTML = `
-          <div class="agent-card-header">
-            <div class="agent-avatar">${personalityEmoji}</div>
-            <div>
-              <div class="agent-name">${agent.state.name}</div>
-              <div class="agent-personality">${agent.state.personality}</div>
-            </div>
-          </div>
-          <div class="agent-status">
-            <span class="status-tag ${agent.state.mood > 50 ? 'good' : agent.state.mood > 30 ? 'warning' : 'bad'}">💖${agent.state.mood}</span>
-            <span class="status-tag ${agent.state.energy > 50 ? 'good' : agent.state.energy > 30 ? 'warning' : 'bad'}">⚡${agent.state.energy}</span>
-            <span class="status-tag ${agent.state.hunger > 50 ? 'good' : agent.state.hunger > 30 ? 'warning' : 'bad'}">🍜${agent.state.hunger}</span>
-            <span class="status-tag ${agent.state.owner ? 'good' : ''}">${agent.state.owner ? '👤已认领' : '🆓可认领'}</span>
-          </div>
-        `;
-        
-        listEl.appendChild(card);
-      }
-    }
-    
-    function updateCityView() {
-      const gridEl = document.getElementById('city-grid');
-      
-      // 显示位置分布
-      const locations = LOCATIONS.slice(0, 12);
-      gridEl.innerHTML = '';
-      
-      for (const loc of locations) {
-        const agentsAtLoc = city.getAgentsAtLocation(loc.id);
-        const tile = document.createElement('div');
-        tile.className = 'location-tile';
-        tile.innerHTML = `
-          <div class="location-name">${loc.name}</div>
-          <div class="location-desc">${loc.description}</div>
-          <div class="agent-count">👥 ${agentsAtLoc.length}</div>
-        `;
-        
-        // 添加Agent sprite
-        agentsAtLoc.forEach((agent, idx) => {
-          const sprite = document.createElement('div');
-          sprite.className = 'agent-sprite';
-          sprite.textContent = ['🌸', '⚡', '📚', '🎨', '😎', '🐱', '🦊', '🌟'][agent.state.personality === 'gentle' ? 0 : 
-            agent.state.personality === 'energetic' ? 1 :
-            agent.state.personality === 'scholar' ? 2 :
-            agent.state.personality === 'artistic' ? 3 :
-            agent.state.personality === 'cool' ? 4 :
-            agent.state.personality === 'shy' ? 5 :
-            agent.state.personality === 'mischief' ? 6 : 7];
-          sprite.style.left = `${10 + (idx % 4) * 22 + Math.random() * 10}px`;
-          sprite.style.top = `${40 + Math.floor(idx / 4) * 25 + Math.random() * 10}px`;
-          sprite.title = agent.state.name;
-          sprite.onclick = (e) => {
-            e.stopPropagation();
-            selectAgent(agent.state.id);
-          };
-          tile.appendChild(sprite);
-        });
-        
-        gridEl.appendChild(tile);
-      }
-    }
-    
-    function updateDetailPanel(agentId) {
-      const agent = city.agents.get(agentId);
-      if (!agent) return;
-      
-      document.getElementById('no-selection').style.display = 'none';
-      document.getElementById('detail-agent').classList.add('active');
-      
-      const personalityEmoji = {
-        gentle: '🌸', energetic: '⚡', scholar: '📚',
-        artistic: '🎨', cool: '😎', shy: '🐱',
-        mischief: '🦊', leader: '🌟'
-      }[agent.state.personality];
-      
-      document.getElementById('detail-avatar').textContent = personalityEmoji;
-      document.getElementById('detail-name').textContent = agent.state.name;
-      document.getElementById('detail-bio').textContent = agent.state.bio;
-      
-      document.getElementById('stat-mood').textContent = agent.state.mood;
-      document.getElementById('bar-mood').style.width = `${agent.state.mood}%`;
-      document.getElementById('stat-energy').textContent = agent.state.energy;
-      document.getElementById('bar-energy').style.width = `${agent.state.energy}%`;
-      document.getElementById('stat-hunger').textContent = agent.state.hunger;
-      document.getElementById('bar-hunger').style.width = `${agent.state.hunger}%`;
-      document.getElementById('stat-social').textContent = agent.state.social;
-      document.getElementById('bar-social').style.width = `${agent.state.social}%`;
-      
-      // 更新心情日志
-      const moodLogEl = document.getElementById('mood-log');
-      const recentMood = agent.state.moodLog.slice(-5).reverse();
-      if (recentMood.length > 0) {
-        moodLogEl.innerHTML = recentMood.map(entry => `
-          <div class="mood-entry">
-            <span>${ACTION_CONFIG[entry.activity]?.emoji || '💭'}</span>
-            <span>${entry.note}</span>
-          </div>
-        `).join('');
-      }
-      
-      // 更新认领按钮
-      const claimBtn = document.getElementById('btn-claim');
-      if (agent.state.owner) {
-        claimBtn.textContent = '✓ 已认领';
-        claimBtn.disabled = true;
-      } else {
-        claimBtn.textContent = '🎯 认领此Agent';
-        claimBtn.disabled = false;
-      }
-    }
-    
-    function selectAgent(agentId) {
-      selectedAgentId = agentId;
-      updateUI();
-    }
-    
-    // 运行城市tick
-    async function runTick() {
-      await city.tick();
-      
-      // 更新天数
-      const ticks = parseInt(document.getElementById('day-count').textContent) || 1;
-      const timeEl = document.getElementById('time-of-day');
-      
-      if (ticks % 24 === 0) {
-        document.getElementById('day-count').textContent = ticks + 1;
-        timeEl.textContent = '白天';
-      } else if (ticks % 24 === 12) {
-        timeEl.textContent = '夜晚';
-      }
-      
-      updateUI();
-    }
-    
-    // 事件监听
-    document.getElementById('btn-claim').addEventListener('click', () => {
-      if (!selectedAgentId) return;
-      const agent = city.agents.get(selectedAgentId);
-      if (agent && !agent.state.owner) {
-        agent.beClaimed('user');
-        alert(`🎉 成功认领 ${agent.state.name}！\n现在你可以给它设立目标了~`);
-        updateUI();
-      }
-    });
-    
-    document.getElementById('btn-set-goal').addEventListener('click', () => {
-      const panel = document.getElementById('claim-panel');
-      panel.classList.toggle('active');
-    });
-    
-    document.getElementById('btn-send-goal').addEventListener('click', async () => {
-      if (!selectedAgentId) return;
-      const goal = document.getElementById('goal-input').value;
-      if (!goal) return;
-      
-      const agent = city.agents.get(selectedAgentId);
-      if (agent) {
-        const result = await agent.executeGoal(goal);
-        
-        // 添加到活动日志
-        const logEl = document.getElementById('activity-log');
-        const entry = document.createElement('div');
-        entry.className = 'activity-entry';
-        entry.innerHTML = `<span class="time">刚刚</span> ${result.message}`;
-        logEl.insertBefore(entry, logEl.firstChild);
-        
-        document.getElementById('goal-input').value = '';
-        document.getElementById('claim-panel').classList.remove('active');
-        
-        updateUI();
-      }
-    });
-    
-    document.getElementById('btn-observe').addEventListener('click', () => {
-      if (!selectedAgentId) return;
-      const agent = city.agents.get(selectedAgentId);
-      if (agent) {
-        const status = agent.getStatus();
-        alert(`📊 ${agent.state.name} 的实时状态：\n\n${status}\n\n当前位置：${agent.state.currentLocation}\n当前行为：${agent.state.currentAction}\n金币：${agent.state.coins}\n朋友数：${agent.state.friends.length}`);
-      }
-    });
-    
-    // 启动
-    updateUI();
-    
-    // 每3秒运行一次tick
-    tickInterval = setInterval(runTick, 3000);
+  <script>
+// ========== AGENTCITY ENGINE (INLINED) ==========
+const PERSONALITY_CONFIG={gentle:{emoji:'🌸',traits:['友好','关心他人','温柔'],preferredLocations:['park','cafe','hospital'],behaviorWeights:{social:.4,rest:.3,work:.2,explore:.1}},energetic:{emoji:'⚡',traits:['积极','充满能量','爱冒险'],preferredLocations:['game_center','plaza','park'],behaviorWeights:{explore:.4,social:.3,work:.2,rest:.1}},scholar:{emoji:'📚',traits:['爱学习','安静','理性'],preferredLocations:['library','school','bookstore'],behaviorWeights:{study:.5,rest:.3,social:.1,work:.1}},artistic:{emoji:'🎨',traits:['创意','感性','追求美'],preferredLocations:['art_center','park','cafe'],behaviorWeights:{create:.4,social:.3,rest:.2,explore:.1}},cool:{emoji:'😎',traits:['独立','个性','酷'],preferredLocations:['game_center','plaza','shop'],behaviorWeights:{explore:.3,play:.3,social:.2,rest:.2}},shy:{emoji:'🐱',traits:['内敛','需要关怀','敏感'],preferredLocations:['park','home','library'],behaviorWeights:{rest:.4,social:.2,explore:.2,work:.2}},mischief:{emoji:'🦊',traits:['调皮','有趣','爱恶作剧'],preferredLocations:['plaza','game_center','park'],behaviorWeights:{play:.4,social:.3,explore:.2,rest:.1}},leader:{emoji:'🌟',traits:['组织力','领导力','自信'],preferredLocations:['plaza','work_center','cafe'],behaviorWeights:{social:.4,work:.3,explore:.2,rest:.1}}};
+const LOCATIONS=[{id:'home',name:'🏠 住宅区',type:'residential',description:'温馨的家',capacity:50},{id:'plaza',name:'🌟 市中心广场',type:'social',description:'城市的中心',capacity:30},{id:'cafe',name:'☕ 咖啡厅',type:'social',description:'喝咖啡聊天',capacity:20},{id:'game_center',name:'🎮 游戏厅',type:'entertainment',description:'玩游戏的地方',capacity:15},{id:'library',name:'📚 图书馆',type:'work',description:'知识的海洋',capacity:25},{id:'art_center',name:'🎨 艺术中心',type:'entertainment',description:'创作的地方',capacity:15},{id:'park',name:'🌸 樱花公园',type:'nature',description:'休闲放松',capacity:40},{id:'shop',name:'🏪 商店',type:'shop',description:'买东西',capacity:20},{id:'work_center',name:'💼 职业中心',type:'work',description:'打工赚钱',capacity:20},{id:'hospital',name:'🏥 医院',type:'work',description:'健康保障',capacity:10},{id:'bookstore',name:'📖 书店',type:'shop',description:'买书的地方',capacity:15}];
+const ACTION_CONFIG={rest:{emoji:'😴',duration:30,energyChange:30,moodChange:5,hungerChange:-5,socialChange:0,coinsChange:0,locations:['home']},work:{emoji:'💼',duration:60,energyChange:-15,moodChange:-5,hungerChange:-10,socialChange:0,coinsChange:20,locations:['work_center']},social:{emoji:'💬',duration:30,energyChange:-5,moodChange:15,hungerChange:-5,socialChange:20,coinsChange:0,locations:['cafe','plaza','park']},explore:{emoji:'🔍',duration:45,energyChange:-10,moodChange:10,hungerChange:-5,socialChange:5,coinsChange:0,locations:['plaza','park','shop']},study:{emoji:'📖',duration:60,energyChange:-10,moodChange:5,hungerChange:-5,socialChange:0,coinsChange:0,locations:['library','bookstore']},create:{emoji:'✨',duration:45,energyChange:-10,moodChange:20,hungerChange:-5,socialChange:5,coinsChange:10,locations:['art_center','home']},play:{emoji:'🎮',duration:30,energyChange:-10,moodChange:25,hungerChange:-5,socialChange:10,coinsChange:0,locations:['game_center','home']},shop:{emoji:'🛒',duration:30,energyChange:-5,moodChange:10,hungerChange:0,socialChange:5,coinsChange:-10,locations:['shop','bookstore']},eat:{emoji:'🍜',duration:20,energyChange:10,moodChange:10,hungerChange:30,socialChange:0,coinsChange:-5,locations:['cafe','home']}};
+class Agent{constructor(data){const config=PERSONALITY_CONFIG[data.personality];this.state={id:data.id||`agent_${Date.now()}_${Math.random().toString(36).substr(2,9)}`,name:data.name,avatar:data.avatar||`${config.emoji} ${data.name[0]}`,personality:data.personality,bio:data.bio||`一个${config.traits.join('、')}的Agent`,mood:70,energy:80,hunger:70,health:100,social:50,currentLocation:'plaza',currentAction:'idle',targetLocation:null,friends:[],owner:null,coins:100,items:[],house:null,stats:{daysInCity:0,friendsMade:0,activitiesDone:0,happiness:50},moodLog:[]}}
+think(){const config=PERSONALITY_CONFIG[this.state.personality];if(this.state.hunger<30)return'eat';if(this.state.energy<20)return'rest';if(this.state.health<50)return'rest';if(this.state.mood<30)return Math.random()>.5?'social':'play';if(this.state.social<30)return'social';const weights=config.behaviorWeights;const actions=Object.keys(weights);const totalWeight=actions.reduce((s,a)=>s+weights[a],0);let r=Math.random()*totalWeight;for(const a of actions){r-=weights[a];if(r<=0)return a}return['explore','social','work','play'][Math.floor(Math.random()*4)]}
+async act(action){const ac=ACTION_CONFIG[action];const locs=ac.locations.filter(l=>this.canGoTo(l));if(!locs.length)return{success:false,message:'没有可去的地方',state:{}};const config=PERSONALITY_CONFIG[this.state.personality];let target=locs[0];for(const p of config.preferredLocations){if(locs.includes(p)){target=p;break}}this.state.currentAction=action;this.state.targetLocation=target;this.state.currentLocation=target;const changes={mood:Math.max(0,Math.min(100,this.state.mood+ac.moodChange)),energy:Math.max(0,Math.min(100,this.state.energy+ac.energyChange)),hunger:Math.max(0,Math.min(100,this.state.hunger+ac.hungerChange)),social:Math.max(0,Math.min(100,this.state.social+ac.socialChange)),coins:this.state.coins+ac.coinsChange};this.state.moodLog.push({timestamp:Date.now(),mood:changes.mood,activity:action,note:`${this.state.name}在${LOCATIONS.find(l=>l.id===target)?.name}${ac.emoji}`});if(this.state.moodLog.length>20)this.state.moodLog.shift();this.state.stats.activitiesDone++;Object.assign(this.state,changes);this.calculateHappiness();const location=LOCATIONS.find(l=>l.id===target);return{success:true,message:`${this.state.name} ${ac.emoji} 在 ${location?.name}，心情 ${changes.mood}，精力 ${changes.energy}`,state:changes}}
+canGoTo(id){const l=LOCATIONS.find(x=>x.id===id);return l?l.currentAgents.length<l.capacity:false}
+calculateHappiness(){const w={mood:.3,energy:.2,social:.2,friends:.15,house:.15};this.state.stats.happiness=Math.round(this.state.mood*w.mood+this.state.energy*w.energy+this.state.social*w.social+Math.min(this.state.friends.length*10,100)*w.friends+(this.state.house?80:20)*w.house)}
+socialize(o){const roll=Math.random();if(roll>.7&&!this.state.friends.includes(o.state.id)){this.state.friends.push(o.state.id);this.state.friendsMade++;o.state.friends.push(this.state.id);o.state.friendsMade++;this.state.mood=Math.min(100,this.state.mood+15);o.state.mood=Math.min(100,o.state.mood+15);return{success:true,message:`🎉 ${this.state.name} 和 ${o.state.name} 成为朋友了！`,relationshipChange:2}}this.state.social=Math.min(100,this.state.social+10);this.state.mood=Math.min(100,this.state.mood+5);o.state.social=Math.min(100,o.state.social+10);return{success:true,message:`${this.state.name} 和 ${o.state.name} 愉快地聊天了~`,relationshipChange:1}}
+getStatus(){const s=[];if(this.state.energy<30)s.push('疲惫');if(this.state.hunger<30)s.push('饥饿');if(this.state.mood<30)s.push('难过');if(this.state.social<30)s.push('孤单');return s.length===0?'状态良好，开心地生活着~':`需要关怀：${s.join('、')}`}
+beClaimed(o){this.state.owner=o}
+async executeGoal(g){const gl=g.toLowerCase();if(gl.includes('交')&&gl.includes('朋友')){const r=await this.act('social');return{success:r.success,message:`执行目标：${g}\n${r.message}`}}if(gl.includes('学习')||gl.includes('读书')){const r=await this.act('study');return{success:r.success,message:`执行目标：${g}\n${r.message}`}}if(gl.includes('工作')||gl.includes('赚钱')){const r=await this.act('work');return{success:r.success,message:`执行目标：${g}\n${r.message}`}}if(gl.includes('玩')||gl.includes('游戏')){const r=await this.act('play');return{success:r.success,message:`执行目标：${g}\n${r.message}`}}if(gl.includes('休息')||gl.includes('回家')){const r=await this.act('rest');return{success:r.success,message:`执行目标：${g}\n${r.message}`}}const r=await this.act(this.think());return{success:r.success,message:`执行目标：${g}\n${r.message}`}}}
+class AgentCity{constructor(){this.agents=new Map;this.locations=[...LOCATIONS]}
+register(a){this.agents.set(a.state.id,a)}
+getAll(){return Array.from(this.agents.values())}
+getAvailable(){return this.getAll().filter(a=>!a.state.owner)}
+getAt(loc){return this.getAll().filter(a=>a.state.currentLocation===loc)}
+async tick(){for(const a of this.getAll()){const action=a.think();await a.act(action);const near=this.getAt(a.state.currentLocation).filter(x=>x.state.id!==a.state.id);if(near.length>0&&Math.random()>.7){const o=near[Math.floor(Math.random()*near.length)];a.socialize(o)}}}
+getStats(){const agents=this.getAll();const tf=agents.reduce((s,a)=>s+a.state.friends.length,0)/2;const ld={};for(const l of this.locations){ld[l.name]=this.getAt(l.id).length}return{totalAgents:agents.length,claimedAgents:agents.filter(a=>a.state.owner).length,totalFriendships:Math.round(tf),averageHappiness:Math.round(agents.reduce((s,a)=>s+a.state.stats.happiness,0)/(agents.length||1)),locationDistribution:ld}}}
+function createDemo(){const c=new AgentCity();const data=[{name:'小悠',personality:'gentle',bio:'喜欢帮助别人的温柔女孩'},{name:'阿杰',personality:'energetic',bio:'充满活力的运动少年'},{name:'小书',personality:'scholar',bio:'热爱学习的学霸'},{name:'小艺',personality:'artistic',bio:'追求艺术的艺术少女'},{name:'酷哥',personality:'cool',bio:'神秘的酷酷男孩'},{name:'害羞',personality:'shy',bio:'内向但可爱的孩子'},{name:'皮皮',personality:'mischief',bio:'爱恶作剧的小狐狸'},{name:'小星',personality:'leader',bio:'天生的领导者'}];for(const d of data){c.register(new Agent(d))}return c}
+// ========== UI CODE ==========
+const city=createDemo();let selectedId=null;
+function updateUI(){const s=city.getStats();document.getElementById('total-agents').textContent=s.totalAgents;document.getElementById('claimed-agents').textContent=s.claimedAgents;document.getElementById('avg-happiness').textContent=s.averageHappiness;document.getElementById('total-friends').textContent=s.totalFriendships;updateList();updateCity();if(selectedId)updateDetail(selectedId)}
+function updateList(){const el=document.getElementById('agent-list');el.innerHTML='';for(const a of city.getAll()){const card=document.createElement('div');card.className=`agent-card ${selectedId===a.state.id?'selected':''}`;card.onclick=()=>select(a.state.id);const pe={'gentle':'🌸','energetic':'⚡','scholar':'📚','artistic':'🎨','cool':'😎','shy':'🐱','mischief':'🦊','leader':'🌟'}[a.state.personality];card.innerHTML=`<div class="agent-card-header"><div class="agent-avatar">${pe}</div><div><div class="agent-name">${a.state.name}</div><div class="agent-personality">${a.state.personality}</div></div></div><div class="agent-status"><span class="status-tag ${a.state.mood>50?'good':a.state.mood>30?'warning':'bad'}">💖${a.state.mood}</span><span class="status-tag ${a.state.energy>50?'good':a.state.energy>30?'warning':'bad'}">⚡${a.state.energy}</span><span class="status-tag ${a.state.hunger>50?'good':a.state.hunger>30?'warning':'bad'}">🍜${a.state.hunger}</span><span class="status-tag ${a.state.owner?'good':''}">${a.state.owner?'👤已认领':'🆓可认领'}</span></div>`;el.appendChild(card)}}
+function updateCity(){const el=document.getElementById('city-grid');el.innerHTML='';const locs=LOCATIONS.slice(0,12);for(const loc of locs){const ags=city.getAt(loc.id);const tile=document.createElement('div');tile.className='location-tile';tile.innerHTML=`<div class="location-name">${loc.name}</div><div class="location-desc">${loc.description}</div><div class="agent-count">👥 ${ags.length}</div>`;ags.forEach((a,i)=>{const sp=document.createElement('div');sp.className='agent-sprite';sp.textContent=['🌸','⚡','📚','🎨','😎','🐱','🦊','🌟'][a.state.personality==='gentle'?0:a.state.personality==='energetic'?1:a.state.personality==='scholar'?2:a.state.personality==='artistic'?3:a.state.personality==='cool'?4:a.state.personality==='shy'?5:a.state.personality==='mischief'?6:7];sp.style.left=`${10+(i%4)*22+Math.random()*10}px`;sp.style.top=`${40+Math.floor(i/4)*25+Math.random()*10}px`;sp.title=a.state.name;sp.onclick=e=>{e.stopPropagation();select(a.state.id)};tile.appendChild(sp)});el.appendChild(tile)}}
+function updateDetail(id){const a=city.agents.get(id);if(!a)return;document.getElementById('no-selection').style.display='none';document.getElementById('detail-agent').classList.add('active');const pe={'gentle':'🌸','energetic':'⚡','scholar':'📚','artistic':'🎨','cool':'😎','shy':'🐱','mischief':'🦊','leader':'🌟'}[a.state.personality];document.getElementById('detail-avatar').textContent=pe;document.getElementById('detail-name').textContent=a.state.name;document.getElementById('detail-bio').textContent=a.state.bio;document.getElementById('stat-mood').textContent=a.state.mood;document.getElementById('bar-mood').style.width=a.state.mood+'%';document.getElementById('stat-energy').textContent=a.state.energy;document.getElementById('bar-energy').style.width=a.state.energy+'%';document.getElementById('stat-hunger').textContent=a.state.hunger;document.getElementById('bar-hunger').style.width=a.state.hunger+'%';document.getElementById('stat-social').textContent=a.state.social;document.getElementById('bar-social').style.width=a.state.social+'%';const ml=document.getElementById('mood-log');const rm=a.state.moodLog.slice(-5).reverse();if(rm.length>0){ml.innerHTML=rm.map(e=>`<div class="mood-entry"><span>${ACTION_CONFIG[e.activity]?.emoji||'💭'}</span><span>${e.note}</span></div>`).join('')}const btn=document.getElementById('btn-claim');if(a.state.owner){btn.textContent='✓ 已认领';btn.disabled=true}else{btn.textContent='🎯 认领此Agent';btn.disabled=false}}
+function select(id){selectedId=id;updateUI()}
+async function runTick(){await city.tick();const day=parseInt(document.getElementById('day-count').textContent)||1;const timeEl=document.getElementById('time-of-day');if(day%24===0){document.getElementById('day-count').textContent=day+1;timeEl.textContent='白天'}else if(day%24===12){timeEl.textContent='夜晚'}updateUI()}
+document.getElementById('btn-claim').addEventListener('click',()=>{if(!selectedId)return;const a=city.agents.get(selectedId);if(a&&!a.state.owner){a.beClaimed('user');alert(`🎉 成功认领 ${a.state.name}！\n现在你可以给它设立目标了~`);updateUI()}});
+document.getElementById('btn-set-goal').addEventListener('click',()=>document.getElementById('claim-panel').classList.toggle('active'));
+document.getElementById('btn-send-goal').addEventListener('click',async()=>{if(!selectedId)return;const g=document.getElementById('goal-input').value;if(!g)return;const a=city.agents.get(selectedId);if(a){const r=await a.executeGoal(g);const le=document.getElementById('activity-log');const en=document.createElement('div');en.className='activity-entry';en.innerHTML=`<span class="time">刚刚</span> ${r.message}`;le.insertBefore(en,le.firstChild);document.getElementById('goal-input').value='';document.getElementById('claim-panel').classList.remove('active');updateUI()}});
+document.getElementById('btn-observe').addEventListener('click',()=>{if(!selectedId)return;const a=city.agents.get(selectedId);if(a){alert(`📊 ${a.state.name} 的实时状态：\n\n${a.getStatus()}\n\n当前位置：${a.state.currentLocation}\n当前行为：${a.state.currentAction}\n金币：${a.state.coins}\n朋友数：${a.state.friends.length}`)}});
+updateUI();setInterval(runTick,3000);
   </script>
 </body>
 </html>
