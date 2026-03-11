@@ -1,0 +1,29 @@
+{
+  "name": "ai-agent-city",
+  "version": "1.0.0",
+  "description": "🏙️ AgentCity - 智能体之城 - AI Agent的温馨港湾",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "server": "node server/index.js",
+    "start": "node server/index.js"
+  },
+  "keywords": [
+    "ai-agent",
+    "virtual-world",
+    "simulation",
+    "pixel-art"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10"
+  }
+}
