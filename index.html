@@ -30,7 +30,6 @@
             width: 100vw;
         }
         
-        /* 左侧面板 */
         .sidebar {
             width: 280px;
             min-width: 280px;
@@ -138,7 +137,6 @@
         
         .quick-btn:hover { background: var(--accent-pink); }
         
-        /* 游戏区域 */
         .game-area { 
             flex: 1; 
             position: relative; 
@@ -191,7 +189,6 @@
         .activity-title { font-size: 10px; color: var(--text-dim); margin-bottom: 3px; }
         .activity-text { font-size: 12px; font-weight: bold; }
         
-        /* 成就弹窗 */
         .achievement-popup {
             position: fixed;
             top: 50%;
@@ -284,7 +281,7 @@
             
             <div class="location-panel" id="locationPanel">
                 <div class="location-name" id="locationName">🏠 住宅区</div>
-                <div class="location-desc" id="locationDesc">Agent的温馨家园</div>
+                <div class="location-desc" id="locationDesc">睡觉吃饭休息</div>
             </div>
             
             <div class="activity-panel">
@@ -294,7 +291,6 @@
         </div>
     </div>
     
-    <!-- 成就弹窗 -->
     <div class="overlay" id="overlay" onclick="closeAchievement()"></div>
     <div class="achievement-popup" id="achievementPopup">
         <div class="achievement-emoji" id="AchievementEmoji">📸</div>
@@ -309,12 +305,10 @@
             MAP_WIDTH: 28,
             MAP_HEIGHT: 16,
             AGENT_SPEED: 1.0,
-            // 时间：24分钟现实 = 1天游戏
-            // 1分钟现实 = 1小时游戏时间
-            // 24分钟现实 = 24小时游戏时间 = 1天
-            TIME_SCALE: 1, // 1秒现实 = 1分钟游戏时间
-            DAY_DURATION: 24 * 60, // 一天1440分钟游戏时间
+            TIME_SCALE: 1,
+            DAY_DURATION: 24 * 60,
             MIN_STAY_TIME: 600, // 最少停留10分钟游戏时间
+            BUBBLE_DURATION: 180, // 气泡至少显示3分钟游戏时间
         };
         
         // 地点定义
@@ -341,15 +335,43 @@
                 special: 'fish'},
             shop: { x: 2, y: 14, w: 5, h: 2, name: '🛒 商业街', desc: '购物消费工作', color: '#20B2AA', emoji: '🛒',
                 activities: ['逛街', '买衣服', '买家具', '买食材', '买礼物'] },
-            job: { x: 14, y: 8, w: 3, h: 3, name: '💼 职业中心', desc: '打工赚钱发展', color: '#708090', emoji: '💼',
-                activities: ['店员', '管理员', '服务员', '农场帮工', '渔夫'],
-                special: 'work'},
+            university: { x: 14, y: 8, w: 3, h: 3, name: '🏛️ 奇迹大学', desc: '学习深造', color: '#708090', emoji: '🏛️',
+                activities: ['上课', '做实验', '图书馆学习', '参加社团', '考试复习'],
+                special: 'study'},
         };
         
+        // 性格系统 - 每个性格有不同的行动模式
         const PERSONALITIES = {
-            gentle: { name: '温柔', emoji: '🌸', color: '#FFB7C5', preferred: ['park', 'cafe'], work: ['店员', '服务员'] },
-            energetic: { name: '活力', emoji: '⚡', color: '#FFD700', preferred: ['arcade', 'park'], work: ['农场帮工', '渔夫'] },
-            scholar: { name: '学者', emoji: '📚', color: '#4169E1', preferred: ['library', 'home'], work: ['管理员'] },
+            gentle: { 
+                name: '温柔', 
+                emoji: '🌸', 
+                color: '#FFB7C5', 
+                preferred: ['park', 'cafe'],       // 喜欢去公园和咖啡厅
+                morning: 'park',                  // 早晨去公园
+                afternoon: 'cafe',                // 下午去咖啡厅
+                evening: 'home',                   // 傍晚回家
+                work: 'university',
+            },
+            energetic: { 
+                name: '活力', 
+                emoji: '⚡', 
+                color: '#FFD700', 
+                preferred: ['arcade', 'park', 'beach'],  // 喜欢游戏厅、公园、海滩
+                morning: 'beach',
+                afternoon: 'arcade',
+                evening: 'park',
+                work: 'shop',
+            },
+            scholar: { 
+                name: '学者', 
+                emoji: '📚', 
+                color: '#4169E1', 
+                preferred: ['library', 'university'],     // 喜欢图书馆和大学
+                morning: 'university',
+                afternoon: 'library',
+                evening: 'home',
+                work: 'university',
+            },
         };
         
         const WEATHER = ['☀️ 晴天', '🌧️ 小雨', '❄️ 小雪', '🌤️ 多云', '🌈 彩虹'];
@@ -362,6 +384,15 @@
         let gameDay = 1;
         let weather = 0;
         let lastTime = Date.now();
+        let grassPattern = []; // 草地纹理
+        
+        // 初始化草地纹理（不闪烁）
+        function initGrassPattern() {
+            grassPattern = [];
+            for (let i = 0; i < CONFIG.MAP_WIDTH * CONFIG.MAP_HEIGHT; i++) {
+                grassPattern.push(Math.random() > 0.5 ? '#4a7c3f' : '#5a8f3e');
+            }
+        }
         
         // ==================== Agent类 ====================
         class Agent {
@@ -390,11 +421,29 @@
                 this.currentActivity = '休息';
                 this.currentEmoji = '😊';
                 this.actionBubble = '';
+                this.bubbleStartTime = 0;  // 气泡开始时间
                 this.achievements = [];
+                
+                // 根据性格设置初始位置
+                this.setInitialLocation();
                 
                 this.skinColor = ['#FFDDBB', '#CCAA88', '#8D5524', '#E6C2A3'][Math.floor(Math.random() * 4)];
                 this.hairColor = ['#2C1810', '#4A3728', '#8B4513', '#DAA520'][Math.floor(Math.random() * 4)];
                 this.clothesColor = ['#E94560', '#0F3460', '#4ADE80', '#FBBF24'][Math.floor(Math.random() * 4)];
+            }
+            
+            setInitialLocation() {
+                // 根据性格分配初始位置，避免都挤在一起
+                if (this.personality === 'gentle') {
+                    this.currentLocation = 'park';
+                } else if (this.personality === 'energetic') {
+                    this.currentLocation = 'arcade';
+                } else if (this.personality === 'scholar') {
+                    this.currentLocation = 'library';
+                }
+                const loc = LOCATIONS[this.currentLocation];
+                this.x = (loc.x + 1) * CONFIG.TILE_SIZE;
+                this.y = (loc.y + 1) * CONFIG.TILE_SIZE;
             }
             
             update(deltaTime) {
@@ -418,6 +467,7 @@
                         this.y = this.targetY;
                         this.moving = false;
                         this.stayTime = 0;
+                        this.bubbleStartTime = 0;
                         this.arrive();
                     } else {
                         this.x += (dx / dist) * CONFIG.AGENT_SPEED;
@@ -442,7 +492,12 @@
             
             performActivity() {
                 const loc = LOCATIONS[this.currentLocation];
-                const activity = loc.activities[Math.floor(Math.random() * loc.activities.length)];
+                
+                // 气泡持续时间足够才切换
+                if (this.stayTime - this.bubbleStartTime > CONFIG.BUBBLE_DURATION) {
+                    this.bubbleStartTime = this.stayTime;
+                    this.updateActivityText();
+                }
                 
                 if (this.currentLocation === 'home') {
                     if (this.energy < 50) {
@@ -463,7 +518,7 @@
                 } else if (this.currentLocation === 'park') {
                     this.currentActivity = '🌸 欣赏樱花';
                     this.currentEmoji = '🌸';
-                    this.actionBubble = `${activity}...`;
+                    if (!this.actionBubble) this.actionBubble = '欣赏樱花...';
                     this.mood += 0.005;
                     
                     if (this.stayTime === 200) this.takePhoto();
@@ -473,7 +528,7 @@
                     const drink = drinks[Math.floor(Math.random() * drinks.length)];
                     this.currentActivity = `☕ 喝${drink}`;
                     this.currentEmoji = '☕';
-                    this.actionBubble = `品尝${drink}...`;
+                    if (!this.actionBubble) this.actionBubble = `品尝${drink}...`;
                     this.mood += 0.008;
                     
                     if (this.stayTime === 200) this.socialize();
@@ -483,7 +538,7 @@
                     const book = books[Math.floor(Math.random() * books.length)];
                     this.currentActivity = `📖 阅读中`;
                     this.currentEmoji = '📚';
-                    this.actionBubble = `阅读《${book}》...`;
+                    if (!this.actionBubble) this.actionBubble = `阅读《${book}》...`;
                     
                     if (this.stayTime === 250) this.readBook(book);
                     
@@ -492,7 +547,7 @@
                     const game = games[Math.floor(Math.random() * games.length)];
                     this.currentActivity = game;
                     this.currentEmoji = '🎮';
-                    this.actionBubble = `${game}中...`;
+                    if (!this.actionBubble) this.actionBubble = `${game}中...`;
                     
                     if (Math.random() < 0.015) {
                         const reward = Math.floor(Math.random() * 30) + 10;
@@ -505,7 +560,7 @@
                     const act = acts[Math.floor(Math.random() * acts.length)];
                     this.currentActivity = act;
                     this.currentEmoji = act.includes('钓鱼') ? '🎣' : '🏖️';
-                    this.actionBubble = `${act}...`;
+                    if (!this.actionBubble) this.actionBubble = `${act}...`;
                     
                     if (Math.random() < 0.008) {
                         const fish = loc.fish[Math.floor(Math.random() * loc.fish.length)];
@@ -515,10 +570,18 @@
                     }
                     this.mood += 0.003;
                     
+                } else if (this.currentLocation === 'university') {
+                    const acts = ['📖 上课中', '🔬 做实验', '📚 图书馆学习', '🎭 参加社团', '📝 考试复习'];
+                    const act = acts[Math.floor(Math.random() * acts.length)];
+                    this.currentActivity = act;
+                    this.currentEmoji = act.includes('实验') ? '🔬' : '📖';
+                    if (!this.actionBubble) this.actionBubble = `${act}...`;
+                    this.mood += 0.004;
+                    
                 } else if (this.currentLocation === 'job') {
                     this.currentActivity = '💼工作中';
                     this.currentEmoji = '💼';
-                    this.actionBubble = '努力工作中...';
+                    if (!this.actionBubble) this.actionBubble = '努力工作中...';
                     const wage = Math.floor(Math.random() * 10) + 15;
                     this.coins += wage;
                     this.energy -= 0.008;
@@ -526,12 +589,38 @@
                 } else if (this.currentLocation === 'shop') {
                     this.currentActivity = '🛒 逛街中';
                     this.currentEmoji = '🛒';
-                    this.actionBubble = '浏览商品...';
+                    if (!this.actionBubble) this.actionBubble = '浏览商品...';
                 }
                 
                 // 停留足够后离开
-                if (this.stayTime > CONFIG.MIN_STAY_TIME && Math.random() < 0.003) {
+                if (this.stayTime > CONFIG.MIN_STAY_TIME && Math.random() < 0.002) {
                     this.think();
+                }
+            }
+            
+            updateActivityText() {
+                const loc = LOCATIONS[this.currentLocation];
+                if (this.currentLocation === 'home') {
+                    const acts = ['在家休息...', '看电视...', '听音乐...', '发呆...'];
+                    this.actionBubble = acts[Math.floor(Math.random() * acts.length)];
+                } else if (this.currentLocation === 'park') {
+                    const acts = ['欣赏樱花...', '拍照打卡...', '野餐...', '喂鸽子...', '放风筝...'];
+                    this.actionBubble = acts[Math.floor(Math.random() * acts.length)];
+                } else if (this.currentLocation === 'cafe') {
+                    const acts = ['品尝咖啡...', '聊天...', '听音乐...', '看窗外...'];
+                    this.actionBubble = acts[Math.floor(Math.random() * acts.length)];
+                } else if (this.currentLocation === 'library') {
+                    const acts = ['认真阅读...', '做笔记...', '查资料...', '思考中...'];
+                    this.actionBubble = acts[Math.floor(Math.random() * acts.length)];
+                } else if (this.currentLocation === 'arcade') {
+                    const acts = ['玩游戏...', '挑战高分...', '抓娃娃...', '比赛中...'];
+                    this.actionBubble = acts[Math.floor(Math.random() * acts.length)];
+                } else if (this.currentLocation === 'beach') {
+                    const acts = ['钓鱼...', '晒太阳...', '捡贝壳...', '堆沙堡...'];
+                    this.actionBubble = acts[Math.floor(Math.random() * acts.length)];
+                } else if (this.currentLocation === 'university') {
+                    const acts = ['上课...', '做实验...', '图书馆学习...', '参加社团活动...'];
+                    this.actionBubble = acts[Math.floor(Math.random() * acts.length)];
                 }
             }
             
@@ -585,27 +674,39 @@
             
             think() {
                 const hour = Math.floor(gameTime / 60);
+                const prefs = this.personalityData;
                 
+                // 基础需求
                 if (this.hunger < 15) { this.goToLocation('home'); return; }
                 if (this.energy < 10) { this.goToLocation('home'); return; }
-                if (this.mood < 15) { this.goToLocation('arcade'); return; }
+                if (this.mood < 15) { this.goToLocation(prefs.preferred[0]); return; }
                 
+                // 根据性格和时间决定行动
                 if (hour >= 22 || hour < 6) {
+                    // 深夜回家
                     this.goToLocation('home');
-                } else if (hour >= 6 && hour < 8) {
-                    this.goToLocation('park');
-                } else if (hour >= 8 && hour < 12) {
-                    if (Math.random() > 0.4) this.goToLocation('job');
-                    else this.goToLocation('library');
+                } else if (hour >= 6 && hour < 9) {
+                    // 早晨 - 根据性格
+                    this.goToLocation(prefs.morning);
+                } else if (hour >= 9 && hour < 12) {
+                    // 上午 - 工作或学习
+                    if (this.personality === 'energetic') {
+                        this.goToLocation('shop'); // 活力型去工作
+                    } else {
+                        this.goToLocation(prefs.work || 'university');
+                    }
                 } else if (hour >= 12 && hour < 14) {
+                    // 午休 - 咖啡厅
                     this.goToLocation('cafe');
                 } else if (hour >= 14 && hour < 18) {
-                    const prefs = this.personalityData.preferred;
-                    this.goToLocation(prefs[Math.floor(Math.random() * prefs.length)]);
+                    // 下午 - 根据性格偏好
+                    this.goToLocation(prefs.preferred[Math.floor(Math.random() * prefs.preferred.length)]);
                 } else if (hour >= 18 && hour < 20) {
-                    this.goToLocation('shop');
+                    // 傍晚 - 购物或回家
+                    this.goToLocation(Math.random() > 0.5 ? 'shop' : 'home');
                 } else {
-                    this.goToLocation(Math.random() > 0.5 ? 'arcade' : 'cafe');
+                    // 晚上 - 根据性格
+                    this.goToLocation(prefs.preferred[Math.floor(Math.random() * prefs.preferred.length)]);
                 }
             }
             
@@ -617,10 +718,12 @@
                 this.targetY = (loc.y + 0.5 + Math.random() * (loc.h - 1)) * CONFIG.TILE_SIZE;
                 this.currentLocation = locationId;
                 this.moving = true;
+                this.actionBubble = ''; // 清除旧气泡
             }
             
             arrive() {
                 this.stayTime = 0;
+                this.bubbleStartTime = 0;
             }
             
             draw(ctx) {
@@ -698,19 +801,20 @@
             const w = CONFIG.MAP_WIDTH * CONFIG.TILE_SIZE;
             const h = CONFIG.MAP_HEIGHT * CONFIG.TILE_SIZE;
             
-            // 草地
+            // 草地 - 使用固定的颜色，不闪烁
             const gradient = ctx.createLinearGradient(0, 0, 0, h);
             gradient.addColorStop(0, '#5a8f3e');
             gradient.addColorStop(1, '#4a7c3f');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, w, h);
             
-            // 草地纹理
-            for (let i = 0; i < w; i += 24) {
-                for (let j = 0; j < h; j += 24) {
-                    if ((i + j) % 48 === 0) {
-                        ctx.fillStyle = Math.random() > 0.5 ? '#4d7a36' : '#5a8f3e';
-                        ctx.fillRect(i + 2, j + 2, 4, 6);
+            // 草地纹理 - 使用预生成的固定纹理
+            for (let i = 0; i < CONFIG.MAP_WIDTH; i++) {
+                for (let j = 0; j < CONFIG.MAP_HEIGHT; j++) {
+                    const idx = i + j * CONFIG.MAP_WIDTH;
+                    if (idx < grassPattern.length) {
+                        ctx.fillStyle = grassPattern[idx];
+                        ctx.fillRect(i * CONFIG.TILE_SIZE + 10, j * CONFIG.TILE_SIZE + 10, 6, 8);
                     }
                 }
             }
@@ -752,7 +856,7 @@
             else if (id === 'home') drawHomes(x, y, w, h);
             else if (id === 'beach') drawBeach(x, y, w, h);
             else if (id === 'shop') drawShops(x, y, w, h);
-            else if (id === 'job') drawJobCenter(x, y, w, h);
+            else if (id === 'university') drawUniversity(x, y, w, h);
             
             ctx.fillStyle = '#fff';
             ctx.font = 'bold 11px "Pixelify Sans", sans-serif';
@@ -880,13 +984,25 @@
             });
         }
         
-        function drawJobCenter(x, y, w, h) {
+        function drawUniversity(x, y, w, h) {
+            // 大学主楼
             ctx.fillStyle = '#5a6a7a';
-            ctx.fillRect(x + 15, y + 25, w - 25, h - 40);
+            ctx.fillRect(x + 20, y + 30, w - 35, h - 50);
+            // 钟楼
             ctx.fillStyle = '#3a4a5a';
-            ctx.fillRect(x + 10, y + 20, w - 15, 20);
-            ctx.font = '18px sans-serif';
-            ctx.fillText('💼', x + 30, y + 50);
+            ctx.fillRect(x + 30, y + 10, 30, 30);
+            ctx.fillStyle = '#87ceeb';
+            ctx.fillRect(x + 35, y + 15, 20, 20);
+            // 台阶
+            ctx.fillStyle = '#4a4a4a';
+            ctx.fillRect(x + 15, y + h - 20, w - 25, 15);
+            // 旗杆
+            ctx.fillStyle = '#888';
+            ctx.fillRect(x + w - 20, y + 5, 3, 40);
+            ctx.fillStyle = '#e94560';
+            ctx.fillRect(x + w - 17, y + 5, 12, 8);
+            ctx.font = '20px sans-serif';
+            ctx.fillText('🏛️', x + 35, y + 55);
         }
         
         // ==================== UI函数 ====================
@@ -999,7 +1115,7 @@
                 { loc: 'cafe', text: '去咖啡厅社交' },
                 { loc: 'library', text: '去图书馆学习' },
                 { loc: 'arcade', text: '去游戏厅玩' },
-                { loc: 'job', text: '去工作赚钱' },
+                { loc: 'university', text: '去奇迹大学' },
                 { loc: 'beach', text: '去海滩钓鱼' },
                 { loc: 'home', text: '回家休息' },
             ];
@@ -1074,16 +1190,13 @@
             canvas.width = canvas.parentElement.clientWidth;
             canvas.height = canvas.parentElement.clientHeight;
             
-            const names = ['小明', '小红', '小刚'];
-            const personalities = ['gentle', 'energetic', 'scholar'];
+            // 初始化草地纹理（固定不闪烁）
+            initGrassPattern();
             
-            names.forEach((name, i) => {
-                agents.push(new Agent(`agent_${i}`, name, personalities[i]));
-            });
-            
-            agents[0].goToLocation('park');
-            agents[1].goToLocation('cafe');
-            agents[2].goToLocation('library');
+            // 3个Agent - 不同性格，初始位置不同
+            agents.push(new Agent('agent_0', '小明', 'gentle'));     // 温柔型 - 初始在公园
+            agents.push(new Agent('agent_1', '小红', 'energetic')); // 活力型 - 初始在游戏厅
+            agents.push(new Agent('agent_2', '小刚', 'scholar'));    // 学者型 - 初始在图书馆
             
             renderAgentList();
             
