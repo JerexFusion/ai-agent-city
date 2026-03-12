@@ -774,8 +774,8 @@ ${agent2.name}: "xxx"
             else if(id==='school')drawSchool(x,y,w,h);
             else drawShop(x,y,w,h);
             
-            ctx.fillStyle='#fff';ctx.font='bold 12px "Pixelify Sans",sans-serifStyle='#000';';
-            ctx.strokectx.lineWidth=3;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
+            ctx.fillStyle='#fff';ctx.font='bold 12px "Pixelify Sans",sans-serif';
+            ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
         }
         
         function drawPark(x,y,w,h){[[0.5,0.5],[2,0.5],[4,0.5],[1,2],[3,2],[5,2],[0.5,3.5],[4.5,3.5]].forEach(([tx,ty])=>drawTree(x+tx*CONFIG.TILE_SIZE,y+ty*CONFIG.TILE_SIZE,'#f2a2b8'));ctx.fillStyle='#5dabeb';ctx.fillRect(x+w*0.5,y+h*0.4,w*0.4,h*0.4);}
