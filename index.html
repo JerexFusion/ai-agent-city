@@ -391,6 +391,45 @@
         let grassPattern = [];
         let dialogCache = new Map(); // 对话缓存
         
+        // ==================== 像素素材 ====================
+        const TILE_IMAGES = {};
+        const TILE_BASE = 'art-resources/Tiles/';
+        const TILE_FILES = {
+            // 建筑 (根据GuttyKreum_CleanCity素材)
+            'house1': 'GuttyKreum_CleanCity_000.png',
+            'house2': 'GuttyKreum_CleanCity_001.png',
+            'house3': 'GuttyKreum_CleanCity_002.png',
+            'shop': 'GuttyKreum_CleanCity_003.png',
+            'cafe': 'GuttyKreum_CleanCity_004.png',
+            'hospital': 'GuttyKreum_CleanCity_006.png',
+            'library': 'GuttyKreum_CleanCity_007.png',
+            'school': 'GuttyKreum_CleanCity_008.png',
+            'park': 'GuttyKreum_CleanCity_009.png',
+            'gym': 'GuttyKreum_CleanCity_010.png',
+            'cinema': 'GuttyKreum_CleanCity_011.png',
+            'restaurant': 'GuttyKreum_CleanCity_012.png',
+            'hotel': 'GuttyKreum_CleanCity_013.png',
+            'beach': 'GuttyKreum_CleanCity_014.png',
+            'university': 'GuttyKreum_CleanCity_015.png',
+            'arcade': 'GuttyKreum_CleanCity_016.png',
+            // 道路和草地
+            'road_h': 'GuttyKreum_CleanCity_100.png',
+            'road_v': 'GuttyKreum_CleanCity_101.png',
+            'road_cross': 'GuttyKreum_CleanCity_102.png',
+        };
+        
+        function preloadTiles() {
+            const promises = Object.entries(TILE_FILES).map(([key, filename]) => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => { TILE_IMAGES[key] = img; resolve(); };
+                    img.onerror = () => { console.warn(`Failed to load: ${filename}`); resolve(); };
+                    img.src = TILE_BASE + filename;
+                });
+            });
+            return Promise.all(promises);
+        }
+        
         function initGrassPattern() {
             grassPattern = [];
             for (let i = 0; i < CONFIG.MAP_WIDTH * CONFIG.MAP_HEIGHT; i++) {
@@ -783,23 +822,39 @@ ${agent2.name}: "xxx"
         function drawLocation(id,loc){
             const x=loc.x*CONFIG.TILE_SIZE,y=loc.y*CONFIG.TILE_SIZE,w=loc.w*CONFIG.TILE_SIZE,h=loc.h*CONFIG.TILE_SIZE;
             
-            ctx.fillStyle=loc.color;ctx.globalAlpha=0.65;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
+            // 绘制背景
+            ctx.fillStyle=loc.color;ctx.globalAlpha=0.5;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
             ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(x+2,y+2,w-4,h-4);
             
-            if(id==='park')drawPark(x,y,w,h);
-            else if(id==='home')drawHomes(x,y,w,h);
-            else if(id==='cafe')drawCafe(x,y,w,h);
-            else if(id==='library')drawLibrary(x,y,w,h);
-            else if(id==='arcade')drawArcade(x,y,w,h);
-            else if(id==='beach')drawBeach(x,y,w,h);
-            else if(id==='university')drawUniversity(x,y,w,h);
-            else if(id==='hospital')drawHospital(x,y,w,h);
-            else if(id==='cinema')drawCinema(x,y,w,h);
-            else if(id==='gym')drawGym(x,y,w,h);
-            else if(id==='restaurant')drawRestaurant(x,y,w,h);
-            else if(id==='hotel')drawHotel(x,y,w,h);
-            else if(id==='school')drawSchool(x,y,w,h);
-            else drawShop(x,y,w,h);
+            // 尝试使用像素素材绘制，否则使用程序化绘制
+            const tileKey = {'park':'park','home':'house1','cafe':'cafe','library':'library',
+                           'arcade':'arcade','beach':'beach','university':'university',
+                           'hospital':'hospital','cinema':'cinema','gym':'gym',
+                           'restaurant':'restaurant','hotel':'hotel','school':'school','shop':'shop'}[id];
+            
+            if(tileKey && TILE_IMAGES[tileKey]) {
+                // 使用像素素材绘制 (居中缩放)
+                const img = TILE_IMAGES[tileKey];
+                const scale = Math.min(w / img.width, h / img.height) * 0.9;
+                const dw = img.width * scale, dh = img.height * scale;
+                ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+            } else {
+                // 回退到程序化绘制
+                if(id==='park')drawPark(x,y,w,h);
+                else if(id==='home')drawHomes(x,y,w,h);
+                else if(id==='cafe')drawCafe(x,y,w,h);
+                else if(id==='library')drawLibrary(x,y,w,h);
+                else if(id==='arcade')drawArcade(x,y,w,h);
+                else if(id==='beach')drawBeach(x,y,w,h);
+                else if(id==='university')drawUniversity(x,y,w,h);
+                else if(id==='hospital')drawHospital(x,y,w,h);
+                else if(id==='cinema')drawCinema(x,y,w,h);
+                else if(id==='gym')drawGym(x,y,w,h);
+                else if(id==='restaurant')drawRestaurant(x,y,w,h);
+                else if(id==='hotel')drawHotel(x,y,w,h);
+                else if(id==='school')drawSchool(x,y,w,h);
+                else drawShop(x,y,w,h);
+            }
             
             ctx.fillStyle='#fff';ctx.font='bold 12px "Pixelify Sans",sans-serif';
             ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
@@ -877,6 +932,9 @@ ${agent2.name}: "xxx"
             canvas=document.getElementById('gameCanvas');ctx=canvas.getContext('2d');
             canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;
             initGrassPattern();
+            preloadTiles().then(() => {
+                console.log('✅ 像素素材加载完成');
+            });
             agents.push(new Agent('a0','小明','gentle'));
             agents.push(new Agent('a1','小红','energetic'));
             agents.push(new Agent('a2','小刚','scholar'));
