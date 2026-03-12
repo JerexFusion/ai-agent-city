@@ -797,7 +797,7 @@ ${agent2.name}: "xxx"
         // ==================== 渲染函数 ====================
         // 城市地图背景
         let CITY_MAP_IMAGE = null;
-        const CITY_MAP_SCALE = 0.7; // 缩放70%（缩小30%）
+        const CITY_MAP_SCALE = 0.6; // 缩放70%（缩小30%）
         const cityMapImg = new Image();
         cityMapImg.onload = () => { CITY_MAP_IMAGE = cityMapImg; console.log('✅ 城市地图加载成功'); };
         cityMapImg.onerror = () => { console.warn('城市地图加载失败，使用程序化背景'); };
