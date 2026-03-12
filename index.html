@@ -6,242 +6,79 @@
     <title>🏙️ AgentCity - 像素都市</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --bg-dark: #1a1a2e;
-            --bg-card: #16213e;
-            --accent-pink: #e94560;
-            --accent-cyan: #0f3460;
-            --text-light: #eaeaea;
-            --text-dim: #a0a0a0;
-        }
-        
-        body {
-            font-family: 'Pixelify Sans', 'Noto Sans SC', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-light);
-            min-height: 100vh;
-            overflow: hidden;
-        }
-        
+        :root { --bg-dark: #1a1a2e; --bg-card: #16213e; --accent-pink: #e94560; --accent-cyan: #0f3460; --text-light: #eaeaea; --text-dim: #a0a0a0; }
+        body { font-family: 'Pixelify Sans', 'Noto Sans SC', sans-serif; background: var(--bg-dark); color: var(--text-light); min-height: 100vh; overflow: hidden; }
         .app-container { display: flex; height: 100vh; width: 100vw; }
-        
-        .sidebar {
-            width: 340px;
-            min-width: 340px;
-            background: var(--bg-card);
-            display: flex;
-            flex-direction: column;
-            border-right: 4px solid var(--accent-cyan);
-        }
-        
-        .sidebar-header {
-            padding: 18px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
-            text-align: center;
-        }
-        
+        .sidebar { width: 340px; min-width: 340px; background: var(--bg-card); display: flex; flex-direction: column; border-right: 4px solid var(--accent-cyan); }
+        .sidebar-header { padding: 18px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink)); text-align: center; }
         .sidebar-header h1 { font-size: 28px; text-shadow: 3px 3px 0 #000; }
-        
-        .city-stats {
-            display: flex;
-            justify-content: space-around;
-            padding: 14px;
-            background: rgba(0,0,0,0.3);
-            font-size: 16px;
-        }
-        
+        .city-stats { display: flex; justify-content: space-around; padding: 14px; background: rgba(0,0,0,0.3); font-size: 16px; }
         .stat-item { text-align: center; padding: 4px 10px; }
         .stat-value { font-size: 24px; font-weight: bold; color: #ffd700; }
-        
         .agent-list { flex: 1; overflow-y: auto; padding: 14px; }
-        
-        .agent-card {
-            background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
+        .agent-card { background: linear-gradient(135deg, #2a2a4a, #1a1a3a); border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
         .agent-card:hover { border-color: var(--accent-pink); }
         .agent-card.selected { border-color: #ffd700; }
-        
         .agent-header { display: flex; align-items: center; gap: 12px; }
-        
-        .agent-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
-            image-rendering: pixelated;
-        }
-        
+        .agent-avatar { width: 44px; height: 44px; border-radius: 8px; image-rendering: pixelated; }
         .agent-name { font-weight: bold; font-size: 20px; }
         .agent-personality { font-size: 14px; color: var(--text-dim); }
-        
         .agent-status { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-        
-        .status-badge {
-            font-size: 13px;
-            padding: 4px 10px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-        }
-        
+        .status-badge { font-size: 13px; padding: 4px 10px; border-radius: 8px; background: rgba(255,255,255,0.1); }
         .status-badge.high { background: #4ade80; color: #000; }
         .status-badge.medium { background: #fbbf24; color: #000; }
         .status-badge.low { background: #f87171; color: #000; }
-        
         .control-panel { padding: 14px; background: rgba(0,0,0,0.4); border-top: 3px solid var(--accent-cyan); }
-        
-        .btn {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 8px;
-            border: none;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 18px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        
+        .btn { width: 100%; padding: 14px; margin-bottom: 8px; border: none; border-radius: 10px; font-family: inherit; font-size: 18px; cursor: pointer; font-weight: 600; }
         .btn-primary { background: linear-gradient(135deg, var(--accent-pink), #c73659); color: white; }
         .btn-secondary { background: linear-gradient(135deg, var(--accent-cyan), #0a2540); color: white; }
         .btn-gift { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
-        
         .quick-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-        
-        .quick-btn {
-            flex: 1;
-            min-width: 75px;
-            padding: 10px;
-            font-size: 13px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            color: var(--text-light);
-            cursor: pointer;
-        }
-        
+        .quick-btn { flex: 1; min-width: 75px; padding: 10px; font-size: 13px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: var(--text-light); cursor: pointer; }
         .quick-btn:hover { background: var(--accent-pink); }
-        
         .game-area { flex: 1; position: relative; display: flex; flex-direction: column; min-width: 0; }
-        
-        .game-header {
-            padding: 12px 20px;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 18px;
-        }
-        
+        .game-header { padding: 12px 20px; background: rgba(0,0,0,0.6); display: flex; justify-content: space-between; align-items: center; font-size: 18px; }
         #gameCanvas { flex: 1; width: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
-        
-        .location-panel {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(22, 33, 62, 0.95);
-            border-radius: 14px;
-            padding: 16px 20px;
-            border: 2px solid var(--accent-cyan);
-            max-width: 280px;
-        }
-        
+        .location-panel { position: absolute; bottom: 20px; left: 20px; background: rgba(22,33,62,0.95); border-radius: 14px; padding: 16px 20px; border: 2px solid var(--accent-cyan); max-width: 280px; }
         .location-name { font-size: 20px; font-weight: bold; margin-bottom: 5px; color: var(--accent-pink); }
         .location-desc { font-size: 15px; color: var(--text-dim); }
-        
-        .activity-panel {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(22, 33, 62, 0.95);
-            border-radius: 14px;
-            padding: 16px 20px;
-            border: 2px solid var(--accent-pink);
-            min-width: 220px;
-        }
-        
+        .activity-panel { position: absolute; bottom: 20px; right: 20px; background: rgba(22,33,62,0.95); border-radius: 14px; padding: 16px 20px; border: 2px solid var(--accent-pink); min-width: 220px; }
         .activity-title { font-size: 14px; color: var(--text-dim); margin-bottom: 5px; }
         .activity-text { font-size: 18px; font-weight: bold; }
-        
-        .achievement-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(22, 33, 62, 0.98);
-            border-radius: 24px;
-            padding: 36px;
-            border: 5px solid #ffd700;
-            text-align: center;
-            z-index: 1000;
-            display: none;
-            min-width: 400px;
-            max-width: 90vw;
-        }
-        
+        .achievement-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(22,33,62,0.98); border-radius: 24px; padding: 36px; border: 5px solid #ffd700; text-align: center; z-index: 1000; display: none; min-width: 400px; max-width: 90vw; }
         .achievement-popup.show { display: block; animation: popIn 0.5s ease; }
-        
-        @keyframes popIn {
-            from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-        
+        @keyframes popIn { from { transform: translate(-50%,-50%) scale(0.5); opacity: 0; } to { transform: translate(-50%,-50%) scale(1); opacity: 1; } }
         .achievement-emoji { font-size: 70px; margin-bottom: 20px; }
         .achievement-title { font-size: 28px; font-weight: bold; color: #ffd700; margin-bottom: 12px; }
         .achievement-desc { font-size: 16px; color: var(--text-dim); line-height: 1.7; white-space: pre-line; }
-        
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 999;
-            display: none;
-        }
-        
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; display: none; }
         .overlay.show { display: block; }
-        
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 5px; }
+        
+        /* 输入弹窗 */
+        .input-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(22,33,62,0.98); border-radius: 20px; padding: 30px; border: 4px solid var(--accent-cyan); text-align: center; z-index: 1001; display: none; min-width: 400px; }
+        .input-popup.show { display: block; }
+        .input-popup h3 { margin-bottom: 15px; font-size: 22px; }
+        .input-popup input { width: 100%; padding: 14px; font-size: 16px; border: 2px solid var(--accent-cyan); border-radius: 10px; background: #1a1a2e; color: white; margin-bottom: 15px; }
+        .input-popup .btn-group { display: flex; gap: 10px; }
+        .input-popup .btn-group button { flex: 1; padding: 12px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="app-container">
         <div class="sidebar">
-            <div class="sidebar-header">
-                <h1>🏙️ AgentCity</h1>
-                <div style="font-size: 16px; opacity: 0.9;">像素乌托邦</div>
-            </div>
-            
+            <div class="sidebar-header"><h1>🏙️ AgentCity</h1><div style="font-size:16px;opacity:0.9;">像素乌托邦</div></div>
             <div class="city-stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="dayDisplay">第1天</div>
-                    <div>天数</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="timeDisplay">08:00</div>
-                    <div>时间</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="happiness">75%</div>
-                    <div>幸福</div>
-                </div>
+                <div class="stat-item"><div class="stat-value" id="dayDisplay">第1天</div><div>天数</div></div>
+                <div class="stat-item"><div class="stat-value" id="timeDisplay">08:00</div><div>时间</div></div>
+                <div class="stat-item"><div class="stat-value" id="happiness">75%</div><div>幸福</div></div>
             </div>
-            
             <div class="agent-list" id="agentList"></div>
-            
             <div class="control-panel">
                 <button class="btn btn-primary" onclick="claimAgent()">认领</button>
-                <button class="btn btn-secondary" onclick="setGoal()">目标</button>
+                <button class="btn btn-secondary" onclick="openGoalInput()">设定目标</button>
                 <button class="btn btn-gift" onclick="sendGift()">礼物</button>
                 <div class="quick-actions">
                     <button class="quick-btn" onclick="quickAction('park')">🌸公园</button>
@@ -251,610 +88,222 @@
                 </div>
             </div>
         </div>
-        
         <div class="game-area">
             <div class="game-header">
                 <div class="weather-display" id="weatherDisplay">☀️ 晴天</div>
                 <div class="coins-display" id="coinsDisplay">💰 450</div>
             </div>
             <canvas id="gameCanvas"></canvas>
-            
             <div class="location-panel" id="locationPanel">
                 <div class="location-name" id="locationName">🏠 住宅区</div>
                 <div class="location-desc" id="locationDesc">睡觉吃饭休息</div>
             </div>
-            
             <div class="activity-panel">
                 <div class="activity-title">当前活动</div>
                 <div class="activity-text" id="activityText">休息中...</div>
             </div>
         </div>
     </div>
-    
-    <div class="overlay" id="overlay" onclick="closeAchievement()"></div>
+    <div class="overlay" id="overlay" onclick="closeAllPopups()"></div>
     <div class="achievement-popup" id="achievementPopup">
         <div class="achievement-emoji" id="AchievementEmoji">📸</div>
         <div class="achievement-title" id="AchievementTitle">拍照成功!</div>
         <div class="achievement-desc" id="AchievementDesc">内容</div>
     </div>
+    <div class="input-popup" id="goalPopup">
+        <h3>🎯 设立目标</h3>
+        <input type="text" id="goalInput" placeholder="输入自然语言目标，如：去公园散步、买些东西、去看病...">
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="submitGoal()">确定</button>
+            <button class="btn btn-secondary" onclick="closeGoalInput()">取消</button>
+        </div>
+    </div>
 
     <script>
-        // ==================== 配置 ====================
-        const CONFIG = {
-            TILE_SIZE: 52,
-            MAP_WIDTH: 38,
-            MAP_HEIGHT: 24,
-            AGENT_SPEED: 1.1,
-            TIME_SCALE: 1,
-            DAY_DURATION: 24 * 60,
-            MIN_STAY_TIME: 600,
-            BUBBLE_DURATION: 180,
-            DIALOG_DURATION: 300, // 对话气泡显示5分钟游戏时间
-        };
+        const CONFIG = { TILE_SIZE: 52, MAP_WIDTH: 38, MAP_HEIGHT: 24, AGENT_SPEED: 1.1, TIME_SCALE: 1, DAY_DURATION: 24*60, MIN_STAY_TIME: 600, BUBBLE_DURATION: 180, DIALOG_DURATION: 300 };
+        const DOUBAO_CONFIG = { api_key: "e1de6305-cf14-4bb4-94b0-72e126ac6f64", endpoint: "ark.cn-beijing.volces.com", model: "doubao-seed-1-6-vision-250815" };
         
-        // 豆包API配置
-        const DOUBAO_CONFIG = {
-            api_key: "e1de6305-cf14-4bb4-94b0-72e126ac6f64",
-            endpoint: "ark.cn-beijing.volces.com",
-            model: "doubao-seed-1-6-vision-250815"
-        };
-        
-        // 地点定义 - 扩展到36x24，无重叠
+        // 地点定义 - 重新布局，不挡路
         const LOCATIONS = {
-            // 左上区块
-            home: { x: 1, y: 1, w: 5, h: 4, name: '🏠 住宅区', desc: '睡觉吃饭休息', color: '#8B4513', activities: ['睡觉', '吃饭', '休息', '看电视剧'] },
-            
-            // 左中上
-            cafe: { x: 1, y: 7, w: 5, h: 5, name: '☕ 咖啡厅', desc: '社交聊天交友', color: '#D2691E', activities: ['喝咖啡', '聊天', '看书'], menu: ['卡布奇诺', '抹茶拿铁', '水果茶'], special: 'socialize' },
-            
-            // 左下
+            home: { x: 1, y: 1, w: 5, h: 4, name: '🏠 住宅区', desc: '睡觉吃饭休息', color: '#8B4513', activities: ['睡觉', '吃饭', '休息'] },
+            cafe: { x: 1, y: 7, w: 5, h: 5, name: '☕ 咖啡厅', desc: '社交聊天交友', color: '#D2691E', activities: ['喝咖啡', '聊天', '看书'], menu: ['卡布奇诺', '抹茶拿铁'], special: 'socialize' },
             shop: { x: 1, y: 14, w: 5, h: 4, name: '🛒 便利店', desc: '购物消费', color: '#20B2AA', activities: ['买东西', '闲逛'] },
-            
-            // 中上左
-            library: { x: 8, y: 1, w: 5, h: 5, name: '📚 图书馆', desc: '阅读学习', color: '#4169E1', activities: ['阅读小说', '学习技术'], books: ['《Python入门》', '《JS高级》'], special: 'read' },
-            
-            // 中上右
-            hospital: { x: 15, y: 1, w: 5, h: 4, name: '🏥 医院', desc: '治病疗养', color: '#F0F0F0', activities: ['体检', '看病'], special: 'heal' },
-            
-            // 中中
-            school: { x: 8, y: 8, w: 6, h: 5, name: '🏫 小学', desc: '童年时光', color: '#87CEEB', activities: ['上课', '体育课'], special: 'school' },
-            
-            // 中下
-            arcade: { x: 8, y: 15, w: 5, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技', color: '#9400D3', activities: ['街机赛车', '投篮'], special: 'play' },
-            
-            // 右上区块
-            park: { x: 22, y: 1, w: 8, h: 6, name: '🌸 樱花公园', desc: '休闲放松', color: '#FFB7C5', activities: ['欣赏樱花', '野餐', '拍照'], special: 'takePhoto' },
-            
-            // 右中上
-            university: { x: 22, y: 9, w: 5, h: 4, name: '🏛️ 奇迹大学', desc: '学习深造', color: '#708090', activities: ['上课', '做实验'], special: 'study' },
-            
-            // 右中下
-            cinema: { x: 29, y: 9, w: 5, h: 4, name: '🎬 电影院', desc: '看电影', color: '#2F2F2F', activities: ['看动作片', '看爱情片'], special: 'movie' },
-            
-            // 右下区块
-            beach: { x: 22, y: 15, w: 8, h: 5, name: '🏖️ 海滩', desc: '钓鱼阳光', color: '#F4A460', activities: ['钓鱼', '捡贝壳'], fish: ['小黄鱼', '鲈鱼'], special: 'fish' },
-            
-            // 右下左
-            gym: { x: 22, y: 22, w: 5, h: 2, name: '💪 健身房', desc: '锻炼身体', color: '#FF6347', activities: ['跑步', '举铁'], special: 'exercise' },
-            
-            // 右下右
-            restaurant: { x: 29, y: 22, w: 5, h: 2, name: '🍜 拉面馆', desc: '品尝美食', color: '#CD5C5C', activities: ['吃拉面', '吃饭'], menu: ['豚骨拉面', '味噌拉面'], special: 'eat' },
-            
-            // 右下角
-            hotel: { x: 32, y: 22, w: 4, h: 2, name: '🏨 温泉旅馆', desc: '泡温泉', color: '#DDA0DD', activities: ['泡温泉', '按摩'], special: 'relax' },
+            hospital: { x: 1, y: 20, w: 5, h: 4, name: '🏥 医院', desc: '治病疗养', color: '#F0F0F0', activities: ['体检', '看病'], special: 'heal' },
+            // 马路右侧
+            library: { x: 24, y: 1, w: 6, h: 5, name: '📚 图书馆', desc: '阅读学习', color: '#4169E1', activities: ['阅读小说', '学习技术'], books: ['《Python入门》'], special: 'read' },
+            school: { x: 24, y: 8, w: 6, h: 5, name: '🏫 小学', desc: '童年时光', color: '#87CEEB', activities: ['上课', '体育课'], special: 'school' },
+            arcade: { x: 24, y: 15, w: 5, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技', color: '#9400D3', activities: ['街机赛车', '投篮'], special: 'play' },
+            park: { x: 15, y: 1, w: 7, h: 5, name: '🌸 樱花公园', desc: '休闲放松', color: '#FFB7C5', activities: ['欣赏樱花', '野餐', '拍照'], special: 'takePhoto' },
+            university: { x: 15, y: 8, w: 5, h: 4, name: '🏛️ 奇迹大学', desc: '学习深造', color: '#708090', activities: ['上课', '做实验'], special: 'study' },
+            cinema: { x: 15, y: 14, w: 5, h: 4, name: '🎬 电影院', desc: '看电影', color: '#2F2F2F', activities: ['看动作片', '看爱情片'], special: 'movie' },
+            beach: { x: 15, y: 20, w: 8, h: 4, name: '🏖️ 海滩', desc: '钓鱼阳光', color: '#F4A460', activities: ['钓鱼', '捡贝壳'], fish: ['小黄鱼'], special: 'fish' },
+            gym: { x: 25, y: 20, w: 5, h: 2, name: '💪 健身房', desc: '锻炼身体', color: '#FF6347', activities: ['跑步', '举铁'], special: 'exercise' },
+            restaurant: { x: 32, y: 20, w: 5, h: 2, name: '🍜 拉面馆', desc: '品尝美食', color: '#CD5C5C', activities: ['吃拉面', '吃饭'], menu: ['豚骨拉面'], special: 'eat' },
+            hotel: { x: 32, y: 23, w: 4, h: 1, name: '🏨 温泉旅馆', desc: '泡温泉', color: '#DDA0DD', activities: ['泡温泉', '按摩'], special: 'relax' },
         };
         
-        // 性格系统
+        // 自然语言映射到地点
+        const GOAL_MAPPING = {
+            '公园': 'park', '樱花公园': 'park', '散步': 'park', '赏花': 'park', '踏青': 'park',
+            '咖啡': 'cafe', '咖啡厅': 'cafe', '喝咖啡': 'cafe', '聊天': 'cafe', '交友': 'cafe', '社交': 'cafe',
+            '图书馆': 'library', '看书': 'library', '阅读': 'library', '学习': 'library',
+            '游戏厅': 'arcade', '游戏机厅': 'arcade', '玩游戏': 'arcade', '抓娃娃': 'arcade',
+            '大学': 'university', '奇迹大学': 'university', '上课': 'university', '做实验': 'university',
+            '电影院': 'cinema', '影院': 'cinema', '看电影': 'cinema',
+            '海滩': 'beach', '海边': 'beach', '钓鱼': 'beach', '沙滩': 'beach',
+            '医院': 'hospital', '看病': 'hospital', '体检': 'hospital', '治病': 'hospital',
+            '健身房': 'gym', '健身': 'gym', '锻炼': 'gym', '运动': 'gym',
+            '拉面馆': 'restaurant', '拉面': 'restaurant', '吃饭': 'restaurant', '餐厅': 'restaurant', '美食': 'restaurant',
+            '便利店': 'shop', '商店': 'shop', '购物': 'shop', '买东西': 'shop',
+            '温泉': 'hotel', '温泉旅馆': 'hotel', '放松': 'hotel', '泡温泉': 'hotel',
+            '小学': 'school', '学校': 'school',
+            '回家': 'home', '休息': 'home', '睡觉': 'home'
+        };
+        
         const PERSONALITIES = {
             gentle: { name: '温柔', emoji: '🌸', color: '#FFB7C5', preferred: ['park', 'cafe', 'cinema'], morning: 'park', afternoon: 'cafe', evening: 'home', work: 'university' },
             energetic: { name: '活力', emoji: '⚡', color: '#FFD700', preferred: ['arcade', 'gym', 'beach'], morning: 'gym', afternoon: 'arcade', evening: 'beach', work: 'shop' },
             scholar: { name: '学者', emoji: '📚', color: '#4169E1', preferred: ['library', 'university', 'school'], morning: 'university', afternoon: 'library', evening: 'home', work: 'university' },
         };
-        
         const WEATHER = ['☀️ 晴天', '🌧️ 小雨', '❄️ 小雪', '🌤️ 多云', '🌈 彩虹'];
         
-        // ==================== 游戏状态 ====================
-        let canvas, ctx;
-        let agents = [];
-        let selectedAgent = null;
-        let gameTime = 8 * 60;
-        let gameDay = 1;
-        let weather = 0;
-        let lastTime = Date.now();
-        let grassPattern = [];
-        let dialogCache = new Map(); // 对话缓存
+        let canvas, ctx, agents = [], selectedAgent = null, gameTime = 8*60, gameDay = 1, weather = 0, lastTime = Date.now(), grassPattern = [], dialogCache = new Map();
         
-        function initGrassPattern() {
-            grassPattern = [];
-            for (let i = 0; i < CONFIG.MAP_WIDTH * CONFIG.MAP_HEIGHT; i++) {
-                grassPattern.push(Math.random() > 0.5 ? '#4a7c3f' : '#5a8f3e');
-            }
-        }
+        function initGrassPattern() { grassPattern = []; for (let i = 0; i < CONFIG.MAP_WIDTH * CONFIG.MAP_HEIGHT; i++) grassPattern.push(Math.random() > 0.5 ? '#4a7c3f' : '#5a8f3e'); }
         
-        // 调用豆包API生成对话
         async function generateDialogue(agent1, agent2) {
-            const cacheKey = `${agent1.id}_${agent2.id}_${Math.floor(gameTime / 60)}`;
-            if (dialogCache.has(cacheKey)) {
-                return dialogCache.get(cacheKey);
-            }
-            
-            const prompt = `你是一个AI城市模拟游戏。两个Agent正在咖啡厅相遇并聊天。请生成一句简短的对话（不超过20字）。
-
-Agent1: ${agent1.name}，${agent1.personalityData.name}型人格
-Agent2: ${agent2.name}，${agent2.personalityData.name}型人格
-
-请用中文回复，格式：
-${agent1.name}: "xxx"
-${agent2.name}: "xxx"
-
-只回复对话内容，不要其他解释。`;
-            
+            const cacheKey = `${agent1.id}_${agent2.id}_${Math.floor(gameTime/60)}`;
+            if (dialogCache.has(cacheKey)) return dialogCache.get(cacheKey);
+            const prompt = `两个Agent在咖啡厅相遇聊天。\nAgent1: ${agent1.name}，${agent1.personalityData.name}型\nAgent2: ${agent2.name}，${agent2.personalityData.name}型\n生成一句简短对话（不超过20字）。格式：\n${agent1.name}: "xxx"\n${agent2.name}: "xxx"`;
             try {
-                const response = await fetch(`https://${DOUBAO_CONFIG.endpoint}/api/v3/responses`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${DOUBAO_CONFIG.api_key}`
-                    },
-                    body: JSON.stringify({
-                        model: DOUBAO_CONFIG.model,
-                        messages: [{ role: 'user', content: prompt }]
-                    })
-                });
-                
+                const response = await fetch(`https://${DOUBAO_CONFIG.endpoint}/api/v3/responses`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DOUBAO_CONFIG.api_key}` }, body: JSON.stringify({ model: DOUBAO_CONFIG.model, messages: [{ role: 'user', content: prompt }] }) });
                 const data = await response.json();
-                let dialogue = data.choices?.[0]?.message?.content || `${agent1.name}: 你好呀！\n${agent2.name}: 你好！`;
-                
-                // 缓存对话
+                let dialogue = data.choices?.[0]?.message?.content || `${agent1.name}: 你好！\n${agent2.name}: 你好！`;
                 dialogCache.set(cacheKey, dialogue);
-                if (dialogCache.size > 100) {
-                    dialogCache.delete(dialogCache.keys().next().value);
-                }
-                
+                if (dialogCache.size > 100) dialogCache.delete(dialogCache.keys().next().value);
                 return dialogue;
-            } catch (e) {
-                console.error('豆包API调用失败:', e);
-                return `${agent1.name}: 今天天气真好！\n${agent2.name}: 是啊，一起去玩吧！`;
-            }
+            } catch (e) { return `${agent1.name}: 今天天气真好！\n${agent2.name}: 是啊！`; }
         }
         
-        // ==================== Agent类 ====================
         class Agent {
             constructor(id, name, personality) {
-                this.id = id;
-                this.name = name;
-                this.personality = personality;
+                this.id = id; this.name = name; this.personality = personality;
                 this.personalityData = PERSONALITIES[personality];
-                
-                this.mood = 70 + Math.random() * 20;
-                this.energy = 70 + Math.random() * 20;
-                this.hunger = 60 + Math.random() * 20;
-                this.health = 80 + Math.random() * 20;
-                this.coins = 150 + Math.floor(Math.random() * 200);
-                
-                this.x = (LOCATIONS.home.x + 1) * CONFIG.TILE_SIZE;
-                this.y = (LOCATIONS.home.y + 1) * CONFIG.TILE_SIZE;
-                this.targetX = this.x;
-                this.targetY = this.y;
-                this.moving = false;
-                this.direction = 'down';
-                this.walkFrame = 0;
-                
-                this.friends = [];
-                this.currentLocation = 'home';
-                this.stayTime = 0;
-                this.currentActivity = '休息';
-                this.currentEmoji = '😊';
-                this.actionBubble = '';
-                this.bubbleStartTime = 0;
-                this.achievements = [];
-                this.dialogueWith = null; // 当前和谁对话
-                this.dialogueBubble = ''; // 对话气泡
-                this.dialogueStartTime = 0;
-                
+                this.mood = 70 + Math.random()*20; this.energy = 70 + Math.random()*20; this.hunger = 60 + Math.random()*20; this.health = 80 + Math.random()*20; this.coins = 150 + Math.floor(Math.random()*200);
+                this.x = (LOCATIONS.home.x + 1) * CONFIG.TILE_SIZE; this.y = (LOCATIONS.home.y + 1) * CONFIG.TILE_SIZE;
+                this.targetX = this.x; this.targetY = this.y; this.moving = false; this.direction = 'down'; this.walkFrame = 0;
+                this.friends = []; this.currentLocation = 'home'; this.stayTime = 0; this.currentActivity = '休息'; this.currentEmoji = '😊'; this.actionBubble = ''; this.bubbleStartTime = 0; this.achievements = []; this.dialogueWith = null; this.dialogueBubble = ''; this.dialogueStartTime = 0;
                 this.setInitialLocation();
-                
-                const colors = ['#FFDDBB', '#CCAA88', '#8D5524', '#E6C2A3'];
-                this.skinColor = colors[Math.floor(Math.random() * colors.length)];
-                this.hairColor = ['#2C1810', '#4A3728', '#8B4513', '#DAA520'][Math.floor(Math.random() * 4)];
-                this.clothesColor = ['#E94560', '#0F3460', '#4ADE80', '#FBBF24'][Math.floor(Math.random() * 4)];
+                this.skinColor = ['#FFDDBB','#CCAA88','#8D5524','#E6C2A3'][Math.floor(Math.random()*4)];
+                this.hairColor = ['#2C1810','#4A3728','#8B4513','#DAA520'][Math.floor(Math.random()*4)];
+                this.clothesColor = ['#E94560','#0F3460','#4ADE80','#FBBF24'][Math.floor(Math.random()*4)];
             }
-            
-            setInitialLocation() {
-                if (this.personality === 'gentle') this.currentLocation = 'park';
-                else if (this.personality === 'energetic') this.currentLocation = 'gym';
-                else if (this.personality === 'scholar') this.currentLocation = 'library';
-                
-                const loc = LOCATIONS[this.currentLocation];
-                this.x = (loc.x + 1) * CONFIG.TILE_SIZE;
-                this.y = (loc.y + 1) * CONFIG.TILE_SIZE;
-            }
-            
-            update(deltaTime) {
-                if (!this.moving) {
-                    this.hunger -= 0.0008 * deltaTime;
-                    this.energy -= 0.0004 * deltaTime;
-                    this.mood -= 0.0002 * deltaTime;
-                }
-                
-                this.mood = Math.max(0, Math.min(100, this.mood));
-                this.energy = Math.max(0, Math.min(100, this.energy));
-                this.hunger = Math.max(0, Math.min(100, this.hunger));
-                this.health = Math.max(0, Math.min(100, this.health));
-                
+            setInitialLocation() { if (this.personality==='gentle') this.currentLocation='park'; else if (this.personality==='energetic') this.currentLocation='gym'; else if (this.personality==='scholar') this.currentLocation='library'; const loc = LOCATIONS[this.currentLocation]; this.x = (loc.x+1)*CONFIG.TILE_SIZE; this.y = (loc.y+1)*CONFIG.TILE_SIZE; }
+            update(dt) {
+                if (!this.moving) { this.hunger -= 0.0008*dt; this.energy -= 0.0004*dt; this.mood -= 0.0002*dt; }
+                this.mood = Math.max(0,Math.min(100,this.mood)); this.energy = Math.max(0,Math.min(100,this.energy)); this.hunger = Math.max(0,Math.min(100,this.hunger)); this.health = Math.max(0,Math.min(100,this.health));
                 if (this.moving) {
-                    const dx = this.targetX - this.x;
-                    const dy = this.targetY - this.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (dist < CONFIG.AGENT_SPEED) {
-                        this.x = this.targetX;
-                        this.y = this.targetY;
-                        this.moving = false;
-                        this.stayTime = 0;
-                        this.bubbleStartTime = 0;
-                        this.arrive();
-                    } else {
-                        this.x += (dx / dist) * CONFIG.AGENT_SPEED;
-                        this.y += (dy / dist) * CONFIG.AGENT_SPEED;
-                        
-                        if (Math.abs(dx) > Math.abs(dy)) this.direction = dx > 0 ? 'right' : 'left';
-                        else this.direction = dy > 0 ? 'down' : 'up';
-                        
-                        this.walkFrame = (this.walkFrame + 0.1) % 4;
-                        this.currentActivity = '🚶 行走中';
-                        this.currentEmoji = '🚶';
-                        this.actionBubble = '';
-                        this.dialogueBubble = '';
-                        this.dialogueWith = null;
-                    }
-                } else {
-                    this.stayTime++;
-                    this.performActivity();
-                }
+                    const dx = this.targetX - this.x, dy = this.targetY - this.y, dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < CONFIG.AGENT_SPEED) { this.x = this.targetX; this.y = this.targetY; this.moving = false; this.stayTime = 0; this.bubbleStartTime = 0; this.arrive(); }
+                    else { this.x += (dx/dist)*CONFIG.AGENT_SPEED; this.y += (dy/dist)*CONFIG.AGENT_SPEED; this.direction = Math.abs(dx)>Math.abs(dy) ? (dx>0?'right':'left') : (dy>0?'down':'up'); this.walkFrame = (this.walkFrame+0.1)%4; this.currentActivity = '🚶'; this.currentEmoji = '🚶'; this.actionBubble = ''; this.dialogueBubble = ''; this.dialogueWith = null; }
+                } else { this.stayTime++; this.performActivity(); }
             }
-            
             performActivity() {
                 const loc = LOCATIONS[this.currentLocation];
-                
-                // 检查是否在对话
-                if (this.dialogueWith && this.stayTime - this.dialogueStartTime > CONFIG.DIALOG_DURATION) {
-                    this.dialogueBubble = '';
-                    this.dialogueWith = null;
-                }
-                
-                if (this.stayTime - this.bubbleStartTime > CONFIG.BUBBLE_DURATION && !this.dialogueWith) {
-                    this.bubbleStartTime = this.stayTime;
-                    this.updateActivityText();
-                }
-                
-                if (this.currentLocation === 'home') {
-                    if (this.energy < 50) { this.currentActivity = '💤 睡觉'; this.currentEmoji = '😴'; this.actionBubble = '睡觉恢复...'; this.energy += 0.015; }
-                    else if (this.hunger < 40) { this.currentActivity = '🍽️ 吃饭'; this.currentEmoji = '🍚'; this.actionBubble = '在家吃饭...'; this.hunger += 0.01; }
-                    else { this.currentActivity = '🏠 休息'; this.currentEmoji = '😊'; this.actionBubble = '在家放松...'; }
-                }
-                else if (this.currentLocation === 'park') { this.currentActivity = '🌸 赏樱'; this.currentEmoji = '🌸'; if (!this.actionBubble) this.actionBubble = '欣赏樱花...'; this.mood += 0.005; if (this.stayTime === 200) this.takePhoto(); }
-                else if (this.currentLocation === 'cafe') { 
-                    const d = loc.menu[Math.floor(Math.random()*loc.menu.length)]; 
-                    this.currentActivity = `☕ ${d}`; this.currentEmoji = '☕'; 
-                    if (!this.actionBubble) this.actionBubble = `品尝${d}...`; 
-                    this.mood += 0.008; 
-                    // 尝试与其他Agent对话
-                    if (this.stayTime === 150 && !this.dialogueWith) this.tryDialogue();
-                    if (this.stayTime === 200) this.socialize(); 
-                }
-                else if (this.currentLocation === 'library') { const b = loc.books[Math.floor(Math.random()*loc.books.length)]; this.currentActivity = '📖 阅读'; this.currentEmoji = '📚'; if (!this.actionBubble) this.actionBubble = `阅读《${b}》...`; if (this.stayTime === 250) this.readBook(b); }
-                else if (this.currentLocation === 'arcade') { this.currentActivity = '🎮 游戏'; this.currentEmoji = '🎮'; if (!this.actionBubble) this.actionBubble = '玩游戏中...'; if (Math.random()<0.015){this.coins+=Math.floor(Math.random()*30)+10;this.mood+=5;} }
-                else if (this.currentLocation === 'beach') { this.currentActivity = '🏖️ 海滩'; this.currentEmoji = Math.random()>0.5?'🎣':'🏖️'; if(!this.actionBubble) this.actionBubble='海边休闲...'; if(Math.random()<0.008){const f=loc.fish[Math.floor(Math.random()*loc.fish.length)];const v=loc.fish.indexOf(f)*20+20;this.coins+=v;showAchievement('🎣','钓鱼成功!',`${this.name}钓到${f}，+${v}金币!`);} this.mood+=0.003; }
-                else if (this.currentLocation === 'university') { this.currentActivity = '🏛️ 学习'; this.currentEmoji = '📖'; if(!this.actionBubble) this.actionBubble = '大学上课...'; this.mood+=0.004; }
-                else if (this.currentLocation === 'hospital') { this.currentActivity = '🏥 体检'; this.currentEmoji = '🏥'; if(!this.actionBubble) this.actionBubble = '做体检...'; this.health+=0.02; }
-                else if (this.currentLocation === 'cinema') { this.currentActivity = '🎬 观影'; this.currentEmoji = '🎬'; if(!this.actionBubble) this.actionBubble = '看电影...'; this.mood+=0.01; this.coins-=20; }
-                else if (this.currentLocation === 'gym') { this.currentActivity = '💪 锻炼'; this.currentEmoji = '💪'; if(!this.actionBubble) this.actionBubble = '健身中...'; this.energy-=0.005; this.mood+=0.006; }
-                else if (this.currentLocation === 'restaurant') { const f=loc.menu[Math.floor(Math.random()*loc.menu.length)]; this.currentActivity = `🍜 ${f}`; this.currentEmoji = '🍜'; if(!this.actionBubble) this.actionBubble = `吃${f}...`; this.hunger+=0.02; this.mood+=0.008; this.coins-=30; }
-                else if (this.currentLocation === 'hotel') { this.currentActivity = '♨️ 温泉'; this.currentEmoji = '♨️'; if(!this.actionBubble) this.actionBubble = '泡温泉中...'; this.energy+=0.015; this.mood+=0.01; this.health+=0.005; }
-                else if (this.currentLocation === 'school') { this.currentActivity = '🏫 上课'; this.currentEmoji = '🏫'; if(!this.actionBubble) this.actionBubble = '小学上课...'; this.mood+=0.003; }
-                else if (this.currentLocation === 'shop') { this.currentActivity = '🛒 购物'; this.currentEmoji = '🛒'; if(!this.actionBubble) this.actionBubble = '逛街中...'; }
-                
-                if (this.stayTime > CONFIG.MIN_STAY_TIME && Math.random() < 0.002 && !this.dialogueWith) this.think();
+                if (this.dialogueWith && this.stayTime-this.dialogueStartTime > CONFIG.DIALOG_DURATION) { this.dialogueBubble = ''; this.dialogueWith = null; }
+                if (this.stayTime-this.bubbleStartTime > CONFIG.BUBBLE_DURATION && !this.dialogueWith) { this.bubbleStartTime = this.stayTime; this.updateActivityText(); }
+                if (this.currentLocation==='home') { if (this.energy<50) { this.currentActivity='💤 睡觉'; this.currentEmoji='😴'; this.actionBubble='睡觉...'; this.energy+=0.015; } else if (this.hunger<40) { this.currentActivity='🍽️ 吃饭'; this.currentEmoji='🍚'; this.actionBubble='吃饭...'; this.hunger+=0.01; } else { this.currentActivity='🏠 休息'; this.currentEmoji='😊'; this.actionBubble='休息...'; } }
+                else if (this.currentLocation==='park') { this.currentActivity='🌸 赏樱'; this.currentEmoji='🌸'; if(!this.actionBubble)this.actionBubble='赏樱...'; this.mood+=0.005; if(this.stayTime===200)this.takePhoto(); }
+                else if (this.currentLocation==='cafe') { const d=loc.menu[Math.floor(Math.random()*loc.menu.length)]; this.currentActivity=`☕ ${d}`; this.currentEmoji='☕'; if(!this.actionBubble)this.actionBubble=`喝${d}...`; this.mood+=0.008; if(this.stayTime===150&&!this.dialogueWith)this.tryDialogue(); if(this.stayTime===200)this.socialize(); }
+                else if (this.currentLocation==='library') { const b=loc.books[Math.floor(Math.random()*loc.books.length)]; this.currentActivity='📖 阅读'; this.currentEmoji='📚'; if(!this.actionBubble)this.actionBubble=`读《${b}》...`; if(this.stayTime===250)this.readBook(b); }
+                else if (this.currentLocation==='arcade') { this.currentActivity='🎮 游戏'; this.currentEmoji='🎮'; if(!this.actionBubble)this.actionBubble='游戏...'; if(Math.random()<0.015){this.coins+=Math.floor(Math.random()*30)+10;this.mood+=5;} }
+                else if (this.currentLocation==='beach') { this.currentActivity='🏖️ 海滩'; this.currentEmoji='🎣'; if(!this.actionBubble)this.actionBubble='海边...'; if(Math.random()<0.008){const f=loc.fish[0],v=20;this.coins+=v;showAchievement('🎣','钓鱼!',`+${v}金币!`);} this.mood+=0.003; }
+                else if (this.currentLocation==='university') { this.currentActivity='🏛️ 学习'; this.currentEmoji='📖'; if(!this.actionBubble)this.actionBubble='学习...'; this.mood+=0.004; }
+                else if (this.currentLocation==='hospital') { this.currentActivity='🏥 体检'; this.currentEmoji='🏥'; if(!this.actionBubble)this.actionBubble='体检...'; this.health+=0.02; }
+                else if (this.currentLocation==='cinema') { this.currentActivity='🎬 观影'; this.currentEmoji='🎬'; if(!this.actionBubble)this.actionBubble='看电影...'; this.mood+=0.01; this.coins-=20; }
+                else if (this.currentLocation==='gym') { this.currentActivity='💪 锻炼'; this.currentEmoji='💪'; if(!this.actionBubble)this.actionBubble='健身...'; this.energy-=0.005; this.mood+=0.006; }
+                else if (this.currentLocation==='restaurant') { this.currentActivity='🍜 吃饭'; this.currentEmoji='🍜'; if(!this.actionBubble)this.actionBubble='吃饭...'; this.hunger+=0.02; this.mood+=0.008; this.coins-=30; }
+                else if (this.currentLocation==='hotel') { this.currentActivity='♨️ 温泉'; this.currentEmoji='♨️'; if(!this.actionBubble)this.actionBubble='泡温泉...'; this.energy+=0.015; this.mood+=0.01; this.health+=0.005; }
+                else if (this.currentLocation==='school') { this.currentActivity='🏫 上课'; this.currentEmoji='🏫'; if(!this.actionBubble)this.actionBubble='上课...'; }
+                else if (this.currentLocation==='shop') { this.currentActivity='🛒 购物'; this.currentEmoji='🛒'; if(!this.actionBubble)this.actionBubble='逛街...'; }
+                if (this.stayTime>CONFIG.MIN_STAY_TIME && Math.random()<0.002 && !this.dialogueWith) this.think();
             }
-            
-            async tryDialogue() {
-                const others = agents.filter(a => a.id !== this.id && a.currentLocation === this.currentLocation && !a.dialogueWith);
-                if (others.length > 0 && Math.random() > 0.4) {
-                    const other = others[0];
-                    this.dialogueWith = other;
-                    other.dialogueWith = this;
-                    this.dialogueStartTime = this.stayTime;
-                    other.dialogueStartTime = this.stayTime;
-                    
-                    const dialogue = await generateDialogue(this, other);
-                    this.dialogueBubble = dialogue;
-                    other.dialogueBubble = dialogue;
-                    
-                    showAchievement('💬', '偶遇对话!', dialogue.replace(/\n/g, '\n'));
-                }
-            }
-            
-            updateActivityText() {
-                const acts = {
-                    home: ['在家休息...', '看电视...', '听音乐...'],
-                    park: ['欣赏樱花...', '拍照打卡...', '野餐...'],
-                    cafe: ['品尝咖啡...', '聊天...', '看窗外...'],
-                    library: ['认真阅读...', '做笔记...', '查资料...'],
-                    arcade: ['玩游戏...', '挑战高分...', '抓娃娃...'],
-                    beach: ['钓鱼...', '晒太阳...', '捡贝壳...'],
-                    university: ['上课...', '做实验...', '图书馆...'],
-                    hospital: ['体检...', '看病...', '咨询...'],
-                    cinema: ['看电影...', '买爆米花...', '等开场...'],
-                    gym: ['跑步...', '举铁...', '瑜伽...'],
-                    restaurant: ['吃拉面...', '吃饭...', '约会...'],
-                    hotel: ['泡温泉...', '按摩...', 'spa...'],
-                    school: ['上课...', '体育课...', '玩耍...'],
-                    shop: ['逛街...', '看商品...'],
-                };
-                const list = acts[this.currentLocation] || ['活动中...'];
-                this.actionBubble = list[Math.floor(Math.random() * list.length)];
-            }
-            
-            takePhoto() {
-                const scenes = ['樱花树下', '湖边', '喷泉旁', '长椅上'];
-                const scene = scenes[Math.floor(Math.random()*scenes.length)];
-                showAchievement('📸','拍照成功!',`📸 ${scene}\nAgent: ${this.name}\n😊 心情: ${Math.floor(this.mood)}`);
-                if(!this.achievements.includes('first_photo')) this.achievements.push('first_photo');
-            }
-            
-            socialize() {
-                const other = agents.filter(a=>a.id!==this.id&&a.currentLocation==='cafe'&&!this.friends.includes(a.id));
-                if(other.length>0&&Math.random()>0.3){const f=other[0];this.friends.push(f.id);f.friends.push(this.id);this.mood+=20;this.coins+=10;showAchievement('💬','认识新朋友!',`${this.name}和${f.name}成为朋友! 👋\n+10金币`);}
-            }
-            
-            readBook(book) {
-                const insights=['这本书很有启发...','学到了新知识...','值得一读...'];
-                const insight=insights[Math.floor(Math.random()*insights.length)];
-                const rating=Math.floor(Math.random()*3)+7;
-                showAchievement('📖','读书心得!',`📚 ${book}\n💡 ${insight}\n⭐ ${rating}/10`);
-            }
-            
-            think() {
-                const hour = Math.floor(gameTime / 60);
-                const prefs = this.personalityData;
-                
-                if (this.hunger < 15 || this.energy < 10 || this.health < 30) { this.goToLocation(this.health<30?'hospital':this.hunger<15?'restaurant':'home'); return; }
-                if (this.mood < 15) { this.goToLocation('cinema'); return; }
-                
-                if (hour >= 22 || hour < 6) this.goToLocation('home');
-                else if (hour >= 6 && hour < 9) this.goToLocation(prefs.morning);
-                else if (hour >= 9 && hour < 12) this.goToLocation(this.personality==='energetic'?'shop':'university');
-                else if (hour >= 12 && hour < 14) this.goToLocation('restaurant');
-                else if (hour >= 14 && hour < 18) this.goToLocation(prefs.preferred[Math.floor(Math.random()*prefs.preferred.length)]);
-                else if (hour >= 18 && hour < 20) this.goToLocation(Math.random()>0.5?'shop':'cinema');
-                else this.goToLocation(prefs.preferred[Math.floor(Math.random()*prefs.preferred.length)]);
-            }
-            
-            goToLocation(locationId) {
-                const loc = LOCATIONS[locationId];
-                if (!loc || this.currentLocation === locationId) return;
-                this.dialogueWith = null;
-                this.dialogueBubble = '';
-                this.targetX = (loc.x + 0.5 + Math.random()*(loc.w-1))*CONFIG.TILE_SIZE;
-                this.targetY = (loc.y + 0.5 + Math.random()*(loc.h-1))*CONFIG.TILE_SIZE;
-                this.currentLocation = locationId;
-                this.moving = true;
-                this.actionBubble = '';
-            }
-            
-            arrive() { this.stayTime = 0; this.bubbleStartTime = 0; }
-            
+            updateActivityText() { const acts = {home:['休息...','看电视...'],park:['赏樱...','拍照...'],cafe:['喝咖啡...','聊天...'],library:['阅读...','学习...'],arcade:['游戏...','抓娃娃...'],beach:['钓鱼...','晒太阳...'],university:['学习...','做实验...'],hospital:['体检...'],cinema:['看电影...'],gym:['健身...','跑步...'],restaurant:['吃饭...'],hotel:['泡温泉...','按摩...'],school:['上课...','玩耍...'],shop:['逛街...','购物...']}; const list=acts[this.currentLocation]||['活动中...']; this.actionBubble = list[Math.floor(Math.random()*list.length)]; }
+            async tryDialogue() { const others = agents.filter(a=>a.id!==this.id&&a.currentLocation===this.currentLocation&&!a.dialogueWith); if(others.length>0&&Math.random()>0.4){const other=others[0];this.dialogueWith=other;other.dialogueWith=this;this.dialogueStartTime=this.stayTime;other.dialogueStartTime=this.stayTime;const dialogue=await generateDialogue(this,other);this.dialogueBubble=dialogue;other.dialogueBubble=dialogue;showAchievement('💬','偶遇!',dialogue.replace(/\n/g,'\n'));} }
+            takePhoto() { showAchievement('📸','拍照!',`${this.name}拍了一张照~`); if(!this.achievements.includes('first_photo'))this.achievements.push('first_photo'); }
+            socialize() { const other=agents.filter(a=>a.id!==this.id&&a.currentLocation==='cafe'&&!this.friends.includes(a.id)); if(other.length>0&&Math.random()>0.3){const f=other[0];this.friends.push(f.id);f.friends.push(this.id);this.mood+=20;this.coins+=10;showAchievement('💬','新朋友!',`+10金币`);} }
+            readBook(book) { showAchievement('📖','读书!',`${book}`); }
+            think() { const hour=Math.floor(gameTime/60),prefs=this.personalityData; if(this.hunger<15||this.energy<10||this.health<30){this.goToLocation(this.health<30?'hospital':this.hunger<15?'restaurant':'home');return;} if(this.mood<15){this.goToLocation('cinema');return;} if(hour>=22||hour<6)this.goToLocation('home');else if(hour>=6&&hour<9)this.goToLocation(prefs.morning);else if(hour>=9&&hour<12)this.goToLocation(this.personality==='energetic'?'shop':'university');else if(hour>=12&&hour<14)this.goToLocation('restaurant');else if(hour>=14&&hour<18)this.goToLocation(prefs.preferred[Math.floor(Math.random()*prefs.preferred.length)]);else if(hour>=18&&hour<20)this.goToLocation(Math.random()>0.5?'shop':'cinema');else this.goToLocation(prefs.preferred[Math.floor(Math.random()*prefs.preferred.length)]); }
+            goToLocation(locationId) { const loc=LOCATIONS[locationId]; if(!loc||this.currentLocation===locationId)return; this.dialogueWith=null; this.dialogueBubble=''; this.targetX=(loc.x+0.5+Math.random()*(loc.w-1))*CONFIG.TILE_SIZE; this.targetY=(loc.y+0.5+Math.random()*(loc.h-1))*CONFIG.TILE_SIZE; this.currentLocation=locationId; this.moving=true; this.actionBubble=''; }
+            arrive() { this.stayTime=0; this.bubbleStartTime=0; }
             draw(ctx) {
-                const px = this.x, py = this.y, size = CONFIG.TILE_SIZE;
-                
-                // 阴影
-                ctx.fillStyle='rgba(0,0,0,0.25)';
-                ctx.beginPath();ctx.ellipse(px+size/2,py+size-5,size/3,6,0,0,Math.PI*2);ctx.fill();
-                
-                // 身体
-                ctx.fillStyle=this.clothesColor;
-                ctx.fillRect(px+16,py+26,20,22);
-                
-                // 腿部
-                ctx.fillStyle='#333';
-                const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*3:0;
-                ctx.fillRect(px+16,py+44,6,8+lo);ctx.fillRect(px+30,py+44,6,8-lo);
-                
-                // 头
-                ctx.fillStyle=this.skinColor;
-                ctx.fillRect(px+16,py+8,20,18);
-                
-                // 头发
-                ctx.fillStyle=this.hairColor;
-                ctx.fillRect(px+14,py+4,24,10);ctx.fillRect(px+16,py+14,4,6);ctx.fillRect(px+34,py+14,4,6);
-                
-                // 眼睛
-                ctx.fillStyle='#222';
-                if(this.direction==='left')ctx.fillRect(px+18,py+16,3,3);
-                else if(this.direction==='right')ctx.fillRect(px+33,py+16,3,3);
-                else{ctx.fillRect(px+19,py+16,3,3);ctx.fillRect(px+30,py+16,3,3);}
-                
-                // 嘴巴
+                const px=this.x,py=this.y,size=CONFIG.TILE_SIZE;
+                ctx.fillStyle='rgba(0,0,0,0.25)';ctx.beginPath();ctx.ellipse(px+size/2,py+size-5,size/3,6,0,0,Math.PI*2);ctx.fill();
+                ctx.fillStyle=this.clothesColor;ctx.fillRect(px+16,py+26,20,22);
+                ctx.fillStyle='#333';const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*3:0;ctx.fillRect(px+16,py+44,6,8+lo);ctx.fillRect(px+30,py+44,6,8-lo);
+                ctx.fillStyle=this.skinColor;ctx.fillRect(px+16,py+8,20,18);
+                ctx.fillStyle=this.hairColor;ctx.fillRect(px+14,py+4,24,10);ctx.fillRect(px+16,py+14,4,6);ctx.fillRect(px+34,py+14,4,6);
+                ctx.fillStyle='#222';if(this.direction==='left')ctx.fillRect(px+18,py+16,3,3);else if(this.direction==='right')ctx.fillRect(px+33,py+16,3,3);else{ctx.fillRect(px+19,py+16,3,3);ctx.fillRect(px+30,py+16,3,3);}
                 ctx.fillStyle='#c44';ctx.fillRect(px+24,py+22,4,2);
-                
-                // 优先显示对话气泡
-                if(!this.moving && this.dialogueBubble) {
-                    ctx.font='bold 12px "Pixelify Sans",sans-serif';
-                    const lines = this.dialogueBubble.split('\n');
-                    let maxWidth = 0;
-                    lines.forEach(line => { maxWidth = Math.max(maxWidth, ctx.measureText(line).width); });
-                    
-                    const bubbleH = lines.length * 16 + 12;
-                    const bubbleW = maxWidth + 16;
-                    
-                    ctx.fillStyle='white';
-                    ctx.beginPath();
-                    ctx.roundRect(px+size/2-bubbleW/2-4, py-30-bubbleH, bubbleW+8, bubbleH+8, 6);
-                    ctx.fill();
-                    
-                    ctx.fillStyle='#333';
-                    lines.forEach((line, i) => {
-                        ctx.fillText(line, px+size/2-maxWidth/2, py-24-bubbleH + i*16);
-                    });
-                }
-                // 普通气泡
-                else if (!this.moving && this.actionBubble) {
-                    ctx.font='bold 12px "Pixelify Sans",sans-serif';
-                    const text = this.currentEmoji + ' ' + this.actionBubble;
-                    const textWidth = ctx.measureText(text).width;
-                    
-                    ctx.fillStyle='white';
-                    ctx.beginPath();
-                    ctx.roundRect(px+size/2-textWidth/2-6, py-28, textWidth+12, 20, 4);
-                    ctx.fill();
-                    
-                    ctx.fillStyle='#333';
-                    ctx.fillText(text, px+size/2-textWidth/2, py-13);
-                }
-                
-                // 选中标记
-                if(selectedAgent===this){ctx.fillStyle='#FFD700';ctx.font='bold 14px sans-serif';ctx.fillText('★',px+20,py-40);}
+                if(!this.moving&&this.dialogueBubble){ctx.font='bold 12px "Pixelify Sans",sans-serif';const lines=this.dialogueBubble.split('\n');let maxW=0;lines.forEach(l=>maxW=Math.max(maxW,ctx.measureText(l).width));const bh=lines.length*16+12,bw=maxW+16;ctx.fillStyle='white';ctx.beginPath();ctx.roundRect(px+size/2-bw/2-4,py-30-bh,bw+8,bh+8,6);ctx.fill();ctx.fillStyle='#333';lines.forEach((l,i)=>ctx.fillText(l,px+size/2-maxW/2,py-24-bh+i*16));}
+                else if(!this.moving&&this.actionBubble){ctx.font='bold 12px "Pixelify Sans",sans-serif';const text=this.currentEmoji+' '+this.actionBubble,tw=ctx.measureText(text).width;ctx.fillStyle='white';ctx.beginPath();ctx.roundRect(px+size/2-tw/2-6,py-28,tw+12,20,4);ctx.fill();ctx.fillStyle='#333';ctx.fillText(text,px+size/2-tw/2,py-13);}
+                if(selectedAgent===this){ctx.fillStyle='#FFD700';ctx.font='bold 14px';ctx.fillText('★',px+20,py-40);}
             }
         }
         
-        // ==================== 渲染函数 ====================
         function drawMap() {
-            const w = CONFIG.MAP_WIDTH*CONFIG.TILE_SIZE;
-            const h = CONFIG.MAP_HEIGHT*CONFIG.TILE_SIZE;
-            
-            // 草地背景
-            const grad=ctx.createLinearGradient(0,0,0,h);
-            grad.addColorStop(0,'#5a8f3e');grad.addColorStop(1,'#4a7c3f');
-            ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
-            
-            // 草地纹理
-            for(let i=0;i<CONFIG.MAP_WIDTH;i++){
-                for(let j=0;j<CONFIG.MAP_HEIGHT;j++){
-                    const idx=i+j*CONFIG.MAP_WIDTH;
-                    if(idx<grassPattern.length){
-                        ctx.fillStyle=grassPattern[idx];
-                        ctx.fillRect(i*CONFIG.TILE_SIZE+12,j*CONFIG.TILE_SIZE+12,6,8);
-                    }
-                }
-            }
-            
-            // 道路
-            ctx.fillStyle='#6a6a6a';
-            ctx.fillRect(7*CONFIG.TILE_SIZE, 0, 2*CONFIG.TILE_SIZE, h);
-            ctx.fillRect(0, 6*CONFIG.TILE_SIZE, w, 2*CONFIG.TILE_SIZE);
-            ctx.fillRect(21*CONFIG.TILE_SIZE, 0, 2*CONFIG.TILE_SIZE, h);
-            ctx.fillRect(0, 20*CONFIG.TILE_SIZE, w, 2*CONFIG.TILE_SIZE);
-            
-            // 道路线
-            ctx.fillStyle='#888';
-            for(let i=0;i<w;i+=CONFIG.TILE_SIZE*2){ctx.fillRect(i+24,6*CONFIG.TILE_SIZE+8,8,4);}
-            
+            const w=CONFIG.MAP_WIDTH*CONFIG.TILE_SIZE,h=CONFIG.MAP_HEIGHT*CONFIG.TILE_SIZE;
+            const grad=ctx.createLinearGradient(0,0,0,h);grad.addColorStop(0,'#5a8f3e');grad.addColorStop(1,'#4a7c3f');ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+            for(let i=0;i<CONFIG.MAP_WIDTH;i++)for(let j=0;j<CONFIG.MAP_HEIGHT;j++){const idx=i+j*CONFIG.MAP_WIDTH;if(idx<grassPattern.length){ctx.fillStyle=grassPattern[idx];ctx.fillRect(i*CONFIG.TILE_SIZE+12,j*CONFIG.TILE_SIZE+12,6,8);}}
+            ctx.fillStyle='#6a6a6a';ctx.fillRect(22*CONFIG.TILE_SIZE,0,2*CONFIG.TILE_SIZE,h);ctx.fillRect(0,6*CONFIG.TILE_SIZE,w,2*CONFIG.TILE_SIZE);
+            ctx.fillStyle='#888';for(let i=0;i<w;i+=CONFIG.TILE_SIZE*2)ctx.fillRect(i+24,6*CONFIG.TILE_SIZE+8,8,4);
             Object.entries(LOCATIONS).forEach(([id,loc])=>drawLocation(id,loc));
         }
         
-        function drawLocation(id,loc){
+        function drawLocation(id,loc) {
             const x=loc.x*CONFIG.TILE_SIZE,y=loc.y*CONFIG.TILE_SIZE,w=loc.w*CONFIG.TILE_SIZE,h=loc.h*CONFIG.TILE_SIZE;
-            
             ctx.fillStyle=loc.color;ctx.globalAlpha=0.65;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
             ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(x+2,y+2,w-4,h-4);
-            
-            if(id==='park')drawPark(x,y,w,h);
-            else if(id==='home')drawHomes(x,y,w,h);
-            else if(id==='cafe')drawCafe(x,y,w,h);
-            else if(id==='library')drawLibrary(x,y,w,h);
-            else if(id==='arcade')drawArcade(x,y,w,h);
-            else if(id==='beach')drawBeach(x,y,w,h);
-            else if(id==='university')drawUniversity(x,y,w,h);
-            else if(id==='hospital')drawHospital(x,y,w,h);
-            else if(id==='cinema')drawCinema(x,y,w,h);
-            else if(id==='gym')drawGym(x,y,w,h);
-            else if(id==='restaurant')drawRestaurant(x,y,w,h);
-            else if(id==='hotel')drawHotel(x,y,w,h);
-            else if(id==='school')drawSchool(x,y,w,h);
-            else drawShop(x,y,w,h);
-            
-            ctx.fillStyle='#fff';ctx.font='bold 12px "Pixelify Sans",sans-serif';
-            ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
+            if(id==='park')drawPark(x,y,w,h);else if(id==='home')drawHomes(x,y,w,h);else if(id==='cafe')drawCafe(x,y,w,h);else if(id==='library')drawLibrary(x,y,w,h);else if(id==='arcade')drawArcade(x,y,w,h);else if(id==='beach')drawBeach(x,y,w,h);else if(id==='university')drawUniversity(x,y,w,h);else if(id==='hospital')drawHospital(x,y,w,h);else if(id==='cinema')drawCinema(x,y,w,h);else if(id==='gym')drawGym(x,y,w,h);else if(id==='restaurant')drawRestaurant(x,y,w,h);else if(id==='hotel')drawHotel(x,y,w,h);else if(id==='school')drawSchool(x,y,w,h);else drawShop(x,y,w,h);
+            ctx.fillStyle='#fff';ctx.font='bold 12px "Pixelify Sans",sans-serif';ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
         }
         
-        function drawPark(x,y,w,h){[[0.5,0.5],[2,0.5],[4,0.5],[1,2],[3,2],[5,2],[0.5,3.5],[4.5,3.5]].forEach(([tx,ty])=>drawTree(x+tx*CONFIG.TILE_SIZE,y+ty*CONFIG.TILE_SIZE,'#f2a2b8'));ctx.fillStyle='#5dabeb';ctx.fillRect(x+w*0.5,y+h*0.4,w*0.4,h*0.4);}
+        function drawPark(x,y,w,h){[[0.5,0.5],[2,0.5],[4,0.5],[1,2],[3,2],[5,2]].forEach(([tx,ty])=>drawTree(x+tx*CONFIG.TILE_SIZE,y+ty*CONFIG.TILE_SIZE,'#f2a2b8'));ctx.fillStyle='#5dabeb';ctx.fillRect(x+w*0.5,y+h*0.4,w*0.4,h*0.4);}
         function drawTree(x,y,color){ctx.fillStyle='#6b4423';ctx.fillRect(x+18,y+22,14,26);ctx.fillStyle=color;ctx.beginPath();ctx.arc(x+25,y+18,18,0,Math.PI*2);ctx.fill();}
-        function drawHomes(x,y,w,h){['#a0522d','#cd853f','#deb887','#8fbc8f'].forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(x+14+i*40,y+28,36,32);ctx.fillStyle='#4a4a4a';ctx.beginPath();ctx.moveTo(x+6+i*40,y+28);ctx.lineTo(x+32+i*40,y+4);ctx.lineTo(x+58+i*40,y+28);ctx.fill();});}
-        function drawCafe(x,y,w,h){ctx.fillStyle='#8b5a2b';ctx.fillRect(x+40,y+50,w-60,h-70);ctx.fillStyle='#5c3d2e';ctx.beginPath();ctx.moveTo(x+30,y+50);ctx.lineTo(x+w/2,y+15);ctx.lineTo(x+w-30,y+50);ctx.fill();ctx.fillStyle='#ffe4b5';ctx.fillRect(x+55,y+70,24,30);ctx.fillRect(x+100,y+70,24,30);ctx.font='24px sans-serif';ctx.fillText('☕',x+85,y+42);}
+        function drawHomes(x,y,w,h){['#a0522d','#cd853f','#deb887'].forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(x+14+i*40,y+28,36,32);ctx.fillStyle='#4a4a4a';ctx.beginPath();ctx.moveTo(x+6+i*40,y+28);ctx.lineTo(x+32+i*40,y+4);ctx.lineTo(x+58+i*40,y+28);ctx.fill();});}
+        function drawCafe(x,y,w,h){ctx.fillStyle='#8b5a2b';ctx.fillRect(x+40,y+50,w-60,h-70);ctx.fillStyle='#5c3d2e';ctx.beginPath();ctx.moveTo(x+30,y+50);ctx.lineTo(x+w/2,y+15);ctx.lineTo(x+w-30,y+50);ctx.fill();ctx.fillStyle='#ffe4b5';ctx.fillRect(x+55,y+70,24,30);ctx.fillRect(x+100,y+70,24,30);ctx.font='24px sans-serif';ctx.fillText('☕',x+80,y+42);}
         function drawLibrary(x,y,w,h){ctx.fillStyle='#2c4a6e';ctx.fillRect(x+28,y+38,w-45,h-55);ctx.fillStyle='#1a2d4a';ctx.beginPath();ctx.moveTo(x+18,y+38);ctx.lineTo(x+w/2,y+8);ctx.lineTo(x+w-18,y+38);ctx.fill();ctx.fillStyle='#5c3d2e';ctx.fillRect(x+52,y+68,48,58);ctx.font='24px sans-serif';ctx.fillText('📚',x+65,y+32);}
-        function drawArcade(x,y,w,h){ctx.fillStyle='#4a1a6b';ctx.fillRect(x+28,y+45,w-45,h-60);ctx.fillStyle='#ff69b4';ctx.fillRect(x+33,y+50,w-55,15);ctx.fillStyle='#fff';ctx.font='bold 14px';ctx.fillText('GAME',x+45,y=62);for(let i=0;i<3;i++){ctx.fillStyle='#2a0a4a';ctx.fillRect(x+35+i*32,y+75,26,32);}}
+        function drawArcade(x,y,w,h){ctx.fillStyle='#4a1a6b';ctx.fillRect(x+28,y+45,w-45,h-60);ctx.fillStyle='#2a0a4a';for(let i=0;i<3;i++)ctx.fillRect(x+35+i*32,y+75,26,32);}
         function drawBeach(x,y,w,h){ctx.fillStyle='#e6c288';ctx.fillRect(x,y,w,h);ctx.fillStyle='#4a90b5';ctx.fillRect(x,y+h-48,w,48);drawTree(x+40,y+45,'#228b22');drawTree(x+160,y+60,'#228b22');}
-        function drawUniversity(x,y,w,h){ctx.fillStyle='#5a6a7a';ctx.fillRect(x+22,y+35,w-35,h-50);ctx.fillStyle='#3a4a5a';ctx.fillRect(x+14,y+20,w-20,22);ctx.fillStyle='#87ceeb';ctx.fillRect(x+20,y+24,20,20);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+12,y+h-20,w-18,16);ctx.font='26px sans-serif';ctx.fillText('🏛️',x+45,y+60);}
+        function drawUniversity(x,y,w,h){ctx.fillStyle='#5a6a7a';ctx.fillRect(x+22,y+35,w-35,h-50);ctx.fillStyle='#3a4a5a';ctx.fillRect(x+14,y+20,w-20,22);ctx.fillStyle='#87ceeb';ctx.fillRect(x+20,y+24,20,20);ctx.font='26px sans-serif';ctx.fillText('🏛️',x+45,y+60);}
         function drawHospital(x,y,w,h){ctx.fillStyle='#f5f5f5';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#e8e8e8';ctx.fillRect(x+14,y+18,w-20,20);ctx.fillStyle='#e94560';ctx.fillRect(x+38,y+22,20,14);ctx.font='24px sans-serif';ctx.fillText('🏥',x+62,y+55);}
-        function drawCinema(x,y,w,h){ctx.fillStyle='#2f2f2f';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#ffd700';ctx.fillRect(x+25,y+35,w-42,30);ctx.fillStyle='#fff';ctx.font='bold 12px';ctx.fillText('CINEMA',x+35,y=55);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+12,y+h-16,w-18,14);}
+        function drawCinema(x,y,w,h){ctx.fillStyle='#2f2f2f';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#ffd700';ctx.fillRect(x+25,y+35,w-42,28);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+12,y+h-16,w-18,14);}
         function drawGym(x,y,w,h){ctx.fillStyle='#ff6347';ctx.fillRect(x+14,y+22,w-22,h-32);ctx.fillStyle='#8b0000';ctx.fillRect(x+20,y+28,w-32,24);ctx.fillStyle='#fff';ctx.fillRect(x+24,y+32,12,16);ctx.fillRect(x+48,y+32,12,16);ctx.font='20px sans-serif';ctx.fillText('💪',x+48,y+h-8);}
-        function drawRestaurant(x,y,w,h){ctx.fillStyle='#cd5c5c';ctx.fillRect(x+28,y+35,w-45,h-50);ctx.fillStyle='#8b0000';ctx.beginPath();ctx.moveTo(x+18,y+35);ctx.lineTo(x+w/2,y+8);ctx.lineTo(x+w-18,y+35);ctx.fill();ctx.font='24px sans-serif';ctx.fillText('🍜',x+75,y+70);}
-        function drawHotel(x,y,w,h){ctx.fillStyle='#dda0dd';ctx.fillRect(x+20,y+22,w-32,h-32);ctx.fillStyle='#ba55d3';ctx.fillRect(x+14,y+14,w-20,18);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+24,y+34,16,30);ctx.fillRect(x+52,y+34,16,30);ctx.fillStyle='#ffe4b5';ctx.fillRect(x+27,y+38,10,12);ctx.fillRect(x+55,y+38,10,12);ctx.font='20px sans-serif';ctx.fillText('♨️',x+58,y+h-6);}
-        function drawSchool(x,y,w,h){ctx.fillStyle='#87ceeb';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#4682b4';ctx.fillRect(x+14,y+18,w-20,20);ctx.fillStyle='#deb887';ctx.fillRect(x+24,y+h-18,w-40,14);for(let i=0;i<3;i++){ctx.fillStyle='#87ceeb';ctx.fillRect(x+30+i*30,y+40,22,20);}}
+        function drawRestaurant(x,y,w,h){ctx.fillStyle='#cd5c5c';ctx.fillRect(x+28,y+35,w-45,h-50);ctx.fillStyle='#8b0000';ctx.beginPath();ctx.moveTo(x+18,y+35);ctx.lineTo(x+w/2,y+8);ctx.lineTo(x+w-18,y+35);ctx.fill();ctx.font='24px sans-serif';ctx.fillText('🍜',x+70,y+70);}
+        function drawHotel(x,y,w,h){ctx.fillStyle='#dda0dd';ctx.fillRect(x+20,y+22,w-32,h-32);ctx.fillStyle='#ba55d3';ctx.fillRect(x+14,y+14,w-20,18);ctx.font='20px sans-serif';ctx.fillText('♨️',x+50,y+h-6);}
+        function drawSchool(x,y,w,h){ctx.fillStyle='#87ceeb';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#4682b4';ctx.fillRect(x+14,y+18,w-20,20);ctx.fillStyle='#deb887';ctx.fillRect(x+24,y+h-18,w-40,14);}
         function drawShop(x,y,w,h){['👕','🪑','🍳'].forEach((e,i)=>{ctx.fillStyle='#2a8a8a';ctx.fillRect(x+14+i*45,y+20,40,55);ctx.font='22px';ctx.fillText(e,x+22+i*45,y+48);});}
         
-        // ==================== UI函数 ====================
-        function renderAgentList(){
-            const list=document.getElementById('agentList');
-            list.innerHTML='';
-            agents.forEach(agent=>{
-                const card=document.createElement('div');
-                card.className=`agent-card ${selectedAgent===agent?'selected':''}`;
-                card.onclick=()=>selectAgent(agent);
-                const p=agent.personalityData;
-                card.innerHTML=`<div class="agent-header"><canvas class="agent-avatar" id="avatar-${agent.id}" width="44" height="44"></canvas><div><div class="agent-name">${agent.name}</div><div class="agent-personality">${p.emoji} ${p.name}</div></div></div><div class="agent-status"><span class="status-badge ${agent.mood>50?'high':agent.mood>25?'medium':'low'}">😊${Math.floor(agent.mood)}</span><span class="status-badge ${agent.energy>50?'high':agent.energy>25?'medium':'low'}">⚡${Math.floor(agent.energy)}</span><span class="status-badge">💰${agent.coins}</span></div>`;
-                list.appendChild(card);
-                const ac=document.getElementById(`avatar-${agent.id}`).getContext('2d');
-                drawAvatar(ac,agent);
-            });
-        }
+        function renderAgentList(){const list=document.getElementById('agentList');list.innerHTML='';agents.forEach(a=>{const card=document.createElement('div');card.className=`agent-card ${selectedAgent===a?'selected':''}`;card.onclick=()=>selectAgent(a);const p=a.personalityData;card.innerHTML=`<div class="agent-header"><canvas class="agent-avatar" id="avatar-${a.id}" width="44" height="44"></canvas><div><div class="agent-name">${a.name}</div><div class="agent-personality">${p.emoji} ${p.name}</div></div></div><div class="agent-status"><span class="status-badge ${a.mood>50?'high':a.mood>25?'medium':'low'}">😊${Math.floor(a.mood)}</span><span class="status-badge ${a.energy>50?'high':a.energy>25?'medium':'low'}">⚡${Math.floor(a.energy)}</span><span class="status-badge">💰${a.coins}</span></div>`;list.appendChild(card);const ac=document.getElementById(`avatar-${a.id}`).getContext('2d');drawAvatar(ac,a);});}
         function drawAvatar(ctx,a){ctx.fillStyle='#333';ctx.fillRect(16,24,12,16);ctx.fillStyle=a.skinColor;ctx.fillRect(12,10,20,16);ctx.fillStyle=a.hairColor;ctx.fillRect(10,6,24,8);ctx.fillStyle='#000';ctx.fillRect(14,16,3,3);ctx.fillRect(22,16,3,3);ctx.fillStyle=a.clothesColor;ctx.fillRect(12,28,20,12);}
         function selectAgent(a){selectedAgent=a;renderAgentList();updateLocationPanel(a.currentLocation);}
         function updateLocationPanel(id){const loc=LOCATIONS[id];if(loc){document.getElementById('locationName').textContent=loc.name;document.getElementById('locationDesc').textContent=loc.desc;}}
-        function updateStats(){
-            const h=Math.floor(gameTime/60),m=Math.floor(gameTime%60);
-            document.getElementById('timeDisplay').textContent=`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;
-            document.getElementById('dayDisplay').textContent=`第${gameDay}天`;
-            const avg=Math.floor(agents.reduce((s,a)=>s+(a.mood+a.energy+a.health)/3,0)/agents.length);
-            document.getElementById('happiness').textContent=avg+'%';
-            document.getElementById('coinsDisplay').textContent='💰 '+agents.reduce((s,a)=>s+a.coins,0);
-            document.getElementById('weatherDisplay').textContent=WEATHER[weather];
-            if(selectedAgent){document.getElementById('activityText').textContent=selectedAgent.currentActivity;updateLocationPanel(selectedAgent.currentLocation);}
-        }
-        function showAchievement(e,t,d){document.getElementById('AchievementEmoji').textContent=e;document.getElementById('AchievementTitle').textContent=t;document.getElementById('AchievementDesc').textContent=d;document.getElementById('achievementPopup').classList.add('show');document.getElementById('overlay').classList.add('show');setTimeout(()=>closeAchievement(),6000);}
-        function closeAchievement(){document.getElementById('achievementPopup').classList.remove('show');document.getElementById('overlay').classList.remove('show');}
+        function updateStats(){const h=Math.floor(gameTime/60),m=Math.floor(gameTime%60);document.getElementById('timeDisplay').textContent=`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;document.getElementById('dayDisplay').textContent=`第${gameDay}天`;const avg=Math.floor(agents.reduce((s,a)=>s+(a.mood+a.energy+a.health)/3,0)/agents.length);document.getElementById('happiness').textContent=avg+'%';document.getElementById('coinsDisplay').textContent='💰 '+agents.reduce((s,a)=>s+a.coins,0);document.getElementById('weatherDisplay').textContent=WEATHER[weather];if(selectedAgent){document.getElementById('activityText').textContent=selectedAgent.currentActivity;updateLocationPanel(selectedAgent.currentLocation);}}
+        function showAchievement(e,t,d){document.getElementById('AchievementEmoji').textContent=e;document.getElementById('AchievementTitle').textContent=t;document.getElementById('AchievementDesc').textContent=d;document.getElementById('achievementPopup').classList.add('show');document.getElementById('overlay').classList.add('show');setTimeout(()=>closeAllPopups(),6000);}
+        function closeAllPopups(){document.getElementById('achievementPopup').classList.remove('show');document.getElementById('goalPopup').classList.remove('show');document.getElementById('overlay').classList.remove('show');}
         
-        function claimAgent(){if(!selectedAgent){alert('请先选择一个Agent');return;}showAchievement('❤️','认领成功!',`你认领了 ${selectedAgent.name}！`);}
-        function setGoal(){if(!selectedAgent){alert('请先选择一个Agent');return;}const goals=[{loc:'park',t:'公园'},{loc:'cafe',t:'咖啡厅'},{loc:'cinema',t:'电影院'},{loc:'gym',t:'健身房'},{loc:'university',t:'大学'},{loc:'beach',t:'海滩'},{loc:'home',t:'回家'}];const g=goals[Math.floor(Math.random()*goals.length)];selectedAgent.goToLocation(g.loc);showAchievement('🎯','设立目标!',`${selectedAgent.name} 去${g.t}`);}
-        function sendGift(){if(!selectedAgent){alert('请先选择一个Agent');return;}const gifts=[['🍎',10,0],['🎁',15,0],['📚',12,0],['💰',5,100]];const g=gifts[Math.floor(Math.random()*gifts.length)];selectedAgent.coins+=g[2];selectedAgent.mood+=g[1];showAchievement('🎁','收到礼物!',`你送给了 ${selectedAgent.name} ${g[0]}!`);}
-        function quickAction(loc){if(!selectedAgent){alert('请先选择一个Agent');return;}selectedAgent.goToLocation(loc);showAchievement('➡️','出发!',`${selectedAgent.name} 前往${LOCATIONS[loc].name}`);}
+        function openGoalInput(){if(!selectedAgent){alert('请先选择一个Agent');return;}document.getElementById('goalInput').value='';document.getElementById('goalPopup').classList.add('show');document.getElementById('overlay').classList.add('show');document.getElementById('goalInput').focus();}
+        function closeGoalInput(){closeAllPopups();}
+        function submitGoal(){const input=document.getElementById('goalInput').value.trim();if(!input){alert('请输入目标');return;}const locId=parseNaturalLanguageGoal(input);if(locId){selectedAgent.goToLocation(locId);showAchievement('🎯','目标设定!',`${selectedAgent.name} 将前往 ${LOCATIONS[locId].name}`);}else{alert('无法理解这个目标，请尝试更简单的表达如：去公园、买咖啡、看病等');}closeAllPopups();}
+        function parseNaturalLanguageGoal(text){text=text.toLowerCase();for(const [key,locId] of Object.entries(GOAL_MAPPING)){if(text.includes(key))return locId;}return null;}
         
-        function gameLoop(){
-            const now=Date.now(),dt=(now-lastTime)/1000;lastTime=now;
-            gameTime+=dt*CONFIG.TIME_SCALE;
-            if(gameTime>=CONFIG.DAY_DURATION){gameTime=0;gameDay++;showAchievement('🌅','新的一天!',`欢迎第${gameDay}天!`);}
-            if(Math.random()<0.00005)weather=Math.floor(Math.random()*WEATHER.length);
-            
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            drawMap();
-            agents.forEach(a=>{a.update(dt*60);a.draw(ctx);});
-            updateStats();
-            requestAnimationFrame(gameLoop);
-        }
+        function claimAgent(){if(!selectedAgent){alert('请先选择一个Agent');return;}showAchievement('❤️','认领!',`你认领了 ${selectedAgent.name}！`);}
+        function sendGift(){if(!selectedAgent){alert('请先选择一个Agent');return;}const gifts=[['🍎',10,0],['🎁',15,0],['💰',5,100]];const g=gifts[Math.floor(Math.random()*gifts.length)];selectedAgent.coins+=g[2];selectedAgent.mood+=g[1];showAchievement('🎁','礼物!',`+${g[2]||0}金币`);}
+        function quickAction(loc){if(!selectedAgent){alert('请先选择一个Agent');return;}selectedAgent.goToLocation(loc);showAchievement('➡️','出发!',`${selectedAgent.name} 去${LOCATIONS[loc].name}`);}
         
-        function init(){
-            canvas=document.getElementById('gameCanvas');ctx=canvas.getContext('2d');
-            canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;
-            initGrassPattern();
-            agents.push(new Agent('a0','小明','gentle'));
-            agents.push(new Agent('a1','小红','energetic'));
-            agents.push(new Agent('a2','小刚','scholar'));
-            renderAgentList();
-            window.addEventListener('resize',()=>{canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;});
-            canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;agents.forEach(a=>{if(Math.sqrt((a.x-x)**2+(a.y-y)**2<45))selectAgent(a);});});
-            gameLoop();
-        }
+        function gameLoop(){const now=Date.now(),dt=(now-lastTime)/1000;lastTime=now;gameTime+=dt*CONFIG.TIME_SCALE;if(gameTime>=CONFIG.DAY_DURATION){gameTime=0;gameDay++;showAchievement('🌅','新一天!',`第${gameDay}天`);}if(Math.random()<0.00005)weather=Math.floor(Math.random()*WEATHER.length);ctx.clearRect(0,0,canvas.width,canvas.height);drawMap();agents.forEach(a=>{a.update(dt*60);a.draw(ctx);});updateStats();requestAnimationFrame(gameLoop);}
+        
+        function init(){canvas=document.getElementById('gameCanvas');ctx=canvas.getContext('2d');canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;initGrassPattern();agents.push(new Agent('a0','小明','gentle'));agents.push(new Agent('a1','小红','energetic'));agents.push(new Agent('a2','小刚','scholar'));renderAgentList();window.addEventListener('resize',()=>{canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;});canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;agents.forEach(a=>{if(Math.sqrt((a.x-x)**2+(a.y-y)**2<45)selectAgent(a);});});document.getElementById('goalInput').addEventListener('keypress',e=>{if(e.key==='Enter')submitGoal();});gameLoop();}
         window.onload=init;
     </script>
 </body>
