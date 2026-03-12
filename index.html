@@ -378,114 +378,56 @@
             '回家': 'home', '休息': 'home', '睡觉': 'home'
         };
         
-        // ==================== 道路网格和寻路算法 ====================
+        // ==================== 道路网格系统 ====================
         const ROAD_GRID = [];
         const GRID_COLS = CONFIG.MAP_WIDTH;
         const GRID_ROWS = CONFIG.MAP_HEIGHT;
         
-        // 初始化道路网格 (1=道路, 0=建筑/障碍)
+        // 初始化道路网格 (1=道路, 0=建筑)
         function initRoadGrid() {
             for (let y = 0; y < GRID_ROWS; y++) {
                 ROAD_GRID[y] = [];
                 for (let x = 0; x < GRID_COLS; x++) {
-                    // 默认非道路
                     ROAD_GRID[y][x] = 0;
                 }
             }
-            
-            // 根据城市地图标记道路 (横向和纵向道路)
-            // 横向道路 (y=6, y=20)
+            // 横向道路
             for (let x = 0; x < GRID_COLS; x++) {
-                if (x >= 0 && x < GRID_COLS) {
-                    ROAD_GRID[6][x] = 1;  // 横向道路1
-                    ROAD_GRID[20][x] = 1; // 横向道路2
-                }
+                ROAD_GRID[6][x] = 1;
+                ROAD_GRID[20][x] = 1;
             }
-            // 纵向道路 (x=7, x=21)
+            // 纵向道路
             for (let y = 0; y < GRID_ROWS; y++) {
-                if (y >= 0 && y < GRID_ROWS) {
-                    ROAD_GRID[y][7] = 1;  // 纵向道路1
-                    ROAD_GRID[y][21] = 1; // 纵向道路2
-                }
+                ROAD_GRID[y][7] = 1;
+                ROAD_GRID[y][21] = 1;
             }
         }
         
-        // BFS寻路 - 找到从起点到终点的道路路径
-        function findPath(startX, startY, endX, endY) {
-            const queue = [{ x: Math.floor(startX / CONFIG.TILE_SIZE), y: Math.floor(startY / CONFIG.TILE_SIZE), path: [] }];
-            const visited = new Set();
-            const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+        // 简化寻路：找到最近的道路点
+        function getNearestRoad(gridX, gridY) {
+            const dirs = [[0,-1],[0,1],[-1,0],[1,0]];
+            let queue = [{x: gridX, y: gridY, dist: 0}];
+            let visited = new Set();
             
             while (queue.length > 0) {
-                const current = queue.shift();
-                const key = `${current.x},${current.y}`;
-                
+                const curr = queue.shift();
+                const key = curr.x + ',' + curr.y;
                 if (visited.has(key)) continue;
                 visited.add(key);
                 
-                // 到达终点附近
-                if (Math.abs(current.x - endX) <= 1 && Math.abs(current.y - endY) <= 1) {
-                    return current.path;
+                if (ROAD_GRID[curr.y] && ROAD_GRID[curr.y][curr.x] === 1) {
+                    return {x: curr.x, y: curr.y};
                 }
                 
-                // 探索四个方向
                 for (const [dx, dy] of dirs) {
-                    const nx = current.x + dx;
-                    const ny = current.y + dy;
-                    
+                    const nx = curr.x + dx;
+                    const ny = curr.y + dy;
                     if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS) {
-                        // 只能走在道路上
-                        if (ROAD_GRID[ny] && ROAD_GRID[ny][nx] === 1) {
-                            queue.push({
-                                x: nx,
-                                y: ny,
-                                path: [...current.path, { x: nx, y: ny }]
-                            });
-                        }
+                        queue.push({x: nx, y: ny, dist: curr.dist + 1});
                     }
                 }
             }
-            return null; // 无路径
-        }
-        
-        // 获取地点最近的道路入口点
-        function getNearestRoadPoint(loc) {
-            const locCenterX = loc.x + loc.w / 2;
-            const locCenterY = loc.y + loc.h / 2;
-            
-            // 找到最近的十字路口或道路边
-            let bestPoint = null;
-            let minDist = Infinity;
-            
-            // 检查地点四个边的中心点
-            const edgePoints = [
-                { x: loc.x, y: locCenterY },                    // 左
-                { x: loc.x + loc.w, y: locCenterY },            // 右
-                { x: locCenterX, y: loc.y },                    // 上
-                { x: locCenterX, y: loc.y + loc.h }             // 下
-            ];
-            
-            for (const point of edgePoints) {
-                const gx = Math.floor(point.x);
-                const gy = Math.floor(point.y);
-                
-                // 找到最近的道路格子
-                for (let dx = -2; dx <= 2; dx++) {
-                    for (let dy = -2; dy <= 2; dy++) {
-                        const nx = gx + dx;
-                        const ny = gy + dy;
-                        if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS && ROAD_GRID[ny] && ROAD_GRID[ny][nx] === 1) {
-                            const dist = Math.abs(nx * CONFIG.TILE_SIZE - point.x) + Math.abs(ny * CONFIG.TILE_SIZE - point.y);
-                            if (dist < minDist) {
-                                minDist = dist;
-                                bestPoint = { x: nx * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2, y: ny * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2 };
-                            }
-                        }
-                    }
-                }
-            }
-            
-            return bestPoint || { x: locCenterX * CONFIG.TILE_SIZE, y: locCenterY * CONFIG.TILE_SIZE };
+            return null;
         }
         
         initRoadGrid();
@@ -679,13 +621,12 @@ ${agent2.name}: "xxx"
                         this.x = this.targetX;
                         this.y = this.targetY;
                         
-                        // 检查是否还有路径点需要走
-                        if (this.pathQueue && this.pathQueue.length > 0) {
-                            const nextPoint = this.pathQueue.shift();
-                            this.targetX = nextPoint.x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
-                            this.targetY = nextPoint.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                        // 检查是否需要继续走向中间目标或最终目标
+                        if (this.intermediateTarget) {
+                            this.targetX = this.intermediateTarget.x;
+                            this.targetY = this.intermediateTarget.y;
+                            this.intermediateTarget = null;
                         } else if (this.finalTargetX !== undefined) {
-                            // 到达道路点，现在走向最终目的地
                             this.targetX = this.finalTargetX;
                             this.targetY = this.finalTargetY;
                             this.finalTargetX = undefined;
@@ -839,32 +780,33 @@ ${agent2.name}: "xxx"
                 this.dialogueWith = null;
                 this.dialogueBubble = '';
                 
-                // 使用寻路算法
-                const startGridX = Math.floor(this.x / CONFIG.TILE_SIZE);
-                const startGridY = Math.floor(this.y / CONFIG.TILE_SIZE);
-                const endGridX = Math.floor((loc.x + loc.w / 2) / CONFIG.TILE_SIZE);
-                const endGridY = Math.floor((loc.y + loc.h / 2) / CONFIG.TILE_SIZE);
+                // 计算当前位置和目标位置的网格坐标
+                const currentGridX = Math.floor(this.x / CONFIG.TILE_SIZE);
+                const currentGridY = Math.floor(this.y / CONFIG.TILE_SIZE);
+                const targetGridX = Math.floor((loc.x + loc.w / 2) / CONFIG.TILE_SIZE);
+                const targetGridY = Math.floor((loc.y + loc.h / 2) / CONFIG.TILE_SIZE);
                 
-                // 找到路径
-                const path = findPath(startGridX, startGridY, endGridX, endGridY);
+                // 找到当前位置和目标位置最近的道路点
+                const currentRoad = getNearestRoad(currentGridX, currentGridY);
+                const targetRoad = getNearestRoad(targetGridX, targetGridY);
                 
-                if (path && path.length > 0) {
-                    // 沿着道路走 - 走第一个道路点
-                    const firstRoadPoint = path[0];
-                    this.targetX = firstRoadPoint.x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
-                    this.targetY = firstRoadPoint.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
-                    
-                    // 存储完整路径
-                    this.pathQueue = path.slice(1);
-                    this.finalTargetX = (loc.x + 0.5 + Math.random() * (loc.w - 1)) * CONFIG.TILE_SIZE;
-                    this.finalTargetY = (loc.y + 0.5 + Math.random() * (loc.h - 1)) * CONFIG.TILE_SIZE;
+                if (currentRoad && targetRoad) {
+                    // 先走向当前最近的道路点
+                    this.targetX = currentRoad.x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                    this.targetY = currentRoad.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                    this.intermediateTarget = {
+                        x: targetRoad.x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2,
+                        y: targetRoad.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2
+                    };
                 } else {
-                    // 如果没有找到道路，直接走
+                    // 如果没有找到道路，直接走向目标
                     this.targetX = (loc.x + 0.5 + Math.random() * (loc.w - 1)) * CONFIG.TILE_SIZE;
                     this.targetY = (loc.y + 0.5 + Math.random() * (loc.h - 1)) * CONFIG.TILE_SIZE;
-                    this.pathQueue = [];
+                    this.intermediateTarget = null;
                 }
                 
+                this.finalTargetX = (loc.x + 0.5 + Math.random() * (loc.w - 1)) * CONFIG.TILE_SIZE;
+                this.finalTargetY = (loc.y + 0.5 + Math.random() * (loc.h - 1)) * CONFIG.TILE_SIZE;
                 this.currentLocation = locationId;
                 this.moving = true;
                 this.actionBubble = '';
