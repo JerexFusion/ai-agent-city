@@ -7,11 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
             --bg-dark: #1a1a2e;
@@ -30,53 +26,35 @@
             overflow: hidden;
         }
         
-        .app-container {
-            display: flex;
-            height: 100vh;
-            gap: 0;
-        }
+        .app-container { display: flex; height: 100vh; }
         
         /* 左侧面板 */
         .sidebar {
-            width: 320px;
+            width: 300px;
             background: var(--bg-card);
             display: flex;
             flex-direction: column;
             border-right: 3px solid var(--accent-cyan);
-            box-shadow: 4px 0 20px rgba(0,0,0,0.5);
         }
         
         .sidebar-header {
-            padding: 20px;
+            padding: 15px;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
             text-align: center;
         }
         
-        .sidebar-header h1 {
-            font-size: 28px;
-            text-shadow: 2px 2px 0 #000;
-            margin-bottom: 5px;
-        }
+        .sidebar-header h1 { font-size: 24px; text-shadow: 2px 2px 0 #000; }
         
         .city-stats {
             display: flex;
             justify-content: space-around;
-            padding: 15px;
+            padding: 10px;
             background: rgba(0,0,0,0.3);
-            font-size: 14px;
+            font-size: 13px;
         }
         
-        .stat-item {
-            text-align: center;
-        }
+        .stat-value { font-size: 18px; font-weight: bold; color: #ffd700; }
         
-        .stat-value {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        /* Agent列表 */
         .agent-list {
             flex: 1;
             overflow-y: auto;
@@ -85,58 +63,35 @@
         
         .agent-card {
             background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 10px;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
             cursor: pointer;
             transition: all 0.3s;
             border: 2px solid transparent;
         }
         
-        .agent-card:hover {
-            border-color: var(--accent-pink);
-            transform: translateX(5px);
-        }
+        .agent-card:hover { border-color: var(--accent-pink); transform: translateX(3px); }
+        .agent-card.selected { border-color: #ffd700; box-shadow: 0 0 10px rgba(255,215,0,0.3); }
         
-        .agent-card.selected {
-            border-color: #ffd700;
-            box-shadow: 0 0 15px rgba(255,215,0,0.3);
-        }
-        
-        .agent-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .agent-header { display: flex; align-items: center; gap: 8px; }
         
         .agent-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
             image-rendering: pixelated;
         }
         
-        .agent-name {
-            font-weight: bold;
-            font-size: 16px;
-        }
+        .agent-name { font-weight: bold; font-size: 14px; }
+        .agent-personality { font-size: 11px; color: var(--text-dim); }
         
-        .agent-personality {
-            font-size: 12px;
-            color: var(--text-dim);
-        }
-        
-        .agent-status {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
+        .agent-status { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
         
         .status-badge {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 10px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
             background: rgba(255,255,255,0.1);
         }
         
@@ -144,71 +99,50 @@
         .status-badge.medium { background: #fbbf24; color: #000; }
         .status-badge.low { background: #f87171; color: #000; }
         
-        /* 控制面板 */
-        .control-panel {
-            padding: 15px;
-            background: rgba(0,0,0,0.4);
-            border-top: 2px solid var(--accent-cyan);
-        }
+        .control-panel { padding: 10px; background: rgba(0,0,0,0.4); border-top: 2px solid var(--accent-cyan); }
         
         .btn {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 8px;
+            padding: 10px;
+            margin-bottom: 6px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
-            transition: all 0.2s;
             font-weight: 600;
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-pink), #c73659);
-            color: white;
-        }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-pink), #c73659); color: white; }
+        .btn-secondary { background: linear-gradient(135deg, var(--accent-cyan), #0a2540); color: white; }
+        .btn-gift { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
         
-        .btn-primary:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(233,69,96,0.4);
-        }
+        .quick-actions { display: flex; gap: 4px; flex-wrap: wrap; }
         
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--accent-cyan), #0a2540);
-            color: white;
-        }
-        
-        .btn-gift {
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: #000;
-        }
-        
-        /* 主游戏区域 */
-        .game-area {
+        .quick-btn {
             flex: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            min-width: 70px;
+            padding: 6px;
+            font-size: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            color: var(--text-light);
+            cursor: pointer;
         }
+        
+        .quick-btn:hover { background: var(--accent-pink); }
+        
+        /* 游戏区域 */
+        .game-area { flex: 1; position: relative; display: flex; flex-direction: column; }
         
         .game-header {
-            padding: 10px 20px;
+            padding: 8px 15px;
             background: rgba(0,0,0,0.6);
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        
-        .time-display {
-            font-size: 18px;
-        }
-        
-        .weather-display {
             font-size: 14px;
-            padding: 5px 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
         }
         
         #gameCanvas {
@@ -217,112 +151,69 @@
             image-rendering: crisp-edges;
         }
         
-        /* 地点信息面板 */
+        /* 地点信息 */
         .location-panel {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 15px;
+            left: 15px;
             background: rgba(22, 33, 62, 0.95);
-            border-radius: 15px;
-            padding: 15px 20px;
+            border-radius: 12px;
+            padding: 12px 15px;
             border: 2px solid var(--accent-cyan);
-            max-width: 300px;
+            max-width: 280px;
         }
         
-        .location-name {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--accent-pink);
+        .location-name { font-size: 16px; font-weight: bold; margin-bottom: 5px; color: var(--accent-pink); }
+        .location-desc { font-size: 12px; color: var(--text-dim); }
+        
+        /* 活动状态显示 */
+        .activity-panel {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(22, 33, 62, 0.95);
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 2px solid var(--accent-pink);
+            min-width: 200px;
         }
         
-        .location-desc {
-            font-size: 13px;
-            color: var(--text-dim);
-            line-height: 1.5;
-        }
+        .activity-title { font-size: 12px; color: var(--text-dim); margin-bottom: 5px; }
+        .activity-text { font-size: 14px; font-weight: bold; }
         
-        /* Agent信息弹窗 */
+        /* Agent详情弹窗 */
         .agent-detail-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: var(--bg-card);
-            border-radius: 20px;
-            padding: 25px;
-            width: 400px;
-            max-height: 80vh;
+            border-radius: 15px;
+            padding: 20px;
+            width: 350px;
+            max-height: 70vh;
             overflow-y: auto;
             border: 3px solid var(--accent-pink);
             z-index: 1000;
             display: none;
         }
         
-        .agent-detail-popup.show {
-            display: block;
-            animation: popIn 0.3s ease;
-        }
+        .agent-detail-popup.show { display: block; animation: popIn 0.3s ease; }
         
         @keyframes popIn {
             from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
         
-        .popup-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+        .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .popup-close { background: none; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; }
         
-        .popup-close {
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            font-size: 24px;
-            cursor: pointer;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
+        .stat-box { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px; text-align: center; }
+        .stat-box-label { font-size: 10px; color: var(--text-dim); }
+        .stat-box-value { font-size: 16px; font-weight: bold; }
         
-        .stat-box {
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .stat-box-label {
-            font-size: 11px;
-            color: var(--text-dim);
-        }
-        
-        .stat-box-value {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        
-        .friends-list {
-            margin-top: 15px;
-        }
-        
-        .friend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            margin-bottom: 5px;
-        }
-        
-        /* 遮罩 */
         .overlay {
             position: fixed;
             top: 0;
@@ -334,57 +225,20 @@
             display: none;
         }
         
-        .overlay.show {
-            display: block;
-        }
+        .overlay.show { display: block; }
         
-        /* 底部快捷操作 */
-        .quick-actions {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 3px; }
         
-        .quick-btn {
-            flex: 1;
-            min-width: 80px;
-            padding: 8px;
-            font-size: 11px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .quick-btn:hover {
-            background: var(--accent-pink);
-        }
-        
-        /* 滚动条 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-cyan);
-            border-radius: 4px;
-        }
-        
-        /* 成就提示 */
         .achievement-toast {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #000;
-            padding: 15px 25px;
-            border-radius: 10px;
+            padding: 12px 20px;
+            border-radius: 8px;
             font-weight: bold;
             z-index: 2000;
             animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
@@ -395,9 +249,7 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateY(-20px); }
-        }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-20px); } }
     </style>
 </head>
 <body>
@@ -406,12 +258,12 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h1>🏙️ AgentCity</h1>
-                <div style="font-size: 14px; opacity: 0.9;">像素乌托邦</div>
+                <div style="font-size: 12px; opacity: 0.9;">像素乌托邦</div>
             </div>
             
             <div class="city-stats">
                 <div class="stat-item">
-                    <div class="stat-value" id="agentCount">8</div>
+                    <div class="stat-value" id="agentCount">3</div>
                     <div>居民</div>
                 </div>
                 <div class="stat-item">
@@ -419,7 +271,7 @@
                     <div>幸福度</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="totalCoins">1280</div>
+                    <div class="stat-value" id="totalCoins">450</div>
                     <div>喵喵币</div>
                 </div>
             </div>
@@ -431,10 +283,10 @@
                 <button class="btn btn-secondary" onclick="setGoal()">设立目标</button>
                 <button class="btn btn-gift" onclick="sendGift()">赠送礼物</button>
                 <div class="quick-actions">
-                    <button class="quick-btn" onclick="quickAction('park')">🌸去公园</button>
-                    <button class="quick-btn" onclick="quickAction('cafe')">☕去咖啡厅</button>
-                    <button class="quick-btn" onclick="quickAction('library')">📚去图书馆</button>
-                    <button class="quick-btn" onclick="quickAction('arcade')">🎮去游戏厅</button>
+                    <button class="quick-btn" onclick="quickAction('park')">🌸公园</button>
+                    <button class="quick-btn" onclick="quickAction('cafe')">☕咖啡厅</button>
+                    <button class="quick-btn" onclick="quickAction('library')">📚图书馆</button>
+                    <button class="quick-btn" onclick="quickAction('arcade')">🎮游戏厅</button>
                 </div>
             </div>
         </div>
@@ -450,6 +302,11 @@
             <div class="location-panel" id="locationPanel">
                 <div class="location-name" id="locationName">🏠 住宅区</div>
                 <div class="location-desc" id="locationDesc">Agent的温馨家园</div>
+            </div>
+            
+            <div class="activity-panel">
+                <div class="activity-title">当前活动</div>
+                <div class="activity-text" id="activityText">休息中...</div>
             </div>
         </div>
     </div>
@@ -479,8 +336,8 @@
                 <div class="stat-box-value" id="popupCoins" style="color: #ffd700;">500</div>
             </div>
         </div>
-        <div class="friends-list">
-            <h4 style="margin-bottom: 10px;">👥 好友列表</h4>
+        <div>
+            <h4 style="margin-bottom: 8px;">👥 好友</h4>
             <div id="friendsContainer"></div>
         </div>
     </div>
@@ -488,25 +345,23 @@
     <script>
         // ==================== 游戏配置 ====================
         const CONFIG = {
-            TILE_SIZE: 32,
-            MAP_WIDTH: 40,
-            MAP_HEIGHT: 25,
-            GAME_SPEED: 1,
-            AGENT_SPEED: 2,
-            THINK_INTERVAL: 3000,
+            TILE_SIZE: 48,  // 更大的像素
+            MAP_WIDTH: 30,
+            MAP_HEIGHT: 18,
+            AGENT_SPEED: 1.5,
+            STAY_DURATION: 180, // 在地点停留的时间(帧)
         };
         
-        // 地点定义
+        // 地点定义 - 更精美的设计
         const LOCATIONS = {
-            // 地图位置 (x, y, width, height in tiles)
-            home: { x: 2, y: 2, w: 4, h: 3, name: '🏠 住宅区', desc: 'Agent的温馨家园', color: '#8B4513' },
-            park: { x: 28, y: 2, w: 8, h: 6, name: '🌸 樱花公园', desc: '休闲放松、偶遇新朋友', color: '#FFB7C5' },
-            cafe: { x: 2, y: 10, w: 4, h: 4, name: '☕ 咖啡厅', desc: '社交聊天、交朋友', color: '#D2691E' },
-            library: { x: 10, y: 2, w: 4, h: 4, name: '📚 图书馆', desc: '阅读学习、获取知识', color: '#4169E1' },
-            arcade: { x: 10, y: 10, w: 4, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技、放松身心', color: '#9400D3' },
-            beach: { x: 28, y: 14, w: 10, h: 8, name: '🏖️ 海滩', desc: '钓鱼休闲、享受阳光', color: '#F4A460' },
-            shop: { x: 2, y: 18, w: 6, h: 5, name: '🛒 商业街', desc: '购物消费、工作赚钱', color: '#20B2AA' },
-            job: { x: 18, y: 10, w: 4, h: 4, name: '💼 职业中心', desc: '打工赚钱、职业发展', color: '#708090' },
+            home: { x: 2, y: 2, w: 4, h: 3, name: '🏠 住宅区', desc: 'Agent的温馨家园', color: '#8B4513', emoji: '🏠' },
+            park: { x: 20, y: 2, w: 8, h: 5, name: '🌸 樱花公园', desc: '休闲放松、偶遇新朋友', color: '#FFB7C5', emoji: '🌸' },
+            cafe: { x: 2, y: 8, w: 4, h: 4, name: '☕ 咖啡厅', desc: '社交聊天、交朋友', color: '#D2691E', emoji: '☕' },
+            library: { x: 8, y: 2, w: 4, h: 4, name: '📚 图书馆', desc: '阅读学习、获取知识', color: '#4169E1', emoji: '📚' },
+            arcade: { x: 8, y: 8, w: 4, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技、放松身心', color: '#9400D3', emoji: '🎮' },
+            beach: { x: 20, y: 10, w: 8, h: 6, name: '🏖️ 海滩', desc: '钓鱼休闲、享受阳光', color: '#F4A460', emoji: '🏖️' },
+            shop: { x: 2, y: 14, w: 6, h: 3, name: '🛒 商业街', desc: '购物消费、工作赚钱', color: '#20B2AA', emoji: '🛒' },
+            job: { x: 15, y: 8, w: 3, h: 3, name: '💼 职业中心', desc: '打工赚钱、职业发展', color: '#708090', emoji: '💼' },
         };
         
         // 性格类型
@@ -515,24 +370,16 @@
             energetic: { name: '活力', emoji: '⚡', color: '#FFD700', preferred: ['arcade', 'park'] },
             scholar: { name: '学者', emoji: '📚', color: '#4169E1', preferred: ['library', 'home'] },
             artistic: { name: '艺术', emoji: '🎨', color: '#9370DB', preferred: ['park', 'cafe'] },
-            cool: { name: '酷酷', emoji: '😎', color: '#2F4F4F', preferred: ['arcade', 'shop'] },
-            shy: { name: '害羞', emoji: '🐱', color: '#DDA0DD', preferred: ['library', 'park'] },
-            mischief: { name: '调皮', emoji: '🦊', color: '#FF6347', preferred: ['arcade', 'park'] },
-            leader: { name: '领袖', emoji: '🌟', color: '#FF4500', preferred: ['job', 'cafe'] },
         };
         
-        // 天气类型
         const WEATHER = ['☀️ 晴天', '🌧️ 小雨', '❄️ 小雪', '🌤️ 多云', '🌈 彩虹'];
         
         // ==================== 游戏状态 ====================
         let canvas, ctx;
         let agents = [];
         let selectedAgent = null;
-        let gameTime = 8 * 60; // 分钟
+        let gameTime = 8 * 60;
         let weather = 0;
-        let camera = { x: 0, y: 0 };
-        let isDragging = false;
-        let lastMouse = { x: 0, y: 0 };
         
         // ==================== Agent类 ====================
         class Agent {
@@ -542,13 +389,11 @@
                 this.personality = personality;
                 this.personalityData = PERSONALITIES[personality];
                 
-                // 状态
-                this.mood = 60 + Math.random() * 30;
-                this.energy = 60 + Math.random() * 30;
-                this.hunger = 50 + Math.random() * 30;
-                this.coins = 100 + Math.floor(Math.random() * 400);
+                this.mood = 70 + Math.random() * 20;
+                this.energy = 70 + Math.random() * 20;
+                this.hunger = 60 + Math.random() * 20;
+                this.coins = 150 + Math.floor(Math.random() * 200);
                 
-                // 位置和移动
                 this.x = (LOCATIONS.home.x + 1) * CONFIG.TILE_SIZE;
                 this.y = (LOCATIONS.home.y + 1) * CONFIG.TILE_SIZE;
                 this.targetX = this.x;
@@ -557,39 +402,32 @@
                 this.direction = 'down';
                 this.walkFrame = 0;
                 
-                // 社交
                 this.friends = [];
                 this.currentLocation = 'home';
-                this.atLocation = null;
-                
-                // 统计
+                this.stayCounter = 0;  // 停留计时器
+                this.activity = '休息';  // 当前活动
                 this.daysInCity = 0;
                 this.friendsMade = 0;
                 this.happiness = 70;
                 
-                // 外观 - 像素风格
-                this.colors = {
-                    skin: ['#FFDDBB', '#CCAA88', '#8D5524', '#C68642'],
-                    hair: ['#2C1810', '#4A3728', '#8B4513', '#DAA520', '#FF6347', '#4169E1'],
-                    clothes: ['#E94560', '#0F3460', '#4ADE80', '#FBBF24', '#60A5FA', '#A78BFA'],
-                };
-                this.skinColor = this.colors.skin[Math.floor(Math.random() * this.colors.skin.length)];
-                this.hairColor = this.colors.hair[Math.floor(Math.random() * this.colors.hair.length)];
-                this.clothesColor = this.colors.clothes[Math.floor(Math.random() * this.colors.clothes.length)];
+                // 外观
+                this.skinColor = ['#FFDDBB', '#CCAA88', '#8D5524', '#E6C2A3'][Math.floor(Math.random() * 4)];
+                this.hairColor = ['#2C1810', '#4A3728', '#8B4513', '#DAA520'][Math.floor(Math.random() * 4)];
+                this.clothesColor = ['#E94560', '#0F3460', '#4ADE80', '#FBBF24'][Math.floor(Math.random() * 4)];
             }
             
             update() {
                 // 状态自然变化
-                this.hunger -= 0.01;
-                this.energy -= 0.005;
-                this.mood -= 0.002;
+                if (!this.moving) {
+                    this.hunger -= 0.008;
+                    this.energy -= 0.004;
+                    this.mood -= 0.002;
+                }
                 
-                // 限制范围
                 this.mood = Math.max(0, Math.min(100, this.mood));
                 this.energy = Math.max(0, Math.min(100, this.energy));
                 this.hunger = Math.max(0, Math.min(100, this.hunger));
                 
-                // 计算幸福度
                 this.happiness = (this.mood + this.energy + this.hunger + this.friends.length * 5) / 4;
                 this.happiness = Math.min(100, this.happiness);
                 
@@ -603,77 +441,133 @@
                         this.x = this.targetX;
                         this.y = this.targetY;
                         this.moving = false;
+                        this.stayCounter = 0;  // 重置停留计时
                         this.arrive();
                     } else {
                         this.x += (dx / dist) * CONFIG.AGENT_SPEED;
                         this.y += (dy / dist) * CONFIG.AGENT_SPEED;
                         
-                        // 更新方向
                         if (Math.abs(dx) > Math.abs(dy)) {
                             this.direction = dx > 0 ? 'right' : 'left';
                         } else {
                             this.direction = dy > 0 ? 'down' : 'up';
                         }
                         
-                        // 动画帧
-                        this.walkFrame = (this.walkFrame + 0.2) % 4;
+                        this.walkFrame = (this.walkFrame + 0.15) % 4;
+                        this.activity = '行走中';
                     }
                 } else {
-                    this.think();
+                    // 停留时执行活动
+                    this.stayCounter++;
+                    this.performActivity();
+                    
+                    // 停留足够时间后决定下一步
+                    if (this.stayCounter > CONFIG.STAY_DURATION) {
+                        this.think();
+                    }
+                }
+            }
+            
+            performActivity() {
+                const loc = this.currentLocation;
+                
+                if (loc === 'home') {
+                    if (this.energy < 50) {
+                        this.activity = '💤 睡觉恢复精力';
+                        this.energy += 0.05;
+                    } else if (this.hunger < 40) {
+                        this.activity = '🍽️ 在家吃饭';
+                        this.hunger += 0.03;
+                    } else {
+                        this.activity = '🏠 在家休息';
+                    }
+                } else if (loc === 'park') {
+                    this.activity = '🌸 欣赏樱花风景';
+                    this.mood += 0.02;
+                    // 可能遇到其他Agent
+                    if (Math.random() < 0.002) this.tryMakeFriend();
+                } else if (loc === 'cafe') {
+                    this.activity = '☕ 喝咖啡聊天';
+                    this.mood += 0.03;
+                    if (Math.random() < 0.005) this.tryMakeFriend();
+                } else if (loc === 'library') {
+                    this.activity = '📚 阅读书籍';
+                    this.mood += 0.02;
+                } else if (loc === 'arcade') {
+                    this.activity = '🎮 玩游戏';
+                    const reward = Math.floor(Math.random() * 10) + 5;
+                    this.coins += reward;
+                    this.mood += 0.04;
+                } else if (loc === 'beach') {
+                    this.activity = '🏖️ 海边钓鱼';
+                    if (Math.random() < 0.003) {
+                        const fishValue = Math.floor(Math.random() * 20) + 10;
+                        this.coins += fishValue;
+                        this.activity = `🎣 钓到鱼 +${fishValue}金币`;
+                    }
+                    this.mood += 0.02;
+                } else if (loc === 'shop') {
+                    this.activity = '🛒 逛街购物';
+                } else if (loc === 'job') {
+                    this.activity = '💼 工作赚钱';
+                    const wage = Math.floor(Math.random() * 15) + 10;
+                    this.coins += wage;
+                    this.energy -= 0.03;
+                }
+            }
+            
+            tryMakeFriend() {
+                const otherAgents = agents.filter(a => a.id !== this.id && 
+                    a.currentLocation === this.currentLocation && 
+                    !this.friends.includes(a.id));
+                
+                if (otherAgents.length > 0 && Math.random() > 0.5) {
+                    const friend = otherAgents[0];
+                    this.friends.push(friend.id);
+                    friend.friends.push(this.id);
+                    this.friendsMade++;
+                    friend.friendsMade++;
+                    this.mood += 15;
+                    showAchievement(`${this.name} 认识了新朋友 ${friend.name}! 👋`);
                 }
             }
             
             think() {
-                // 根据时间和状态决策
                 const hour = Math.floor(gameTime / 60);
-                const minute = gameTime % 60;
                 
                 // 基础需求检查
-                if (this.hunger < 20) {
+                if (this.hunger < 15) {
                     this.goToLocation('home');
                     return;
                 }
-                if (this.energy < 15) {
+                if (this.energy < 10) {
                     this.goToLocation('home');
                     return;
                 }
-                if (this.mood < 20) {
+                if (this.mood < 15) {
                     this.goToLocation('arcade');
                     return;
                 }
                 
                 // 时间段行为
                 if (hour >= 22 || hour < 6) {
-                    // 睡觉时间
                     this.goToLocation('home');
                 } else if (hour >= 6 && hour < 8) {
-                    // 早晨
                     this.goToLocation('park');
                 } else if (hour >= 8 && hour < 12) {
-                    // 上午工作时间
-                    if (Math.random() > 0.5) {
-                        this.goToLocation('job');
-                    } else {
-                        this.goToLocation('library');
-                    }
+                    if (Math.random() > 0.4) this.goToLocation('job');
+                    else this.goToLocation('library');
                 } else if (hour >= 12 && hour < 14) {
-                    // 午休
                     this.goToLocation('cafe');
                 } else if (hour >= 14 && hour < 18) {
-                    // 下午
                     const prefs = this.personalityData.preferred;
                     const loc = prefs[Math.floor(Math.random() * prefs.length)];
                     this.goToLocation(loc);
                 } else if (hour >= 18 && hour < 20) {
-                    // 傍晚
                     this.goToLocation('shop');
                 } else {
-                    // 晚间
-                    if (Math.random() > 0.5) {
-                        this.goToLocation('arcade');
-                    } else {
-                        this.goToLocation('cafe');
-                    }
+                    if (Math.random() > 0.5) this.goToLocation('arcade');
+                    else this.goToLocation('cafe');
                 }
             }
             
@@ -681,103 +575,72 @@
                 const loc = LOCATIONS[locationId];
                 if (!loc || this.currentLocation === locationId) return;
                 
-                // 随机目标位置
-                this.targetX = (loc.x + Math.random() * loc.w) * CONFIG.TILE_SIZE;
-                this.targetY = (loc.y + Math.random() * loc.h) * CONFIG.TILE_SIZE;
+                // 在地点内随机位置
+                this.targetX = (loc.x + 0.5 + Math.random() * (loc.w - 1)) * CONFIG.TILE_SIZE;
+                this.targetY = (loc.y + 0.5 + Math.random() * (loc.h - 1)) * CONFIG.TILE_SIZE;
                 this.currentLocation = locationId;
                 this.moving = true;
-                this.atLocation = locationId;
             }
             
             arrive() {
-                // 到达地点后的行为
-                if (this.currentLocation === 'cafe' && Math.random() > 0.5) {
-                    this.chat();
+                const loc = LOCATIONS[this.currentLocation];
+                // 显示到达消息
+                if (selectedAgent === this) {
+                    updateLocationPanel(this.currentLocation);
                 }
-                if (this.currentLocation === 'arcade' && Math.random() > 0.6) {
-                    this.play();
-                }
-                if (this.currentLocation === 'library' && Math.random() > 0.5) {
-                    this.read();
-                }
-            }
-            
-            chat() {
-                // 随机找一个其他Agent聊天
-                const otherAgents = agents.filter(a => a.id !== this.id && a.currentLocation === this.currentLocation);
-                if (otherAgents.length > 0) {
-                    const friend = otherAgents[Math.floor(Math.random() * otherAgents.length)];
-                    if (!this.friends.includes(friend.id) && Math.random() > 0.5) {
-                        this.friends.push(friend.id);
-                        friend.friends.push(this.id);
-                        this.friendsMade++;
-                        friend.friendsMade++;
-                        this.mood += 10;
-                        showAchievement(`${this.name} 认识了新朋友 ${friend.name}!`);
-                    }
-                }
-            }
-            
-            play() {
-                const reward = Math.floor(Math.random() * 20) + 5;
-                this.coins += reward;
-                this.mood += 5;
-            }
-            
-            read() {
-                this.mood += 3;
             }
             
             draw(ctx) {
-                const px = Math.floor(this.x / CONFIG.TILE_SIZE) * CONFIG.TILE_SIZE;
-                const py = Math.floor(this.y / CONFIG.TILE_SIZE) * CONFIG.TILE_SIZE;
+                const px = this.x;
+                const py = this.y;
+                const size = CONFIG.TILE_SIZE;
                 
-                // 绘制阴影
-                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                // 阴影
+                ctx.fillStyle = 'rgba(0,0,0,0.25)';
                 ctx.beginPath();
-                ctx.ellipse(this.x + 16, this.y + 28, 10, 4, 0, 0, Math.PI * 2);
+                ctx.ellipse(px + size/2, py + size - 5, size/3, 6, 0, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // 身体
+                // 身体 - 星露谷风格
                 ctx.fillStyle = this.clothesColor;
-                ctx.fillRect(this.x + 10, this.y + 16, 12, 14);
+                ctx.fillRect(px + 14, py + 24, 20, 22);
+                
+                // 腿部
+                ctx.fillStyle = '#333';
+                const legOffset = this.moving ? Math.sin(this.walkFrame * Math.PI / 2) * 3 : 0;
+                ctx.fillRect(px + 15, py + 42, 6, 8 + legOffset);
+                ctx.fillRect(px + 27, py + 42, 6, 8 - legOffset);
                 
                 // 头
                 ctx.fillStyle = this.skinColor;
-                ctx.fillRect(this.x + 10, this.y + 4, 12, 12);
+                ctx.fillRect(px + 14, py + 8, 20, 18);
                 
                 // 头发
                 ctx.fillStyle = this.hairColor;
-                ctx.fillRect(this.x + 9, this.y + 2, 14, 6);
+                ctx.fillRect(px + 12, py + 4, 24, 10);
+                ctx.fillRect(px + 14, py + 14, 4, 6);
+                ctx.fillRect(px + 30, py + 14, 4, 6);
                 
                 // 眼睛
-                ctx.fillStyle = '#000';
+                ctx.fillStyle = '#222';
                 if (this.direction === 'left') {
-                    ctx.fillRect(this.x + 11, this.y + 9, 2, 2);
+                    ctx.fillRect(px + 16, py + 16, 3, 3);
                 } else if (this.direction === 'right') {
-                    ctx.fillRect(this.x + 19, this.y + 9, 2, 2);
+                    ctx.fillRect(px + 29, py + 16, 3, 3);
                 } else {
-                    ctx.fillRect(this.x + 12, this.y + 9, 2, 2);
-                    ctx.fillRect(this.x + 18, this.y + 9, 2, 2);
+                    ctx.fillRect(px + 17, py + 16, 3, 3);
+                    ctx.fillRect(px + 28, py + 16, 3, 3);
                 }
                 
-                // 行走动画
-                if (this.moving) {
-                    const legOffset = Math.sin(this.walkFrame * Math.PI / 2) * 2;
-                    ctx.fillStyle = '#333';
-                    ctx.fillRect(this.x + 11, this.y + 28, 3, 4 + legOffset);
-                    ctx.fillRect(this.x + 18, this.y + 28, 3, 4 - legOffset);
-                } else {
-                    ctx.fillStyle = '#333';
-                    ctx.fillRect(this.x + 11, this.y + 28, 3, 4);
-                    ctx.fillRect(this.x + 18, this.y + 28, 3, 4);
-                }
+                // 嘴巴
+                ctx.fillStyle = '#c44';
+                ctx.fillRect(px + 21, py + 22, 4, 2);
                 
                 // 选中标记
                 if (selectedAgent === this) {
                     ctx.fillStyle = '#FFD700';
-                    ctx.font = '16px sans-serif';
-                    ctx.fillText('★', this.x + 12, this.y - 5);
+                    ctx.font = 'bold 16px sans-serif';
+                    ctx.fillText('★', px + 20, py - 5);
                 }
             }
         }
@@ -787,34 +650,43 @@
             const w = CONFIG.MAP_WIDTH * CONFIG.TILE_SIZE;
             const h = CONFIG.MAP_HEIGHT * CONFIG.TILE_SIZE;
             
-            // 草地背景
-            ctx.fillStyle = '#4a7c3f';
+            // 草地背景 - 更细腻的渐变
+            const gradient = ctx.createLinearGradient(0, 0, 0, h);
+            gradient.addColorStop(0, '#5a8f3e');
+            gradient.addColorStop(1, '#4a7c3f');
+            ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, w, h);
             
             // 草地纹理
-            for (let i = 0; i < w; i += CONFIG.TILE_SIZE) {
-                for (let j = 0; j < h; j += CONFIG.TILE_SIZE) {
-                    if ((i + j) % 64 === 0) {
-                        ctx.fillStyle = '#3d6b32';
-                        ctx.fillRect(i + 4, j + 4, 4, 4);
+            for (let i = 0; i < w; i += CONFIG.TILE_SIZE/2) {
+                for (let j = 0; j < h; j += CONFIG.TILE_SIZE/2) {
+                    if ((i + j) % 32 === 0) {
+                        ctx.fillStyle = Math.random() > 0.5 ? '#4d7a36' : '#5a8f3e';
+                        ctx.fillRect(i + 2, j + 2, 4, 6);
                     }
                 }
             }
             
-            // 道路网格
-            ctx.fillStyle = '#4a4a4a';
-            // 横向道路
-            ctx.fillRect(0, 7 * CONFIG.TILE_SIZE, w, 2 * CONFIG.TILE_SIZE);
-            // 纵向道路
-            ctx.fillRect(8 * CONFIG.TILE_SIZE, 0, 2 * CONFIG.TILE_SIZE, h);
-            ctx.fillRect(24 * CONFIG.TILE_SIZE, 0, 2 * CONFIG.TILE_SIZE, h);
-            
-            // 道路标记
+            // 道路
             ctx.fillStyle = '#6a6a6a';
-            for (let i = 0; i < w; i += CONFIG.TILE_SIZE * 2) {
-                ctx.fillRect(i + 14, 7 * CONFIG.TILE_SIZE + 6, 4, 4);
-                ctx.fillRect(8 * CONFIG.TILE_SIZE + 6, i + 14, 4, 4);
+            ctx.fillRect(0, 7 * CONFIG.TILE_SIZE, w, 2 * CONFIG.TILE_SIZE);
+            ctx.fillRect(7 * CONFIG.TILE_SIZE, 0, 2 * CONFIG.TILE_SIZE, h);
+            ctx.fillRect(18 * CONFIG.TILE_SIZE, 0, 2 * CONFIG.TILE_SIZE, h);
+            
+            // 道路边线
+            ctx.fillStyle = '#888';
+            for (let i = 0; i < w; i += CONFIG.TILE_SIZE) {
+                ctx.fillRect(i + 20, 7 * CONFIG.TILE_SIZE + 8, 8, 4);
+                ctx.fillRect(i + 20, 8 * CONFIG.TILE_SIZE + 8, 8, 4);
             }
+            for (let i = 0; i < h; i += CONFIG.TILE_SIZE) {
+                ctx.fillRect(7 * CONFIG.TILE_SIZE + 8, i + 20, 4, 8);
+                ctx.fillRect(8 * CONFIG.TILE_SIZE + 8, i + 20, 4, 8);
+            }
+            
+            // 人行道
+            ctx.fillStyle = '#a0a0a0';
+            ctx.fillRect(1 * CONFIG.TILE_SIZE, 6 * CONFIG.TILE_SIZE, 6 * CONFIG.TILE_SIZE, 1 * CONFIG.TILE_SIZE);
             
             // 绘制各地点
             Object.entries(LOCATIONS).forEach(([id, loc]) => {
@@ -830,7 +702,7 @@
             
             // 地点背景
             ctx.fillStyle = loc.color;
-            ctx.globalAlpha = 0.7;
+            ctx.globalAlpha = 0.6;
             ctx.fillRect(x, y, w, h);
             ctx.globalAlpha = 1;
             
@@ -840,162 +712,206 @@
             ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
             
             // 绘制建筑物
-            if (id === 'park') {
-                drawPark(x, y, w, h);
-            } else if (id === 'cafe') {
-                drawBuilding(x, y, w, h, '☕', '#8B4513');
-            } else if (id === 'library') {
-                drawBuilding(x, y, w, h, '📚', '#2F4F4F');
-            } else if (id === 'arcade') {
-                drawBuilding(x, y, w, h, '🎮', '#4B0082');
-            } else if (id === 'home') {
-                drawHouses(x, y, w, h);
-            } else if (id === 'beach') {
-                drawBeach(x, y, w, h);
-            } else if (id === 'shop') {
-                drawShops(x, y, w, h);
-            } else if (id === 'job') {
-                drawBuilding(x, y, w, h, '💼', '#2F4F4F');
-            }
+            if (id === 'park') drawPark(x, y, w, h);
+            else if (id === 'cafe') drawCafe(x, y, w, h);
+            else if (id === 'library') drawLibrary(x, y, w, h);
+            else if (id === 'arcade') drawArcade(x, y, w, h);
+            else if (id === 'home') drawHomes(x, y, w, h);
+            else if (id === 'beach') drawBeach(x, y, w, h);
+            else if (id === 'shop') drawShops(x, y, w, h);
+            else if (id === 'job') drawJobCenter(x, y, w, h);
             
             // 地点名称
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 14px "Pixelify Sans", sans-serif';
+            ctx.font = 'bold 12px "Pixelify Sans", sans-serif';
             ctx.strokeStyle = '#000';
-            ctx.lineWidth = 3;
-            ctx.strokeText(loc.name, x + 10, y + 20);
-            ctx.fillText(loc.name, x + 10, y + 20);
+            ctx.lineWidth = 2;
+            ctx.strokeText(loc.name, x + 8, y + 18);
+            ctx.fillText(loc.name, x + 8, y + 18);
         }
         
         function drawPark(x, y, w, h) {
             // 樱花树
-            const treePositions = [
-                [2, 1], [6, 2], [3, 4], [7, 3], [1, 5]
-            ];
-            treePositions.forEach(([tx, ty]) => {
-                drawCherryTree(x + tx * CONFIG.TILE_SIZE, y + ty * CONFIG.TILE_SIZE);
-            });
+            const trees = [[1,1], [5,1], [2,3], [6,2], [1,4], [5,4]];
+            trees.forEach(([tx, ty]) => drawCherryTree(x + tx * CONFIG.TILE_SIZE, y + ty * CONFIG.TILE_SIZE));
             
             // 湖泊
-            ctx.fillStyle = '#4da6ff';
-            ctx.fillRect(x + 50, y + 80, 80, 50);
-            ctx.fillStyle = '#80bfff';
-            ctx.fillRect(x + 55, y + 85, 70, 40);
+            ctx.fillStyle = '#5dabeb';
+            ctx.fillRect(x + 120, y + 60, 100, 80);
+            ctx.fillStyle = '#7ec5f5';
+            ctx.fillRect(x + 130, y + 70, 80, 60);
             
             // 小路
-            ctx.fillStyle = '#c4a574';
-            ctx.fillRect(x + 20, y + 60, 120, 15);
+            ctx.fillStyle = '#c9b896';
+            ctx.fillRect(x + 30, y + 80, 160, 20);
+            ctx.fillRect(x + 100, y + 40, 20, 120);
         }
         
         function drawCherryTree(x, y) {
             // 树干
-            ctx.fillStyle = '#8B4513';
-            ctx.fillRect(x + 12, y + 16, 8, 16);
+            ctx.fillStyle = '#6b4423';
+            ctx.fillRect(x + 18, y + 24, 12, 24);
             // 树冠
-            ctx.fillStyle = '#FFB7C5';
+            ctx.fillStyle = '#f2a2b8';
             ctx.beginPath();
-            ctx.arc(x + 16, y + 12, 12, 0, Math.PI * 2);
+            ctx.arc(x + 24, y + 20, 18, 0, Math.PI * 2);
             ctx.fill();
-            // 花朵细节
-            ctx.fillStyle = '#FF69B4';
-            for (let i = 0; i < 5; i++) {
-                const angle = (i / 5) * Math.PI * 2;
+            // 花朵
+            ctx.fillStyle = '#ffb7c5';
+            for (let i = 0; i < 6; i++) {
+                const angle = (i / 6) * Math.PI * 2;
                 ctx.beginPath();
-                ctx.arc(x + 16 + Math.cos(angle) * 8, y + 12 + Math.sin(angle) * 8, 3, 0, Math.PI * 2);
+                ctx.arc(x + 24 + Math.cos(angle) * 12, y + 20 + Math.sin(angle) * 10, 4, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
         
-        function drawBuilding(x, y, w, h, emoji, color) {
-            // 建筑主体
-            ctx.fillStyle = color;
-            ctx.fillRect(x + 20, y + 30, w - 40, h - 50);
-            
+        function drawCafe(x, y, w, h) {
+            // 建筑
+            ctx.fillStyle = '#8b5a2b';
+            ctx.fillRect(x + 40, y + 40, w - 60, h - 60);
             // 屋顶
-            ctx.fillStyle = '#333';
+            ctx.fillStyle = '#5c3d2e';
             ctx.beginPath();
-            ctx.moveTo(x + 10, y + 30);
-            ctx.lineTo(x + w / 2, y + 5);
-            ctx.lineTo(x + w - 10, y + 30);
+            ctx.moveTo(x + 30, y + 40);
+            ctx.lineTo(x + w/2, y + 10);
+            ctx.lineTo(x + w - 30, y + 40);
             ctx.closePath();
             ctx.fill();
-            
             // 窗户
-            ctx.fillStyle = '#FFE4B5';
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 2; j++) {
-                    ctx.fillRect(x + 35 + i * 25, y + 45 + j * 30, 15, 20);
-                }
-            }
-            
-            // Emoji
-            ctx.font = '24px sans-serif';
-            ctx.fillText(emoji, x + w / 2 - 12, y + h - 10);
+            ctx.fillStyle = '#ffe4b5';
+            ctx.fillRect(x + 55, y + 60, 25, 30);
+            ctx.fillRect(x + 100, y + 60, 25, 30);
+            // 门
+            ctx.fillStyle = '#4a3728';
+            ctx.fillRect(x + 70, y + 90, 30, 40);
+            // 招牌
+            ctx.font = '20px sans-serif';
+            ctx.fillText('☕', x + 85, y + 35);
         }
         
-        function drawHouses(x, y, w, h) {
-            const colors = ['#CD5C5C', '#8B4513', '#DAA520', '#2E8B57'];
+        function drawLibrary(x, y, w, h) {
+            ctx.fillStyle = '#2c4a6e';
+            ctx.fillRect(x + 30, y + 30, w - 50, h - 50);
+            // 屋顶
+            ctx.fillStyle = '#1a2d4a';
+            ctx.beginPath();
+            ctx.moveTo(x + 20, y + 30);
+            ctx.lineTo(x + w/2, y + 5);
+            ctx.lineTo(x + w - 20, y + 30);
+            ctx.closePath();
+            ctx.fill();
+            // 大门
+            ctx.fillStyle = '#5c3d2e';
+            ctx.fillRect(x + 60, y + 70, 50, 60);
+            // 窗户
+            ctx.fillStyle = '#87ceeb';
+            ctx.fillRect(x + 40, y + 45, 15, 25);
+            ctx.fillRect(x + 115, y + 45, 15, 25);
+            ctx.font = '20px sans-serif';
+            ctx.fillText('📚', x + 75, y + 28);
+        }
+        
+        function drawArcade(x, y, w, h) {
+            ctx.fillStyle = '#4a1a6b';
+            ctx.fillRect(x + 30, y + 35, w - 50, h - 55);
+            // 霓虹招牌
+            ctx.fillStyle = '#ff69b4';
+            ctx.fillRect(x + 35, y + 40, w - 60, 15);
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillStyle = '#fff';
+            ctx.fillText('GAME', x + 55, y + 52);
+            // 游戏机
+            ctx.fillStyle = '#2a0a4a';
             for (let i = 0; i < 3; i++) {
-                const hx = x + 10 + i * 35;
-                const hy = y + 20;
+                ctx.fillRect(x + 40 + i * 35, y + 70, 28, 35);
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(x + 43 + i * 35, y + 73, 22, 15);
+                ctx.fillStyle = '#2a0a4a';
+            }
+            ctx.font = '20px sans-serif';
+            ctx.fillText('🎮', x + 80, y + 30);
+        }
+        
+        function drawHomes(x, y, w, h) {
+            const colors = ['#a0522d', '#cd853f', '#deb887', '#8fbc8f'];
+            for (let i = 0; i < 3; i++) {
+                const hx = x + 15 + i * 50;
+                const hy = y + 25;
+                // 房子
                 ctx.fillStyle = colors[i];
-                ctx.fillRect(hx, hy, 30, 30);
+                ctx.fillRect(hx, hy, 40, 35);
                 // 屋顶
                 ctx.fillStyle = '#4a4a4a';
                 ctx.beginPath();
                 ctx.moveTo(hx - 5, hy);
-                ctx.lineTo(hx + 15, hy - 15);
-                ctx.lineTo(hx + 35, hy);
+                ctx.lineTo(hx + 20, hy - 18);
+                ctx.lineTo(hx + 45, hy);
                 ctx.closePath();
                 ctx.fill();
                 // 门
-                ctx.fillStyle = '#8B4513';
-                ctx.fillRect(hx + 10, hy + 15, 10, 15);
+                ctx.fillStyle = '#4a3020';
+                ctx.fillRect(hx + 15, hy + 18, 12, 17);
+                // 窗户
+                ctx.fillStyle = '#87ceeb';
+                ctx.fillRect(hx + 5, hy + 8, 10, 10);
+                ctx.fillRect(hx + 27, hy + 8, 10, 10);
             }
         }
         
         function drawBeach(x, y, w, h) {
             // 沙滩
-            ctx.fillStyle = '#F4A460';
+            ctx.fillStyle = '#e6c288';
             ctx.fillRect(x, y, w, h);
             // 海水
-            ctx.fillStyle = '#4da6ff';
-            ctx.fillRect(x, y + h - 30, w, 30);
+            ctx.fillStyle = '#4a90b5';
+            ctx.fillRect(x, y + h - 50, w, 50);
             // 波浪
-            ctx.fillStyle = '#80bfff';
-            for (let i = 0; i < w; i += 20) {
+            ctx.fillStyle = '#6ab0d0';
+            for (let i = 0; i < w; i += 25) {
                 ctx.beginPath();
-                ctx.arc(x + i + 10, y + h - 30, 10, 0, Math.PI);
+                ctx.arc(x + i + 12, y + h - 50, 12, 0, Math.PI);
                 ctx.fill();
             }
             // 棕榈树
-            drawPalmTree(x + 30, y + 40);
-            drawPalmTree(x + 150, y + 60);
+            drawPalmTree(x + 40, y + 50);
+            drawPalmTree(x + 180, y + 70);
+            drawPalmTree(x + 250, y + 40);
         }
         
         function drawPalmTree(x, y) {
-            // 树干
-            ctx.fillStyle = '#8B4513';
-            ctx.fillRect(x + 10, y + 20, 8, 40);
+            ctx.fillStyle = '#8b5a2b';
+            ctx.fillRect(x + 12, y + 30, 10, 50);
             // 叶子
-            ctx.fillStyle = '#228B22';
-            for (let i = 0; i < 5; i++) {
+            ctx.fillStyle = '#228b22';
+            for (let i = 0; i < 6; i++) {
                 ctx.beginPath();
-                ctx.ellipse(x + 14 + Math.cos(i * 0.8) * 15, y + 20 + Math.sin(i * 0.8) * 10, 15, 5, i * 0.5, 0, Math.PI * 2);
+                ctx.ellipse(x + 17 + Math.cos(i * 0.9) * 20, y + 30 + Math.sin(i * 0.9) * 12, 20, 6, i * 0.6, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
         
         function drawShops(x, y, w, h) {
-            const shops = ['👕', '🪑', '🍳', '📦'];
+            const shops = ['👕', '🪑', '🍳'];
             shops.forEach((emoji, i) => {
-                const sx = x + 10 + (i % 2) * 60;
-                const sy = y + 20 + Math.floor(i / 2) * 40;
-                ctx.fillStyle = '#20B2AA';
-                ctx.fillRect(sx, sy, 50, 35);
-                ctx.font = '20px sans-serif';
-                ctx.fillText(emoji, sx + 15, sy + 25);
+                const sx = x + 15 + i * 55;
+                const sy = y + 20;
+                ctx.fillStyle = '#2a8a8a';
+                ctx.fillRect(sx, sy, 45, 60);
+                ctx.fillStyle = '#1a5a5a';
+                ctx.fillRect(sx + 5, sy + 5, 35, 25);
+                ctx.font = '22px sans-serif';
+                ctx.fillText(emoji, sx + 12, sy + 48);
             });
+        }
+        
+        function drawJobCenter(x, y, w, h) {
+            ctx.fillStyle = '#5a6a7a';
+            ctx.fillRect(x + 15, y + 25, w - 25, h - 40);
+            ctx.fillStyle = '#3a4a5a';
+            ctx.fillRect(x + 10, y + 20, w - 15, 20);
+            ctx.font = '22px sans-serif';
+            ctx.fillText('💼', x + 35, y + 55);
         }
         
         // ==================== UI函数 ====================
@@ -1008,14 +924,14 @@
                 card.className = `agent-card ${selectedAgent === agent ? 'selected' : ''}`;
                 card.onclick = () => selectAgent(agent);
                 
-                const personalityData = agent.personalityData;
+                const p = agent.personalityData;
                 
                 card.innerHTML = `
                     <div class="agent-header">
-                        <canvas class="agent-avatar" id="avatar-${agent.id}" width="40" height="40"></canvas>
+                        <canvas class="agent-avatar" id="avatar-${agent.id}" width="36" height="36"></canvas>
                         <div>
                             <div class="agent-name">${agent.name}</div>
-                            <div class="agent-personality">${personalityData.emoji} ${personalityData.name}</div>
+                            <div class="agent-personality">${p.emoji} ${p.name}</div>
                         </div>
                     </div>
                     <div class="agent-status">
@@ -1028,7 +944,6 @@
                 
                 list.appendChild(card);
                 
-                // 绘制小头像
                 const avatarCanvas = document.getElementById(`avatar-${agent.id}`);
                 const avatarCtx = avatarCanvas.getContext('2d');
                 drawAvatar(avatarCtx, agent);
@@ -1037,16 +952,16 @@
         
         function drawAvatar(ctx, agent) {
             ctx.fillStyle = '#333';
-            ctx.fillRect(10, 16, 20, 20);
+            ctx.fillRect(12, 20, 12, 12);
             ctx.fillStyle = agent.skinColor;
-            ctx.fillRect(12, 6, 16, 12);
+            ctx.fillRect(10, 8, 16, 14);
             ctx.fillStyle = agent.hairColor;
-            ctx.fillRect(11, 4, 18, 8);
+            ctx.fillRect(9, 5, 18, 8);
             ctx.fillStyle = '#000';
-            ctx.fillRect(15, 10, 2, 2);
-            ctx.fillRect(23, 10, 2, 2);
+            ctx.fillRect(12, 12, 3, 3);
+            ctx.fillRect(21, 12, 3, 3);
             ctx.fillStyle = agent.clothesColor;
-            ctx.fillRect(12, 18, 16, 10);
+            ctx.fillRect(10, 22, 16, 10);
         }
         
         function selectAgent(agent) {
@@ -1066,17 +981,16 @@
             document.getElementById('popupHunger').textContent = Math.floor(agent.hunger);
             document.getElementById('popupCoins').textContent = agent.coins;
             
-            // 好友列表
             const friendsContainer = document.getElementById('friendsContainer');
             const friends = agents.filter(a => agent.friends.includes(a.id));
             
             if (friends.length === 0) {
-                friendsContainer.innerHTML = '<div style="color: #a0a0a0; font-size: 12px;">还没有好友</div>';
+                friendsContainer.innerHTML = '<div style="color: #a0a0a0; font-size: 11px;">暂无好友</div>';
             } else {
                 friendsContainer.innerHTML = friends.map(f => `
-                    <div class="friend-item">
+                    <div style="display:flex; align-items:center; gap:5px; padding:5px; background:rgba(255,255,255,0.05); border-radius:4px; margin-bottom:4px;">
                         <span>${f.personalityData.emoji}</span>
-                        <span>${f.name}</span>
+                        <span style="font-size:12px;">${f.name}</span>
                     </div>
                 `).join('');
             }
@@ -1105,13 +1019,15 @@
             const totalCoins = agents.reduce((sum, a) => sum + a.coins, 0);
             document.getElementById('totalCoins').textContent = totalCoins;
             
-            // 时间
             const hour = Math.floor(gameTime / 60);
             const minute = gameTime % 60;
             document.getElementById('timeDisplay').textContent = `⏰ ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-            
-            // 天气
             document.getElementById('weatherDisplay').textContent = WEATHER[weather];
+            
+            // 更新活动显示
+            if (selectedAgent) {
+                document.getElementById('activityText').textContent = selectedAgent.activity;
+            }
         }
         
         function showAchievement(text) {
@@ -1124,57 +1040,39 @@
         
         // ==================== 交互函数 ====================
         function claimAgent() {
-            if (!selectedAgent) {
-                alert('请先选择一个Agent');
-                return;
-            }
+            if (!selectedAgent) { alert('请先选择一个Agent'); return; }
             showAchievement(`你认领了 ${selectedAgent.name}！`);
         }
         
         function setGoal() {
-            if (!selectedAgent) {
-                alert('请先选择一个Agent');
-                return;
-            }
-            const goals = ['去交一个新朋友', '去图书馆学习', '去工作赚钱', '去公园散步', '回家休息'];
+            if (!selectedAgent) { alert('请先选择一个Agent'); return; }
+            const goals = [
+                { loc: 'park', text: '去公园散步' },
+                { loc: 'cafe', text: '去咖啡厅社交' },
+                { loc: 'library', text: '去图书馆学习' },
+                { loc: 'arcade', text: '去游戏厅玩' },
+                { loc: 'job', text: '去工作赚钱' },
+                { loc: 'beach', text: '去海滩钓鱼' },
+                { loc: 'home', text: '回家休息' },
+            ];
             const goal = goals[Math.floor(Math.random() * goals.length)];
-            
-            if (goal.includes('朋友')) {
-                selectedAgent.goToLocation('cafe');
-            } else if (goal.includes('图书馆')) {
-                selectedAgent.goToLocation('library');
-            } else if (goal.includes('工作')) {
-                selectedAgent.goToLocation('job');
-            } else if (goal.includes('公园')) {
-                selectedAgent.goToLocation('park');
-            } else {
-                selectedAgent.goToLocation('home');
-            }
-            
-            showAchievement(`你给 ${selectedAgent.name} 设立了目标: ${goal}`);
+            selectedAgent.goToLocation(goal.loc);
+            showAchievement(`你给 ${selectedAgent.name} 设立了目标: ${goal.text}`);
         }
         
         function sendGift() {
-            if (!selectedAgent) {
-                alert('请先选择一个Agent');
-                return;
-            }
-            const gifts = ['🍎 苹果', '🎁 礼物盒', '📚 书', '🎮 游戏', '💰 100金币'];
+            if (!selectedAgent) { alert('请先选择一个Agent'); return; }
+            const gifts = ['🍎 苹果', '🎁 礼物', '📚 书', '🎮 游戏', '💰 50金币'];
             const gift = gifts[Math.floor(Math.random() * gifts.length)];
             
-            if (gift.includes('金币')) {
-                selectedAgent.coins += 100;
-            }
-            selectedAgent.mood += 15;
+            if (gift.includes('金币')) selectedAgent.coins += 50;
+            selectedAgent.mood += 10;
             
             showAchievement(`你送给了 ${selectedAgent.name} ${gift}！`);
         }
         
         function quickAction(location) {
-            if (!selectedAgent) {
-                alert('请先选择一个Agent');
-                return;
-            }
+            if (!selectedAgent) { alert('请先选择一个Agent'); return; }
             selectedAgent.goToLocation(location);
             const loc = LOCATIONS[location];
             showAchievement(`${selectedAgent.name} 前往了 ${loc.name}`);
@@ -1182,32 +1080,25 @@
         
         // ==================== 游戏循环 ====================
         function gameLoop() {
-            // 清空画布
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // 绘制地图
             drawMap();
             
-            // 绘制Agent
             agents.forEach(agent => {
                 agent.update();
                 agent.draw(ctx);
             });
             
-            // 更新时间
-            gameTime += 0.5;
+            gameTime += 0.3;
             if (gameTime >= 24 * 60) {
                 gameTime = 6 * 60;
-                // 新的一天
                 agents.forEach(a => a.daysInCity++);
             }
             
-            // 随机天气变化
-            if (Math.random() < 0.001) {
+            if (Math.random() < 0.0005) {
                 weather = Math.floor(Math.random() * WEATHER.length);
             }
             
-            // 更新UI
             if (selectedAgent) {
                 updateLocationPanel(selectedAgent.currentLocation);
             }
@@ -1221,17 +1112,15 @@
             canvas = document.getElementById('gameCanvas');
             ctx = canvas.getContext('2d');
             
-            // 设置画布大小
-            canvas.width = window.innerWidth - 320;
+            canvas.width = window.innerWidth - 300;
             canvas.height = window.innerHeight;
             
-            // 初始化Agent
-            const names = ['小明', '小红', '小刚', '小美', '小强', '小丽', '小杰', '小芳'];
-            const personalities = Object.keys(PERSONALITIES);
+            // 3个Agent
+            const names = ['小明', '小红', '小刚'];
+            const personalities = ['gentle', 'energetic', 'scholar'];
             
             names.forEach((name, i) => {
-                const personality = personalities[i % personalities.length];
-                agents.push(new Agent(`agent_${i}`, name, personality));
+                agents.push(new Agent(`agent_${i}`, name, personalities[i]));
             });
             
             // 随机初始位置
@@ -1241,57 +1130,32 @@
                 agent.goToLocation(loc);
             });
             
-            // 渲染初始UI
             renderAgentList();
             updateStats();
             
-            // 窗口大小变化
             window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth - 320;
+                canvas.width = window.innerWidth - 300;
                 canvas.height = window.innerHeight;
             });
             
-            // 点击事件
-            canvas.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                lastMouse = { x: e.clientX, y: e.clientY };
-            });
-            
-            canvas.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    const dx = e.clientX - lastMouse.x;
-                    const dy = e.clientY - lastMouse.y;
-                    camera.x = Math.max(0, Math.min(camera.x + dx, CONFIG.MAP_WIDTH * CONFIG.TILE_SIZE - canvas.width));
-                    camera.y = Math.max(0, Math.min(camera.y + dy, CONFIG.MAP_HEIGHT * CONFIG.TILE_SIZE - canvas.height));
-                    lastMouse = { x: e.clientX, y: e.clientY };
-                }
-            });
-            
-            canvas.addEventListener('mouseup', () => isDragging = false);
             canvas.addEventListener('click', (e) => {
-                if (!isDragging) {
-                    // 点击选择Agent
-                    const rect = canvas.getBoundingClientRect();
-                    const x = e.clientX - rect.left + camera.x;
-                    const y = e.clientY - rect.top + camera.y;
-                    
-                    agents.forEach(agent => {
-                        const dist = Math.sqrt((agent.x - x) ** 2 + (agent.y - y) ** 2);
-                        if (dist < 30) {
-                            selectAgent(agent);
-                        }
-                    });
-                }
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                agents.forEach(agent => {
+                    const dist = Math.sqrt((agent.x - x) ** 2 + (agent.y - y) ** 2);
+                    if (dist < 40) {
+                        selectAgent(agent);
+                    }
+                });
             });
             
-            // 遮罩点击关闭弹窗
             document.getElementById('overlay').addEventListener('click', closePopup);
             
-            // 启动游戏循环
             gameLoop();
         }
         
-        // 启动
         window.onload = init;
     </script>
 </body>
