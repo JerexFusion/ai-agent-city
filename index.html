@@ -31,45 +31,45 @@
         }
         
         .sidebar {
-            width: 260px;
-            min-width: 260px;
+            width: 320px;
+            min-width: 320px;
             background: var(--bg-card);
             display: flex;
             flex-direction: column;
-            border-right: 3px solid var(--accent-cyan);
+            border-right: 4px solid var(--accent-cyan);
         }
         
         .sidebar-header {
-            padding: 10px;
+            padding: 16px;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
             text-align: center;
         }
         
-        .sidebar-header h1 { font-size: 18px; text-shadow: 2px 2px 0 #000; }
+        .sidebar-header h1 { font-size: 26px; text-shadow: 3px 3px 0 #000; }
         
         .city-stats {
             display: flex;
             justify-content: space-around;
-            padding: 6px;
+            padding: 12px;
             background: rgba(0,0,0,0.3);
-            font-size: 11px;
+            font-size: 15px;
             flex-wrap: wrap;
         }
         
-        .stat-item { text-align: center; padding: 2px 4px; }
-        .stat-value { font-size: 14px; font-weight: bold; color: #ffd700; }
+        .stat-item { text-align: center; padding: 4px 8px; }
+        .stat-value { font-size: 22px; font-weight: bold; color: #ffd700; }
         
         .agent-list {
             flex: 1;
             overflow-y: auto;
-            padding: 6px;
+            padding: 12px;
         }
         
         .agent-card {
             background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
-            border-radius: 6px;
-            padding: 6px;
-            margin-bottom: 5px;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
             cursor: pointer;
             transition: all 0.3s;
             border: 2px solid transparent;
@@ -78,24 +78,24 @@
         .agent-card:hover { border-color: var(--accent-pink); }
         .agent-card.selected { border-color: #ffd700; }
         
-        .agent-header { display: flex; align-items: center; gap: 5px; }
+        .agent-header { display: flex; align-items: center; gap: 10px; }
         
         .agent-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 3px;
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
             image-rendering: pixelated;
         }
         
-        .agent-name { font-weight: bold; font-size: 12px; }
-        .agent-personality { font-size: 9px; color: var(--text-dim); }
+        .agent-name { font-weight: bold; font-size: 18px; }
+        .agent-personality { font-size: 13px; color: var(--text-dim); }
         
-        .agent-status { display: flex; gap: 3px; margin-top: 3px; flex-wrap: wrap; }
+        .agent-status { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
         
         .status-badge {
-            font-size: 8px;
-            padding: 1px 4px;
-            border-radius: 4px;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 6px;
             background: rgba(255,255,255,0.1);
         }
         
@@ -103,16 +103,16 @@
         .status-badge.medium { background: #fbbf24; color: #000; }
         .status-badge.low { background: #f87171; color: #000; }
         
-        .control-panel { padding: 6px; background: rgba(0,0,0,0.4); border-top: 2px solid var(--accent-cyan); }
+        .control-panel { padding: 12px; background: rgba(0,0,0,0.4); border-top: 3px solid var(--accent-cyan); }
         
         .btn {
             width: 100%;
-            padding: 6px;
-            margin-bottom: 3px;
+            padding: 12px;
+            margin-bottom: 6px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             font-family: inherit;
-            font-size: 11px;
+            font-size: 16px;
             cursor: pointer;
             font-weight: 600;
         }
@@ -121,16 +121,16 @@
         .btn-secondary { background: linear-gradient(135deg, var(--accent-cyan), #0a2540); color: white; }
         .btn-gift { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
         
-        .quick-actions { display: flex; gap: 2px; flex-wrap: wrap; }
+        .quick-actions { display: flex; gap: 4px; flex-wrap: wrap; }
         
         .quick-btn {
             flex: 1;
-            min-width: 55px;
-            padding: 4px;
-            font-size: 8px;
+            min-width: 70px;
+            padding: 8px;
+            font-size: 12px;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 3px;
+            border-radius: 5px;
             color: var(--text-light);
             cursor: pointer;
         }
@@ -146,12 +146,12 @@
         }
         
         .game-header {
-            padding: 5px 10px;
+            padding: 10px 16px;
             background: rgba(0,0,0,0.6);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
+            font-size: 16px;
         }
         
         #gameCanvas {
@@ -163,31 +163,31 @@
         
         .location-panel {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
+            bottom: 16px;
+            left: 16px;
             background: rgba(22, 33, 62, 0.95);
-            border-radius: 8px;
-            padding: 8px 10px;
+            border-radius: 12px;
+            padding: 14px 18px;
             border: 2px solid var(--accent-cyan);
-            max-width: 180px;
+            max-width: 260px;
         }
         
-        .location-name { font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--accent-pink); }
-        .location-desc { font-size: 10px; color: var(--text-dim); }
+        .location-name { font-size: 18px; font-weight: bold; margin-bottom: 4px; color: var(--accent-pink); }
+        .location-desc { font-size: 14px; color: var(--text-dim); }
         
         .activity-panel {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            bottom: 16px;
+            right: 16px;
             background: rgba(22, 33, 62, 0.95);
-            border-radius: 8px;
-            padding: 8px 10px;
+            border-radius: 12px;
+            padding: 14px 18px;
             border: 2px solid var(--accent-pink);
-            min-width: 130px;
+            min-width: 200px;
         }
         
-        .activity-title { font-size: 9px; color: var(--text-dim); margin-bottom: 2px; }
-        .activity-text { font-size: 11px; font-weight: bold; }
+        .activity-title { font-size: 13px; color: var(--text-dim); margin-bottom: 4px; }
+        .activity-text { font-size: 16px; font-weight: bold; }
         
         .achievement-popup {
             position: fixed;
@@ -195,13 +195,13 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(22, 33, 62, 0.98);
-            border-radius: 14px;
-            padding: 20px;
-            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            border: 4px solid #ffd700;
             text-align: center;
             z-index: 1000;
             display: none;
-            min-width: 250px;
+            min-width: 350px;
             max-width: 90vw;
         }
         
@@ -212,9 +212,9 @@
             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
         
-        .achievement-emoji { font-size: 40px; margin-bottom: 10px; }
-        .achievement-title { font-size: 16px; font-weight: bold; color: #ffd700; margin-bottom: 6px; }
-        .achievement-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; white-space: pre-line; }
+        .achievement-emoji { font-size: 60px; margin-bottom: 16px; }
+        .achievement-title { font-size: 24px; font-weight: bold; color: #ffd700; margin-bottom: 10px; }
+        .achievement-desc { font-size: 15px; color: var(--text-dim); line-height: 1.6; white-space: pre-line; }
         
         .overlay {
             position: fixed;
@@ -229,9 +229,9 @@
         
         .overlay.show { display: block; }
         
-        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 2px; }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -239,7 +239,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h1>🏙️ AgentCity</h1>
-                <div style="font-size: 10px; opacity: 0.9;">像素乌托邦</div>
+                <div style="font-size: 14px; opacity: 0.9;">像素乌托邦</div>
             </div>
             
             <div class="city-stats">
@@ -301,67 +301,82 @@
     <script>
         // ==================== 配置 ====================
         const CONFIG = {
-            TILE_SIZE: 40,
-            MAP_WIDTH: 35,
-            MAP_HEIGHT: 22,
-            AGENT_SPEED: 0.9,
+            TILE_SIZE: 48,
+            MAP_WIDTH: 32,
+            MAP_HEIGHT: 20,
+            AGENT_SPEED: 1.0,
             TIME_SCALE: 1,
             DAY_DURATION: 24 * 60,
             MIN_STAY_TIME: 600,
             BUBBLE_DURATION: 180,
         };
         
-        // 地点定义 - 扩展到14个地点
+        // 地点定义 - 全部在绿地上
         const LOCATIONS = {
-            // 左侧区域
-            home: { x: 1, y: 1, w: 4, h: 3, name: '🏠 住宅区', desc: '睡觉吃饭休息', color: '#8B4513', emoji: '🏠',
+            // 左上区块
+            home: { x: 1, y: 1, w: 5, h: 4, name: '🏠 住宅区', desc: '睡觉吃饭休息', color: '#8B4513', emoji: '🏠',
                 activities: ['睡觉', '吃饭', '休息', '看电视剧'] },
-            cafe: { x: 1, y: 6, w: 4, h: 4, name: '☕ 咖啡厅', desc: '社交聊天交友', color: '#D2691E', emoji: '☕',
-                activities: ['喝咖啡', '聊天', '看书', '约会'], menu: ['卡布奇诺', '抹茶拿铁', '水果茶', '隐藏菜单'],
+            
+            // 左中区块
+            cafe: { x: 1, y: 7, w: 5, h: 5, name: '☕ 咖啡厅', desc: '社交聊天交友', color: '#D2691E', emoji: '☕',
+                activities: ['喝咖啡', '聊天', '看书', '约会'], menu: ['卡布奇诺', '抹茶拿铁', '水果茶'],
                 special: 'socialize' },
-            shop: { x: 1, y: 12, w: 5, h: 3, name: '🛒 便利店', desc: '购物消费', color: '#20B2AA', emoji: '🛒',
-                activities: ['买东西', '闲逛'] },
-            restaurant: { x: 1, y: 17, w: 4, h: 3, name: '🍜 拉面馆', desc: '品尝美食', color: '#CD5C5C', emoji: '🍜',
-                activities: ['吃拉面', '吃饭', '约会'], menu: ['豚骨拉面', '味噌拉面', '酱油拉面', '煎饺'],
+            
+            // 左下区块
+            restaurant: { x: 1, y: 14, w: 5, h: 5, name: '🍜 拉面馆', desc: '品尝美食', color: '#CD5C5C', emoji: '🍜',
+                activities: ['吃拉面', '吃饭', '约会'], menu: ['豚骨拉面', '味噌拉面', '酱油拉面'],
                 special: 'eat' },
             
-            // 中上区域
-            library: { x: 7, y: 1, w: 4, h: 4, name: '📚 图书馆', desc: '阅读学习知识', color: '#4169E1', emoji: '📚',
+            // 中上区块
+            library: { x: 8, y: 1, w: 5, h: 5, name: '📚 图书馆', desc: '阅读学习知识', color: '#4169E1', emoji: '📚',
                 activities: ['阅读小说', '学习技术', '看传记', '做笔记'],
                 books: ['《Python入门》', '《JS高级》', '《算法导论》', '《乔布斯传》'],
                 special: 'read' },
-            hospital: { x: 7, y: 7, w: 4, h: 3, name: '🏥 医院', desc: '治病疗养', color: '#F0F0F0', emoji: '🏥',
+            
+            // 中中区块
+            hospital: { x: 8, y: 8, w: 5, h: 4, name: '🏥 医院', desc: '治病疗养', color: '#F0F0F0', emoji: '🏥',
                 activities: ['体检', '看病', '打针', '心理咨询'],
                 special: 'heal' },
-            school: { x: 7, y: 12, w: 5, h: 3, name: '🏫 小学', desc: '童年时光', color: '#87CEEB', emoji: '🏫',
+            
+            // 中下区块
+            school: { x: 8, y: 14, w: 6, h: 5, name: '🏫 小学', desc: '童年时光', color: '#87CEEB', emoji: '🏫',
                 activities: ['上课', '体育课', '课间玩耍', '考试'],
                 special: 'school' },
             
-            // 中下区域
-            arcade: { x: 7, y: 17, w: 4, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技', color: '#9400D3', emoji: '🎮',
-                activities: ['街机赛车', '投篮大赛', '抓娃娃', '21点'],
-                special: 'play' },
-            
-            // 右上区域
-            park: { x: 20, y: 1, w: 7, h: 5, name: '🌸 樱花公园', desc: '休闲放松偶遇', color: '#FFB7C5', emoji: '🌸',
+            // 右上区块
+            park: { x: 16, y: 1, w: 8, h: 6, name: '🌸 樱花公园', desc: '休闲放松偶遇', color: '#FFB7C5', emoji: '🌸',
                 activities: ['欣赏樱花', '野餐', '喂鸽子', '放风筝', '拍照打卡'], 
                 special: 'takePhoto' },
-            university: { x: 20, y: 8, w: 4, h: 3, name: '🏛️ 奇迹大学', desc: '学习深造', color: '#708090', emoji: '🏛️',
+            
+            // 右中上
+            university: { x: 16, y: 9, w: 5, h: 4, name: '🏛️ 奇迹大学', desc: '学习深造', color: '#708090', emoji: '🏛️',
                 activities: ['上课', '做实验', '图书馆学习', '社团活动'],
                 special: 'study' },
-            cinema: { x: 26, y: 8, w: 4, h: 3, name: '🎬 电影院', desc: '看电影', color: '#2F2F2F', emoji: '🎬',
+            
+            // 右中下
+            cinema: { x: 23, y: 9, w: 5, h: 4, name: '🎬 电影院', desc: '看电影', color: '#2F2F2F', emoji: '🎬',
                 activities: ['看动作片', '看爱情片', '看喜剧', '买爆米花'],
                 special: 'movie' },
             
-            // 右下区域 - 新增
-            beach: { x: 20, y: 13, w: 7, h: 5, name: '🏖️ 海滩', desc: '钓鱼休闲阳光', color: '#F4A460', emoji: '🏖️',
+            // 右下区块
+            beach: { x: 16, y: 15, w: 8, h: 5, name: '🏖️ 海滩', desc: '钓鱼休闲阳光', color: '#F4A460', emoji: '🏖️',
                 activities: ['钓鱼', '捡贝壳', '挖蛤蜊', '堆沙堡'],
                 fish: ['小黄鱼', '鲈鱼', '金枪鱼', '龙虾', '帝王蟹'],
                 special: 'fish' },
-            gym: { x: 20, y: 20, w: 4, h: 2, name: '💪 健身房', desc: '锻炼身体', color: '#FF6347', emoji: '💪',
+            
+            // 边缘位置
+            arcade: { x: 26, y: 1, w: 5, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技', color: '#9400D3', emoji: '🎮',
+                activities: ['街机赛车', '投篮大赛', '抓娃娃', '21点'],
+                special: 'play' },
+            
+            shop: { x: 26, y: 7, w: 5, h: 4, name: '🛒 便利店', desc: '购物消费', color: '#20B2AA', emoji: '🛒',
+                activities: ['买东西', '闲逛'] },
+            
+            gym: { x: 26, y: 13, w: 5, h: 3, name: '💪 健身房', desc: '锻炼身体', color: '#FF6347', emoji: '💪',
                 activities: ['跑步', '举铁', '瑜伽', '游泳'],
                 special: 'exercise' },
-            hotel: { x: 26, y: 20, w: 4, h: 2, name: '🏨 温泉旅馆', desc: '泡温泉放松', color: '#DDA0DD', emoji: '🏨',
+            
+            hotel: { x: 26, y: 17, w: 5, h: 3, name: '🏨 温泉旅馆', desc: '泡温泉放松', color: '#DDA0DD', emoji: '🏨',
                 activities: ['泡温泉', '按摩', 'spa', '住宿'],
                 special: 'relax' },
         };
@@ -491,7 +506,6 @@
                     this.updateActivityText();
                 }
                 
-                // 根据地点执行活动
                 if (this.currentLocation === 'home') {
                     if (this.energy < 50) { this.currentActivity = '💤 睡觉'; this.currentEmoji = '😴'; this.actionBubble = '睡觉恢复...'; this.energy += 0.015; }
                     else if (this.hunger < 40) { this.currentActivity = '🍽️ 吃饭'; this.currentEmoji = '🍚'; this.actionBubble = '在家吃饭...'; this.hunger += 0.01; }
@@ -503,7 +517,7 @@
                 else if (this.currentLocation === 'arcade') { this.currentActivity = '🎮 游戏'; this.currentEmoji = '🎮'; if (!this.actionBubble) this.actionBubble = '玩游戏中...'; if (Math.random()<0.015){this.coins+=Math.floor(Math.random()*30)+10;this.mood+=5;} }
                 else if (this.currentLocation === 'beach') { this.currentActivity = '🏖️ 海滩'; this.currentEmoji = Math.random()>0.5?'🎣':'🏖️'; if(!this.actionBubble) this.actionBubble='海边休闲...'; if(Math.random()<0.008){const f=loc.fish[Math.floor(Math.random()*loc.fish.length)];const v=loc.fish.indexOf(f)*20+20;this.coins+=v;showAchievement('🎣','钓鱼成功!',`${this.name}钓到${f}，+${v}金币!`);} this.mood+=0.003; }
                 else if (this.currentLocation === 'university') { this.currentActivity = '🏛️ 学习'; this.currentEmoji = '📖'; if(!this.actionBubble) this.actionBubble = '大学上课...'; this.mood+=0.004; }
-                else if (this.currentLocation === 'hospital') { this.currentActivity = '🏥 体检'; this.currentEmoji = '🏥'; if(!this.actionBubble) this.actionBubble = '做体检...'; this.health+=0.02; this.mood-=0.001; }
+                else if (this.currentLocation === 'hospital') { this.currentActivity = '🏥 体检'; this.currentEmoji = '🏥'; if(!this.actionBubble) this.actionBubble = '做体检...'; this.health+=0.02; }
                 else if (this.currentLocation === 'cinema') { this.currentActivity = '🎬 观影'; this.currentEmoji = '🎬'; if(!this.actionBubble) this.actionBubble = '看电影...'; this.mood+=0.01; this.coins-=20; }
                 else if (this.currentLocation === 'gym') { this.currentActivity = '💪 锻炼'; this.currentEmoji = '💪'; if(!this.actionBubble) this.actionBubble = '健身中...'; this.energy-=0.005; this.mood+=0.006; }
                 else if (this.currentLocation === 'restaurant') { const f=loc.menu[Math.floor(Math.random()*loc.menu.length)]; this.currentActivity = `🍜 ${f}`; this.currentEmoji = '🍜'; if(!this.actionBubble) this.actionBubble = `吃${f}...`; this.hunger+=0.02; this.mood+=0.008; this.coins-=30; }
@@ -586,37 +600,37 @@
                 const px = this.x, py = this.y, size = CONFIG.TILE_SIZE;
                 
                 ctx.fillStyle='rgba(0,0,0,0.25)';
-                ctx.beginPath();ctx.ellipse(px+size/2,py+size-4,size/3,5,0,0,Math.PI*2);ctx.fill();
+                ctx.beginPath();ctx.ellipse(px+size/2,py+size-5,size/3,6,0,0,Math.PI*2);ctx.fill();
                 
                 ctx.fillStyle=this.clothesColor;
-                ctx.fillRect(px+12,py+20,16,18);
+                ctx.fillRect(px+14,py+24,20,22);
                 
                 ctx.fillStyle='#333';
-                const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*2:0;
-                ctx.fillRect(px+12,py+35,5,6+lo);ctx.fillRect(px+23,py+35,5,6-lo);
+                const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*3:0;
+                ctx.fillRect(px+15,py+42,6,8+lo);ctx.fillRect(px+27,py+42,6,8-lo);
                 
                 ctx.fillStyle=this.skinColor;
-                ctx.fillRect(px+12,py+6,16,15);
+                ctx.fillRect(px+14,py+8,20,18);
                 
                 ctx.fillStyle=this.hairColor;
-                ctx.fillRect(px+10,py+3,20,8);ctx.fillRect(px+12,py+11,3,5);ctx.fillRect(px+25,py+11,3,5);
+                ctx.fillRect(px+12,py+4,24,10);ctx.fillRect(px+14,py+14,4,6);ctx.fillRect(px+30,py+14,4,6);
                 
                 ctx.fillStyle='#222';
-                if(this.direction==='left')ctx.fillRect(px+13,py+13,2,2);
-                else if(this.direction==='right')ctx.fillRect(px+25,py+13,2,2);
-                else{ctx.fillRect(px+14,py+13,2,2);ctx.fillRect(px+24,py+13,2,2);}
+                if(this.direction==='left')ctx.fillRect(px+16,py+16,3,3);
+                else if(this.direction==='right')ctx.fillRect(px+29,py+16,3,3);
+                else{ctx.fillRect(px+17,py+16,3,3);ctx.fillRect(px+28,py+16,3,3);}
                 
-                ctx.fillStyle='#c44';ctx.fillRect(px+18,py+18,4,2);
+                ctx.fillStyle='#c44';ctx.fillRect(px+21,py+22,4,2);
                 
                 if(!this.moving&&this.actionBubble){
-                    ctx.font='bold 10px "Pixelify Sans",sans-serif';
+                    ctx.font='bold 12px "Pixelify Sans",sans-serif';
                     const text=this.currentEmoji+' '+this.actionBubble;
                     const tw=ctx.measureText(text).width;
-                    ctx.fillStyle='white';ctx.beginPath();ctx.roundRect(px+size/2-tw/2-5,py-22,tw+10,16,3);ctx.fill();
-                    ctx.fillStyle='#333';ctx.fillText(text,px+size/2-tw/2,py-10);
+                    ctx.fillStyle='white';ctx.beginPath();ctx.roundRect(px+size/2-tw/2-6,py-26,tw+12,20,4);ctx.fill();
+                    ctx.fillStyle='#333';ctx.fillText(text,px+size/2-tw/2,py-11);
                 }
                 
-                if(selectedAgent===this){ctx.fillStyle='#FFD700';ctx.font='bold 10px sans-serif';ctx.fillText('★',px+16,py-28);}
+                if(selectedAgent===this){ctx.fillStyle='#FFD700';ctx.font='bold 14px sans-serif';ctx.fillText('★',px+18,py-35);}
             }
         }
         
@@ -625,27 +639,33 @@
             const w = CONFIG.MAP_WIDTH*CONFIG.TILE_SIZE;
             const h = CONFIG.MAP_HEIGHT*CONFIG.TILE_SIZE;
             
+            // 草地背景
             const grad=ctx.createLinearGradient(0,0,0,h);
             grad.addColorStop(0,'#5a8f3e');grad.addColorStop(1,'#4a7c3f');
             ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
             
+            // 草地纹理
             for(let i=0;i<CONFIG.MAP_WIDTH;i++){
                 for(let j=0;j<CONFIG.MAP_HEIGHT;j++){
                     const idx=i+j*CONFIG.MAP_WIDTH;
                     if(idx<grassPattern.length){
                         ctx.fillStyle=grassPattern[idx];
-                        ctx.fillRect(i*CONFIG.TILE_SIZE+8,j*CONFIG.TILE_SIZE+8,5,7);
+                        ctx.fillRect(i*CONFIG.TILE_SIZE+10,j*CONFIG.TILE_SIZE+10,6,8);
                     }
                 }
             }
             
+            // 道路 - 仅作为连接，不占据地点位置
             ctx.fillStyle='#6a6a6a';
-            ctx.fillRect(0,6*CONFIG.TILE_SIZE,w,2*CONFIG.TILE_SIZE);
-            ctx.fillRect(6*CONFIG.TILE_SIZE,0,2*CONFIG.TILE_SIZE,h);
-            ctx.fillRect(19*CONFIG.TILE_SIZE,0,2*CONFIG.TILE_SIZE,h);
+            // 纵向道路
+            ctx.fillRect(7*CONFIG.TILE_SIZE, 0, 2*CONFIG.TILE_SIZE, h);
+            // 横向道路
+            ctx.fillRect(0, 6*CONFIG.TILE_SIZE, w, 2*CONFIG.TILE_SIZE);
+            ctx.fillRect(15*CONFIG.TILE_SIZE, 0, 2*CONFIG.TILE_SIZE, h);
             
+            // 道路线
             ctx.fillStyle='#888';
-            for(let i=0;i<w;i+=CONFIG.TILE_SIZE){ctx.fillRect(i+16,6*CONFIG.TILE_SIZE+6,6,3);}
+            for(let i=0;i<w;i+=CONFIG.TILE_SIZE*2){ctx.fillRect(i+20,6*CONFIG.TILE_SIZE+8,8,4);}
             
             Object.entries(LOCATIONS).forEach(([id,loc])=>drawLocation(id,loc));
         }
@@ -653,10 +673,10 @@
         function drawLocation(id,loc){
             const x=loc.x*CONFIG.TILE_SIZE,y=loc.y*CONFIG.TILE_SIZE,w=loc.w*CONFIG.TILE_SIZE,h=loc.h*CONFIG.TILE_SIZE;
             
-            ctx.fillStyle=loc.color;ctx.globalAlpha=0.6;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
-            ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.strokeRect(x+2,y+2,w-4,h-4);
+            // 地点背景
+            ctx.fillStyle=loc.color;ctx.globalAlpha=0.65;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
+            ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(x+2,y+2,w-4,h-4);
             
-            // 各地点绘制
             if(id==='park')drawPark(x,y,w,h);
             else if(id==='home')drawHomes(x,y,w,h);
             else if(id==='cafe')drawCafe(x,y,w,h);
@@ -672,8 +692,8 @@
             else if(id==='school')drawSchool(x,y,w,h);
             else drawShop(x,y,w,h);
             
-            ctx.fillStyle='#fff';ctx.font='bold 9px "Pixelify Sans",sans-serif';
-            ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.strokeText(loc.name,x+6,y+12);ctx.fillText(loc.name,x+6,y+12);
+            ctx.fillStyle='#fff';ctx.font='bold 12px "Pixelify Sans",sans-serif';
+            ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
         }
         
         function drawPark(x,y,w,h){
@@ -681,22 +701,22 @@
             ctx.fillStyle='#5dabeb';ctx.fillRect(x+w*0.5,y+h*0.4,w*0.4,h*0.4);
         }
         function drawTree(x,y,color){
-            ctx.fillStyle='#6b4423';ctx.fillRect(x+14,y+18,10,20);
-            ctx.fillStyle=color;ctx.beginPath();ctx.arc(x+19,y+14,14,0,Math.PI*2);ctx.fill();
+            ctx.fillStyle='#6b4423';ctx.fillRect(x+16,y+20,12,24);
+            ctx.fillStyle=color;ctx.beginPath();ctx.arc(x+22,y+16,16,0,Math.PI*2);ctx.fill();
         }
-        function drawHomes(x,y,w,h){['#a0522d','#cd853f','#deb887'].forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(x+10+i*35,y+20,30,28);ctx.fillStyle='#4a4a4a';ctx.beginPath();ctx.moveTo(x+5+i*35,y+20);ctx.lineTo(x+25+i*35,y+5);ctx.lineTo(x+45+i*35,y+20);ctx.fill();});}
-        function drawCafe(x,y,w,h){ctx.fillStyle='#8b5a2b';ctx.fillRect(x+30,y+30,w-50,h-50);ctx.fillStyle='#5c3d2e';ctx.beginPath();ctx.moveTo(x+20,y+30);ctx.lineTo(x+w/2,y+5);ctx.lineTo(x+w-20,y+30);ctx.fill();ctx.fillStyle='#ffe4b5';ctx.fillRect(x+40,y+45,20,25);ctx.fillRect(x+75,y+45,20,25);ctx.font='16px sans-serif';ctx.fillText('☕',x+65,y+28);}
-        function drawLibrary(x,y,w,h){ctx.fillStyle='#2c4a6e';ctx.fillRect(x+20,y+25,w-35,h-40);ctx.fillStyle='#1a2d4a';ctx.beginPath();ctx.moveTo(x+12,y+25);ctx.lineTo(x+w/2,y+3);ctx.lineTo(x+w-12,y+25);ctx.fill();ctx.fillStyle='#5c3d2e';ctx.fillRect(x+45,y+55,40,50);ctx.font='16px sans-serif';ctx.fillText('📚',x+55,y+22);}
-        function drawArcade(x,y,w,h){ctx.fillStyle='#4a1a6b';ctx.fillRect(x+20,y+28,w-35,h-45);ctx.fillStyle='#ff69b4';ctx.fillRect(x+25,y+32,w-45,12);ctx.fillStyle='#fff';ctx.font='bold 10px';ctx.fillText('GAME',x+35,y+42);for(let i=0;i<3;i++){ctx.fillStyle='#2a0a4a';ctx.fillRect(x+28+i*28,y+55,22,28);}}
-        function drawBeach(x,y,w,h){ctx.fillStyle='#e6c288';ctx.fillRect(x,y,w,h);ctx.fillStyle='#4a90b5';ctx.fillRect(x,y+h-40,w,40);drawTree(x+30,y+35,'#228b22');drawTree(x+120,y+50,'#228b22');}
-        function drawUniversity(x,y,w,h){ctx.fillStyle='#5a6a7a';ctx.fillRect(x+15,y+25,w-25,h-40);ctx.fillStyle='#3a4a5a';ctx.fillRect(x+10,y+15,w-15,18);ctx.fillStyle='#87ceeb';ctx.fillRect(x+15,y+18,15,15);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+8,y+h-15,w-12,12);ctx.font='18px sans-serif';ctx.fillText('🏛️',x+30,y+50);}
-        function drawHospital(x,y,w,h){ctx.fillStyle='#f5f5f5';ctx.fillRect(x+15,y+20,w-25,h-35);ctx.fillStyle='#e8e8e8';ctx.fillRect(x+10,y+12,w-15,15);ctx.fillStyle='#e94560';ctx.fillRect(x+30,y+16,15,10);ctx.font='16px sans-serif';ctx.fillText('🏥',x+50,y+45);}
-        function drawCinema(x,y,w,h){ctx.fillStyle='#2f2f2f';ctx.fillRect(x+15,y+20,w-25,h-35);ctx.fillStyle='#ffd700';ctx.fillRect(x+20,y+25,w-35,25);ctx.fillStyle='#fff';ctx.font='bold 9px';ctx.fillText('CINEMA',x+28,y+40);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+10,y+h-12,w-15,10);}
-        function drawGym(x,y,w,h){ctx.fillStyle='#ff6347';ctx.fillRect(x+10,y+15,w-18,h-25);ctx.fillStyle='#8b0000';ctx.fillRect(x+15,y+20,w-28,20);ctx.fillStyle='#fff';ctx.fillRect(x+20,y+25,8,12);ctx.fillRect(x+40,y+25,8,12);ctx.font='14px sans-serif';ctx.fillText('💪',x+35,y+h-8);}
-        function drawRestaurant(x,y,w,h){ctx.fillStyle='#cd5c5c';ctx.fillRect(x+20,y+25,w-35,h-40);ctx.fillStyle='#8b0000';ctx.beginPath();ctx.moveTo(x+12,y+25);ctx.lineTo(x+w/2,y+3);ctx.lineTo(x+w-12,y+25);ctx.fill();ctx.font='16px sans-serif';ctx.fillText('🍜',x+55,y+55);}
-        function drawHotel(x,y,w,h){ctx.fillStyle='#dda0dd';ctx.fillRect(x+15,y+15,w-25,h-25);ctx.fillStyle='#ba55d3';ctx.fillRect(x+10,y+8,w-15,15);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+20,y+25,12,25);ctx.fillRect(x+45,y+25,12,25);ctx.fillStyle='#ffe4b5';ctx.fillRect(x+23,y+28,6,8);ctx.fillRect(x+48,y+28,6,8);ctx.font='14px sans-serif';ctx.fillText('♨️',x+50,y+h-6);}
-        function drawSchool(x,y,w,h){ctx.fillStyle='#87ceeb';ctx.fillRect(x+15,y+20,w-25,h-35);ctx.fillStyle='#4682b4';ctx.fillRect(x+10,y+10,w-15,18);ctx.fillStyle='#deb887';ctx.fillRect(x+20,y+h-12,w-35,10);for(let i=0;i<3;i++){ctx.fillStyle='#87ceeb';ctx.fillRect(x+25+i*25,y+30,18,15);}}
-        function drawShop(x,y,w,h){['👕','🪑','🍳'].forEach((e,i)=>{ctx.fillStyle='#2a8a8a';ctx.fillRect(x+10+i*38,y+15,35,45);ctx.font='16px';ctx.fillText(e,x+18+i*38,y+40);});}
+        function drawHomes(x,y,w,h){['#a0522d','#cd853f','#deb887','#8fbc8f'].forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(x+12+i*38,y+25,34,30);ctx.fillStyle='#4a4a4a';ctx.beginPath();ctx.moveTo(x+6+i*38,y+25);ctx.lineTo(x+29+i*38,y+3);ctx.lineTo(x+52+i*38,y+25);ctx.fill();});}
+        function drawCafe(x,y,w,h){ctx.fillStyle='#8b5a2b';ctx.fillRect(x+35,y+45,w-55,h-65);ctx.fillStyle='#5c3d2e';ctx.beginPath();ctx.moveTo(x+25,y+45);ctx.lineTo(x+w/2,y+10);ctx.lineTo(x+w-25,y+45);ctx.fill();ctx.fillStyle='#ffe4b5';ctx.fillRect(x+48,y+65,22,28);ctx.fillRect(x+90,y+65,22,28);ctx.font='22px sans-serif';ctx.fillText('☕',x+78,y+38);}
+        function drawLibrary(x,y,w,h){ctx.fillStyle='#2c4a6e';ctx.fillRect(x+25,y+35,w-40,h-55);ctx.fillStyle='#1a2d4a';ctx.beginPath();ctx.moveTo(x+15,y+35);ctx.lineTo(x+w/2,y+5);ctx.lineTo(x+w-15,y+35);ctx.fill();ctx.fillStyle='#5c3d2e';ctx.fillRect(x+50,y+65,45,55);ctx.font='22px sans-serif';ctx.fillText('📚',x+60,y+30);}
+        function drawArcade(x,y,w,h){ctx.fillStyle='#4a1a6b';ctx.fillRect(x+25,y+40,w-40,h-60);ctx.fillStyle='#ff69b4';ctx.fillRect(x+30,y+45,w-50,15);ctx.fillStyle='#fff';ctx.font='bold 14px';ctx.fillText('GAME',x+40,y+57);for(let i=0;i<3;i++){ctx.fillStyle='#2a0a4a';ctx.fillRect(x+32+i*30,y+70,24,30);}}
+        function drawBeach(x,y,w,h){ctx.fillStyle='#e6c288';ctx.fillRect(x,y,w,h);ctx.fillStyle='#4a90b5';ctx.fillRect(x,y+h-45,w,45);drawTree(x+35,y+40,'#228b22');drawTree(x+140,y+55,'#228b22');}
+        function drawUniversity(x,y,w,h){ctx.fillStyle='#5a6a7a';ctx.fillRect(x+20,y+30,w-30,h-45);ctx.fillStyle='#3a4a5a';ctx.fillRect(x+12,y+18,w-18,20);ctx.fillStyle='#87ceeb';ctx.fillRect(x+18,y+22,18,18);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+10,y+h-18,w-15,15);ctx.font='24px sans-serif';ctx.fillText('🏛️',x+40,y+55);}
+        function drawHospital(x,y,w,h){ctx.fillStyle='#f5f5f5';ctx.fillRect(x+18,y+25,w-28,h-40);ctx.fillStyle='#e8e8e8';ctx.fillRect(x+12,y+15,w-18,18);ctx.fillStyle='#e94560';ctx.fillRect(x+35,y+20,18,12);ctx.font='22px sans-serif';ctx.fillText('🏥',x+58,y+50);}
+        function drawCinema(x,y,w,h){ctx.fillStyle='#2f2f2f';ctx.fillRect(x+18,y+25,w-28,h-40);ctx.fillStyle='#ffd700';ctx.fillRect(x+23,y+32,w-38,28);ctx.fillStyle='#fff';ctx.font='bold 12px';ctx.fillText('CINEMA',x+32,y+50);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+10,y+h-15,w-15,12);}
+        function drawGym(x,y,w,h){ctx.fillStyle='#ff6347';ctx.fillRect(x+12,y+20,w-20,h-30);ctx.fillStyle='#8b0000';ctx.fillRect(x+18,y+26,w-30,22);ctx.fillStyle='#fff';ctx.fillRect(x+22,y+30,10,14);ctx.fillRect(x+45,y+30,10,14);ctx.font='18px sans-serif';ctx.fillText('💪',x+45,y+h-10);}
+        function drawRestaurant(x,y,w,h){ctx.fillStyle='#cd5c5c';ctx.fillRect(x+25,y+30,w-40,h-45);ctx.fillStyle='#8b0000';ctx.beginPath();ctx.moveTo(x+15,y+30);ctx.lineTo(x+w/2,y+5);ctx.lineTo(x+w-15,y+30);ctx.fill();ctx.font='22px sans-serif';ctx.fillText('🍜',x+70,y+65);}
+        function drawHotel(x,y,w,h){ctx.fillStyle='#dda0dd';ctx.fillRect(x+18,y+20,w-28,h-30);ctx.fillStyle='#ba55d3';ctx.fillRect(x+12,y+12,w-18,18);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+22,y+30,14,28);ctx.fillRect(x+50,y+30,14,28);ctx.fillStyle='#ffe4b5';ctx.fillRect(x+25,y+34,8,10);ctx.fillRect(x+53,y+34,8,10);ctx.font='18px sans-serif';ctx.fillText('♨️',x+55,y+h-8);}
+        function drawSchool(x,y,w,h){ctx.fillStyle='#87ceeb';ctx.fillRect(x+18,y+25,w-30,h-40);ctx.fillStyle='#4682b4';ctx.fillRect(x+12,y+15,w-18,20);ctx.fillStyle='#deb887';ctx.fillRect(x+22,y+h-15,w-38,12);for(let i=0;i<3;i++){ctx.fillStyle='#87ceeb';ctx.fillRect(x+28+i*28,y+35,20,18);}}
+        function drawShop(x,y,w,h){['👕','🪑','🍳'].forEach((e,i)=>{ctx.fillStyle='#2a8a8a';ctx.fillRect(x+12+i*42,y+18,38,50);ctx.font='20px';ctx.fillText(e,x+20+i*42,y+45);});}
         
         // ==================== UI函数 ====================
         function renderAgentList(){
@@ -707,13 +727,13 @@
                 card.className=`agent-card ${selectedAgent===agent?'selected':''}`;
                 card.onclick=()=>selectAgent(agent);
                 const p=agent.personalityData;
-                card.innerHTML=`<div class="agent-header"><canvas class="agent-avatar" id="avatar-${agent.id}" width="28" height="28"></canvas><div><div class="agent-name">${agent.name}</div><div class="agent-personality">${p.emoji} ${p.name}</div></div></div><div class="agent-status"><span class="status-badge ${agent.mood>50?'high':agent.mood>25?'medium':'low'}">😊${Math.floor(agent.mood)}</span><span class="status-badge ${agent.energy>50?'high':agent.energy>25?'medium':'low'}">⚡${Math.floor(agent.energy)}</span><span class="status-badge">💰${agent.coins}</span></div>`;
+                card.innerHTML=`<div class="agent-header"><canvas class="agent-avatar" id="avatar-${agent.id}" width="40" height="40"></canvas><div><div class="agent-name">${agent.name}</div><div class="agent-personality">${p.emoji} ${p.name}</div></div></div><div class="agent-status"><span class="status-badge ${agent.mood>50?'high':agent.mood>25?'medium':'low'}">😊${Math.floor(agent.mood)}</span><span class="status-badge ${agent.energy>50?'high':agent.energy>25?'medium':'low'}">⚡${Math.floor(agent.energy)}</span><span class="status-badge">💰${agent.coins}</span></div>`;
                 list.appendChild(card);
                 const ac=document.getElementById(`avatar-${agent.id}`).getContext('2d');
                 drawAvatar(ac,agent);
             });
         }
-        function drawAvatar(ctx,a){ctx.fillStyle='#333';ctx.fillRect(10,16,8,8);ctx.fillStyle=a.skinColor;ctx.fillRect(8,7,12,10);ctx.fillStyle=a.hairColor;ctx.fillRect(7,4,14,5);ctx.fillStyle='#000';ctx.fillRect(9,10,2,2);ctx.fillRect(13,10,2,2);ctx.fillStyle=a.clothesColor;ctx.fillRect(8,18,12,7);}
+        function drawAvatar(ctx,a){ctx.fillStyle='#333';ctx.fillRect(14,22,12,14);ctx.fillStyle=a.skinColor;ctx.fillRect(11,9,18,14);ctx.fillStyle=a.hairColor;ctx.fillRect(9,5,22,7);ctx.fillStyle='#000';ctx.fillRect(13,14,3,3);ctx.fillRect(20,14,3,3);ctx.fillStyle=a.clothesColor;ctx.fillRect(11,25,18,11);}
         function selectAgent(a){selectedAgent=a;renderAgentList();updateLocationPanel(a.currentLocation);}
         function updateLocationPanel(id){const loc=LOCATIONS[id];if(loc){document.getElementById('locationName').textContent=loc.name;document.getElementById('locationDesc').textContent=loc.desc;}}
         function updateStats(){
@@ -756,7 +776,7 @@
             agents.push(new Agent('a2','小刚','scholar'));
             renderAgentList();
             window.addEventListener('resize',()=>{canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;});
-            canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;agents.forEach(a=>{if(Math.sqrt((a.x-x)**2+(a.y-y)**2<35))selectAgent(a);});});
+            canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;agents.forEach(a=>{if(Math.sqrt((a.x-x)**2+(a.y-y)**2<40))selectAgent(a);});});
             gameLoop();
         }
         window.onload=init;
