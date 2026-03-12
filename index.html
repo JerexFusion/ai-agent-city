@@ -395,27 +395,37 @@
         const TILE_IMAGES = {};
         const TILE_BASE = 'art-resources/Tiles/';
         const TILE_FILES = {
-            // 建筑 (根据GuttyKreum_CleanCity素材)
-            'house1': 'GuttyKreum_CleanCity_000.png',
-            'house2': 'GuttyKreum_CleanCity_001.png',
-            'house3': 'GuttyKreum_CleanCity_002.png',
+            // 建筑素材 - 正确对应
+            // 000-002: 居民楼 -> 住宅区
+            'home': 'GuttyKreum_CleanCity_000.png',
+            'home2': 'GuttyKreum_CleanCity_001.png',
+            'home3': 'GuttyKreum_CleanCity_002.png',
+            // 003: 便利店 -> 商店
             'shop': 'GuttyKreum_CleanCity_003.png',
+            // 004: 咖啡店 -> 咖啡厅
             'cafe': 'GuttyKreum_CleanCity_004.png',
+            // 006: 医院 -> 医院
             'hospital': 'GuttyKreum_CleanCity_006.png',
+            // 007: 图书馆 -> 图书馆
             'library': 'GuttyKreum_CleanCity_007.png',
+            // 008: 学校 -> 小学
             'school': 'GuttyKreum_CleanCity_008.png',
+            // 009: 樱花树 -> 公园
             'park': 'GuttyKreum_CleanCity_009.png',
+            // 010: 体育馆 -> 健身房
             'gym': 'GuttyKreum_CleanCity_010.png',
+            // 011: 电影院 -> 电影院
             'cinema': 'GuttyKreum_CleanCity_011.png',
+            // 012: 餐厅 -> 拉面馆
             'restaurant': 'GuttyKreum_CleanCity_012.png',
+            // 013: 温泉旅馆 -> 酒店
             'hotel': 'GuttyKreum_CleanCity_013.png',
+            // 014: 海洋 -> 海滩
             'beach': 'GuttyKreum_CleanCity_014.png',
+            // 015: 大学 -> 大学
             'university': 'GuttyKreum_CleanCity_015.png',
+            // 016: 游戏机店 -> 游戏机厅
             'arcade': 'GuttyKreum_CleanCity_016.png',
-            // 道路和草地
-            'road_h': 'GuttyKreum_CleanCity_100.png',
-            'road_v': 'GuttyKreum_CleanCity_101.png',
-            'road_cross': 'GuttyKreum_CleanCity_102.png',
         };
         
         function preloadTiles() {
@@ -827,10 +837,22 @@ ${agent2.name}: "xxx"
             ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(x+2,y+2,w-4,h-4);
             
             // 尝试使用像素素材绘制，否则使用程序化绘制
-            const tileKey = {'park':'park','home':'house1','cafe':'cafe','library':'library',
-                           'arcade':'arcade','beach':'beach','university':'university',
-                           'hospital':'hospital','cinema':'cinema','gym':'gym',
-                           'restaurant':'restaurant','hotel':'hotel','school':'school','shop':'shop'}[id];
+            const tileKey = {
+                'park': 'park',           // 009 樱花树
+                'home': 'home',           // 000 居民楼
+                'cafe': 'cafe',           // 004 咖啡店
+                'library': 'library',    // 007 图书馆
+                'arcade': 'arcade',       // 016 游戏机店
+                'beach': 'beach',         // 014 海洋
+                'university': 'university', // 015 大学
+                'hospital': 'hospital',   // 006 医院
+                'cinema': 'cinema',       // 011 电影院
+                'gym': 'gym',             // 010 体育馆
+                'restaurant': 'restaurant', // 012 餐厅
+                'hotel': 'hotel',          // 013 温泉旅馆
+                'school': 'school',        // 008 学校
+                'shop': 'shop'            // 003 便利店
+            }[id];
             
             if(tileKey && TILE_IMAGES[tileKey]) {
                 // 使用像素素材绘制 (居中缩放)
