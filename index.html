@@ -282,7 +282,7 @@
         // ==================== 配置 ====================
         const CONFIG = {
             TILE_SIZE: 52,
-            MAP_WIDTH: 36,
+            MAP_WIDTH: 38,
             MAP_HEIGHT: 24,
             AGENT_SPEED: 1.1,
             TIME_SCALE: 1,
@@ -307,11 +307,8 @@
             // 左中上
             cafe: { x: 1, y: 7, w: 5, h: 5, name: '☕ 咖啡厅', desc: '社交聊天交友', color: '#D2691E', activities: ['喝咖啡', '聊天', '看书'], menu: ['卡布奇诺', '抹茶拿铁', '水果茶'], special: 'socialize' },
             
-            // 左中下
-            restaurant: { x: 1, y: 14, w: 5, h: 5, name: '🍜 拉面馆', desc: '品尝美食', color: '#CD5C5C', activities: ['吃拉面', '吃饭', '约会'], menu: ['豚骨拉面', '味噌拉面'], special: 'eat' },
-            
             // 左下
-            shop: { x: 1, y: 21, w: 5, h: 3, name: '🛒 便利店', desc: '购物消费', color: '#20B2AA', activities: ['买东西', '闲逛'] },
+            shop: { x: 1, y: 14, w: 5, h: 4, name: '🛒 便利店', desc: '购物消费', color: '#20B2AA', activities: ['买东西', '闲逛'] },
             
             // 中上左
             library: { x: 8, y: 1, w: 5, h: 5, name: '📚 图书馆', desc: '阅读学习', color: '#4169E1', activities: ['阅读小说', '学习技术'], books: ['《Python入门》', '《JS高级》'], special: 'read' },
@@ -325,7 +322,7 @@
             // 中下
             arcade: { x: 8, y: 15, w: 5, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技', color: '#9400D3', activities: ['街机赛车', '投篮'], special: 'play' },
             
-            // 右上
+            // 右上区块
             park: { x: 22, y: 1, w: 8, h: 6, name: '🌸 樱花公园', desc: '休闲放松', color: '#FFB7C5', activities: ['欣赏樱花', '野餐', '拍照'], special: 'takePhoto' },
             
             // 右中上
@@ -334,14 +331,17 @@
             // 右中下
             cinema: { x: 29, y: 9, w: 5, h: 4, name: '🎬 电影院', desc: '看电影', color: '#2F2F2F', activities: ['看动作片', '看爱情片'], special: 'movie' },
             
-            // 右下上
+            // 右下区块
             beach: { x: 22, y: 15, w: 8, h: 5, name: '🏖️ 海滩', desc: '钓鱼阳光', color: '#F4A460', activities: ['钓鱼', '捡贝壳'], fish: ['小黄鱼', '鲈鱼'], special: 'fish' },
             
             // 右下左
             gym: { x: 22, y: 22, w: 5, h: 2, name: '💪 健身房', desc: '锻炼身体', color: '#FF6347', activities: ['跑步', '举铁'], special: 'exercise' },
             
             // 右下右
-            hotel: { x: 29, y: 22, w: 5, h: 2, name: '🏨 温泉旅馆', desc: '泡温泉', color: '#DDA0DD', activities: ['泡温泉', '按摩'], special: 'relax' },
+            restaurant: { x: 29, y: 22, w: 5, h: 2, name: '🍜 拉面馆', desc: '品尝美食', color: '#CD5C5C', activities: ['吃拉面', '吃饭'], menu: ['豚骨拉面', '味噌拉面'], special: 'eat' },
+            
+            // 右下角
+            hotel: { x: 32, y: 22, w: 4, h: 2, name: '🏨 温泉旅馆', desc: '泡温泉', color: '#DDA0DD', activities: ['泡温泉', '按摩'], special: 'relax' },
         };
         
         // 性格系统
