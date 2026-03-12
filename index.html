@@ -845,69 +845,10 @@ ${agent2.name}: "xxx"
         function drawLocation(id,loc){
             const x=loc.x*CONFIG.TILE_SIZE,y=loc.y*CONFIG.TILE_SIZE,w=loc.w*CONFIG.TILE_SIZE,h=loc.h*CONFIG.TILE_SIZE;
             
-            // 绘制背景
-            ctx.fillStyle=loc.color;ctx.globalAlpha=0.5;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
-            ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(x+2,y+2,w-4,h-4);
-            
-            // 尝试使用像素素材绘制，否则使用程序化绘制
-            const tileKey = {
-                'park': 'park',           // 009 樱花树
-                'home': 'home',           // 000 居民楼
-                'cafe': 'cafe',           // 004 咖啡店
-                'library': 'library',    // 007 图书馆
-                'arcade': 'arcade',       // 016 游戏机店
-                'beach': 'beach',         // 014 海洋
-                'university': 'university', // 015 大学
-                'hospital': 'hospital',   // 006 医院
-                'cinema': 'cinema',       // 011 电影院
-                'gym': 'gym',             // 010 体育馆
-                'restaurant': 'restaurant', // 012 餐厅
-                'hotel': 'hotel',          // 013 温泉旅馆
-                'school': 'school',        // 008 学校
-                'shop': 'shop'            // 003 便利店
-            }[id];
-            
-            if(tileKey && TILE_IMAGES[tileKey]) {
-                // 使用像素素材绘制 (居中缩放)
-                const img = TILE_IMAGES[tileKey];
-                const scale = Math.min(w / img.width, h / img.height) * 0.9;
-                const dw = img.width * scale, dh = img.height * scale;
-                ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
-            } else {
-                // 回退到程序化绘制
-                if(id==='park')drawPark(x,y,w,h);
-                else if(id==='home')drawHomes(x,y,w,h);
-                else if(id==='cafe')drawCafe(x,y,w,h);
-                else if(id==='library')drawLibrary(x,y,w,h);
-                else if(id==='arcade')drawArcade(x,y,w,h);
-                else if(id==='beach')drawBeach(x,y,w,h);
-                else if(id==='university')drawUniversity(x,y,w,h);
-                else if(id==='hospital')drawHospital(x,y,w,h);
-                else if(id==='cinema')drawCinema(x,y,w,h);
-                else if(id==='gym')drawGym(x,y,w,h);
-                else if(id==='restaurant')drawRestaurant(x,y,w,h);
-                else if(id==='hotel')drawHotel(x,y,w,h);
-                else if(id==='school')drawSchool(x,y,w,h);
-                else drawShop(x,y,w,h);
-            }
-            
-            ctx.fillStyle='#fff';ctx.font='bold 12px "Pixelify Sans",sans-serif';
-            ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
+            // 只显示地点名称标签（城市地图已有完整图像）
+            ctx.fillStyle='#fff';ctx.font='bold 14px "Pixelify Sans",sans-serif';
+            ctx.strokeStyle='#000';ctx.lineWidth=4;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
         }
-        
-        function drawPark(x,y,w,h){[[0.5,0.5],[2,0.5],[4,0.5],[1,2],[3,2],[5,2],[0.5,3.5],[4.5,3.5]].forEach(([tx,ty])=>drawTree(x+tx*CONFIG.TILE_SIZE,y+ty*CONFIG.TILE_SIZE,'#f2a2b8'));ctx.fillStyle='#5dabeb';ctx.fillRect(x+w*0.5,y+h*0.4,w*0.4,h*0.4);}
-        function drawTree(x,y,color){ctx.fillStyle='#6b4423';ctx.fillRect(x+18,y+22,14,26);ctx.fillStyle=color;ctx.beginPath();ctx.arc(x+25,y+18,18,0,Math.PI*2);ctx.fill();}
-        function drawHomes(x,y,w,h){['#a0522d','#cd853f','#deb887','#8fbc8f'].forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(x+14+i*40,y+28,36,32);ctx.fillStyle='#4a4a4a';ctx.beginPath();ctx.moveTo(x+6+i*40,y+28);ctx.lineTo(x+32+i*40,y+4);ctx.lineTo(x+58+i*40,y+28);ctx.fill();});}
-        function drawCafe(x,y,w,h){ctx.fillStyle='#8b5a2b';ctx.fillRect(x+40,y+50,w-60,h-70);ctx.fillStyle='#5c3d2e';ctx.beginPath();ctx.moveTo(x+30,y+50);ctx.lineTo(x+w/2,y+15);ctx.lineTo(x+w-30,y+50);ctx.fill();ctx.fillStyle='#ffe4b5';ctx.fillRect(x+55,y+70,24,30);ctx.fillRect(x+100,y+70,24,30);ctx.font='24px sans-serif';ctx.fillText('☕',x+85,y+42);}
-        function drawLibrary(x,y,w,h){ctx.fillStyle='#2c4a6e';ctx.fillRect(x+28,y+38,w-45,h-55);ctx.fillStyle='#1a2d4a';ctx.beginPath();ctx.moveTo(x+18,y+38);ctx.lineTo(x+w/2,y+8);ctx.lineTo(x+w-18,y+38);ctx.fill();ctx.fillStyle='#5c3d2e';ctx.fillRect(x+52,y+68,48,58);ctx.font='24px sans-serif';ctx.fillText('📚',x+65,y+32);}
-        function drawArcade(x,y,w,h){ctx.fillStyle='#4a1a6b';ctx.fillRect(x+28,y+45,w-45,h-60);ctx.fillStyle='#ff69b4';ctx.fillRect(x+33,y+50,w-55,15);for(let i=0;i<3;i++){ctx.fillStyle='#2a0a4a';ctx.fillRect(x+35+i*32,y+75,26,32);}}
-        function drawBeach(x,y,w,h){ctx.fillStyle='#e6c288';ctx.fillRect(x,y,w,h);ctx.fillStyle='#4a90b5';ctx.fillRect(x,y+h-48,w,48);drawTree(x+40,y+45,'#228b22');drawTree(x+160,y+60,'#228b22');}
-        function drawUniversity(x,y,w,h){ctx.fillStyle='#5a6a7a';ctx.fillRect(x+22,y+35,w-35,h-50);ctx.fillStyle='#3a4a5a';ctx.fillRect(x+14,y+20,w-20,22);ctx.fillStyle='#87ceeb';ctx.fillRect(x+20,y+24,20,20);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+12,y+h-20,w-18,16);ctx.font='26px sans-serif';ctx.fillText('🏛️',x+45,y+60);}
-        function drawHospital(x,y,w,h){ctx.fillStyle='#f5f5f5';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#e8e8e8';ctx.fillRect(x+14,y+18,w-20,20);ctx.fillStyle='#e94560';ctx.fillRect(x+38,y+22,20,14);ctx.font='24px sans-serif';ctx.fillText('🏥',x+62,y+55);}
-        function drawCinema(x,y,w,h){ctx.fillStyle='#2f2f2f';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#ffd700';ctx.fillRect(x+25,y+35,w-42,30);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+12,y+h-16,w-18,14);}
-        function drawGym(x,y,w,h){ctx.fillStyle='#ff6347';ctx.fillRect(x+14,y+22,w-22,h-32);ctx.fillStyle='#8b0000';ctx.fillRect(x+20,y+28,w-32,24);ctx.fillStyle='#fff';ctx.fillRect(x+24,y+32,12,16);ctx.fillRect(x+48,y+32,12,16);ctx.font='20px sans-serif';ctx.fillText('💪',x+48,y+h-8);}
-        function drawRestaurant(x,y,w,h){ctx.fillStyle='#cd5c5c';ctx.fillRect(x+28,y+35,w-45,h-50);ctx.fillStyle='#8b0000';ctx.beginPath();ctx.moveTo(x+18,y+35);ctx.lineTo(x+w/2,y+8);ctx.lineTo(x+w-18,y+35);ctx.fill();ctx.font='24px sans-serif';ctx.fillText('🍜',x+75,y+70);}
-        function drawHotel(x,y,w,h){ctx.fillStyle='#dda0dd';ctx.fillRect(x+20,y+22,w-32,h-32);ctx.fillStyle='#ba55d3';ctx.fillRect(x+14,y+14,w-20,18);ctx.fillStyle='#4a4a4a';ctx.fillRect(x+24,y+34,16,30);ctx.fillRect(x+52,y+34,16,30);ctx.fillStyle='#ffe4b5';ctx.fillRect(x+27,y+38,10,12);ctx.fillRect(x+55,y+38,10,12);ctx.font='20px sans-serif';ctx.fillText('♨️',x+58,y+h-6);}
         function drawSchool(x,y,w,h){ctx.fillStyle='#87ceeb';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#4682b4';ctx.fillRect(x+14,y+18,w-20,20);ctx.fillStyle='#deb887';ctx.fillRect(x+24,y+h-18,w-40,14);for(let i=0;i<3;i++){ctx.fillStyle='#87ceeb';ctx.fillRect(x+30+i*30,y+40,22,20);}}
         function drawShop(x,y,w,h){['👕','🪑','🍳'].forEach((e,i)=>{ctx.fillStyle='#2a8a8a';ctx.fillRect(x+14+i*45,y+20,40,55);ctx.font='22px';ctx.fillText(e,x+22+i*45,y+48);});}
         
