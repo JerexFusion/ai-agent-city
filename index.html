@@ -219,25 +219,25 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h1>🏙️ AgentCity</h1>
-                <div style="font-size: 16px; opacity: 0.9;">像素乌托邦</div>
-            </div>
+                <div style="font-size: 16px; opacity: 0.9;">像素乌托邦</div> -->
+            </div> -->
             
             <div class="city-stats">
                 <div class="stat-item">
-                    <div class="stat-value" id="dayDisplay">第1天</div>
-                    <div>天数</div>
-                </div>
+                    <div class="stat-value" id="dayDisplay">第1天</div> -->
+                    <div>天数</div> -->
+                </div> -->
                 <div class="stat-item">
-                    <div class="stat-value" id="timeDisplay">08:00</div>
-                    <div>时间</div>
-                </div>
+                    <div class="stat-value" id="timeDisplay">08:00</div> -->
+                    <div>时间</div> -->
+                </div> -->
                 <div class="stat-item">
-                    <div class="stat-value" id="happiness">75%</div>
-                    <div>幸福</div>
-                </div>
-            </div>
+                    <div class="stat-value" id="happiness">75%</div> -->
+                    <div>幸福</div> -->
+                </div> -->
+            </div> -->
             
-            <div class="agent-list" id="agentList"></div>
+            <div class="agent-list" id="agentList"></div> -->
             
             <div class="control-panel">
                 <button class="btn btn-primary" onclick="claimAgent()">认领</button>
@@ -248,35 +248,35 @@
                     <button class="quick-btn" onclick="quickAction('cafe')">☕咖啡</button>
                     <button class="quick-btn" onclick="quickAction('hospital')">🏥医院</button>
                     <button class="quick-btn" onclick="quickAction('cinema')">🎬影院</button>
-                </div>
-            </div>
-        </div>
+                </div> -->
+            </div> -->
+        </div> -->
         
         <div class="game-area">
             <div class="game-header">
-                <div class="weather-display" id="weatherDisplay">☀️ 晴天</div>
-                <div class="coins-display" id="coinsDisplay">💰 450</div>
-            </div>
+                <div class="weather-display" id="weatherDisplay">☀️ 晴天</div> -->
+                <!-- <div class="coins-display" id="coinsDisplay">💰 450</div> -->
+            </div> -->
             <canvas id="gameCanvas"></canvas>
             
             <div class="location-panel" id="locationPanel">
-                <div class="location-name" id="locationName">🏠 住宅区</div>
-                <div class="location-desc" id="locationDesc">睡觉吃饭休息</div>
-            </div>
+                <div class="location-name" id="locationName">🏠 住宅区</div> -->
+                <div class="location-desc" id="locationDesc">睡觉吃饭休息</div> -->
+            </div> -->
             
             <div class="activity-panel">
-                <div class="activity-title">当前活动</div>
-                <div class="activity-text" id="activityText">休息中...</div>
-            </div>
-        </div>
-    </div>
+                <div class="activity-title">当前活动</div> -->
+                <div class="activity-text" id="activityText">休息中...</div> -->
+            </div> -->
+        </div> -->
+    </div> -->
     
-    <div class="overlay" id="overlay" onclick="closeAchievement();closeGoalInput();"></div>
+    <div class="overlay" id="overlay" onclick="closeAchievement();closeGoalInput();"></div> -->
     <div class="achievement-popup" id="achievementPopup">
-        <div class="achievement-emoji" id="AchievementEmoji">📸</div>
-        <div class="achievement-title" id="AchievementTitle">拍照成功!</div>
-        <div class="achievement-desc" id="AchievementDesc">内容</div>
-    </div>
+        <div class="achievement-emoji" id="AchievementEmoji">📸</div> -->
+        <div class="achievement-title" id="AchievementTitle">拍照成功!</div> -->
+        <div class="achievement-desc" id="AchievementDesc">内容</div> -->
+    </div> -->
 
     <div class="goal-popup" id="goalPopup" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(22,33,62,0.98);border-radius:20px;padding:30px;border:4px solid #0f3460;text-align:center;z-index:1001;min-width:400px;">
         <h3 style="margin-bottom:15px;font-size:22px;">🎯 设立目标</h3>
@@ -284,8 +284,8 @@
         <div style="display:flex;gap:10px;">
             <button onclick="submitGoal()" style="flex:1;padding:12px;font-size:16px;border:none;border-radius:8px;cursor:pointer;background:linear-gradient(135deg,#e94560,#c73659);color:white;">确定</button>
             <button onclick="closeGoalInput()" style="flex:1;padding:12px;font-size:16px;border:none;border-radius:8px;cursor:pointer;background:linear-gradient(135deg,#0f3460,#0a2540);color:white;">取消</button>
-        </div>
-    </div>
+        </div> -->
+    </div> -->
 
     <script>
         // ==================== 配置 ====================
@@ -377,6 +377,118 @@
             '小学': 'school', '学校': 'school',
             '回家': 'home', '休息': 'home', '睡觉': 'home'
         };
+        
+        // ==================== 道路网格和寻路算法 ====================
+        const ROAD_GRID = [];
+        const GRID_COLS = CONFIG.MAP_WIDTH;
+        const GRID_ROWS = CONFIG.MAP_HEIGHT;
+        
+        // 初始化道路网格 (1=道路, 0=建筑/障碍)
+        function initRoadGrid() {
+            for (let y = 0; y < GRID_ROWS; y++) {
+                ROAD_GRID[y] = [];
+                for (let x = 0; x < GRID_COLS; x++) {
+                    // 默认非道路
+                    ROAD_GRID[y][x] = 0;
+                }
+            }
+            
+            // 根据城市地图标记道路 (横向和纵向道路)
+            // 横向道路 (y=6, y=20)
+            for (let x = 0; x < GRID_COLS; x++) {
+                if (x >= 0 && x < GRID_COLS) {
+                    ROAD_GRID[6][x] = 1;  // 横向道路1
+                    ROAD_GRID[20][x] = 1; // 横向道路2
+                }
+            }
+            // 纵向道路 (x=7, x=21)
+            for (let y = 0; y < GRID_ROWS; y++) {
+                if (y >= 0 && y < GRID_ROWS) {
+                    ROAD_GRID[y][7] = 1;  // 纵向道路1
+                    ROAD_GRID[y][21] = 1; // 纵向道路2
+                }
+            }
+        }
+        
+        // BFS寻路 - 找到从起点到终点的道路路径
+        function findPath(startX, startY, endX, endY) {
+            const queue = [{ x: Math.floor(startX / CONFIG.TILE_SIZE), y: Math.floor(startY / CONFIG.TILE_SIZE), path: [] }];
+            const visited = new Set();
+            const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+            
+            while (queue.length > 0) {
+                const current = queue.shift();
+                const key = `${current.x},${current.y}`;
+                
+                if (visited.has(key)) continue;
+                visited.add(key);
+                
+                // 到达终点附近
+                if (Math.abs(current.x - endX) <= 1 && Math.abs(current.y - endY) <= 1) {
+                    return current.path;
+                }
+                
+                // 探索四个方向
+                for (const [dx, dy] of dirs) {
+                    const nx = current.x + dx;
+                    const ny = current.y + dy;
+                    
+                    if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS) {
+                        // 只能走在道路上
+                        if (ROAD_GRID[ny] && ROAD_GRID[ny][nx] === 1) {
+                            queue.push({
+                                x: nx,
+                                y: ny,
+                                path: [...current.path, { x: nx, y: ny }]
+                            });
+                        }
+                    }
+                }
+            }
+            return null; // 无路径
+        }
+        
+        // 获取地点最近的道路入口点
+        function getNearestRoadPoint(loc) {
+            const locCenterX = loc.x + loc.w / 2;
+            const locCenterY = loc.y + loc.h / 2;
+            
+            // 找到最近的十字路口或道路边
+            let bestPoint = null;
+            let minDist = Infinity;
+            
+            // 检查地点四个边的中心点
+            const edgePoints = [
+                { x: loc.x, y: locCenterY },                    // 左
+                { x: loc.x + loc.w, y: locCenterY },            // 右
+                { x: locCenterX, y: loc.y },                    // 上
+                { x: locCenterX, y: loc.y + loc.h }             // 下
+            ];
+            
+            for (const point of edgePoints) {
+                const gx = Math.floor(point.x);
+                const gy = Math.floor(point.y);
+                
+                // 找到最近的道路格子
+                for (let dx = -2; dx <= 2; dx++) {
+                    for (let dy = -2; dy <= 2; dy++) {
+                        const nx = gx + dx;
+                        const ny = gy + dy;
+                        if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS && ROAD_GRID[ny] && ROAD_GRID[ny][nx] === 1) {
+                            const dist = Math.abs(nx * CONFIG.TILE_SIZE - point.x) + Math.abs(ny * CONFIG.TILE_SIZE - point.y);
+                            if (dist < minDist) {
+                                minDist = dist;
+                                bestPoint = { x: nx * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2, y: ny * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2 };
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return bestPoint || { x: locCenterX * CONFIG.TILE_SIZE, y: locCenterY * CONFIG.TILE_SIZE };
+        }
+        
+        initRoadGrid();
         
         const WEATHER = ['☀️ 晴天', '🌧️ 小雨', '❄️ 小雪', '🌤️ 多云', '🌈 彩虹'];
         
@@ -566,10 +678,24 @@ ${agent2.name}: "xxx"
                     if (dist < CONFIG.AGENT_SPEED) {
                         this.x = this.targetX;
                         this.y = this.targetY;
-                        this.moving = false;
-                        this.stayTime = 0;
-                        this.bubbleStartTime = 0;
-                        this.arrive();
+                        
+                        // 检查是否还有路径点需要走
+                        if (this.pathQueue && this.pathQueue.length > 0) {
+                            const nextPoint = this.pathQueue.shift();
+                            this.targetX = nextPoint.x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                            this.targetY = nextPoint.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                        } else if (this.finalTargetX !== undefined) {
+                            // 到达道路点，现在走向最终目的地
+                            this.targetX = this.finalTargetX;
+                            this.targetY = this.finalTargetY;
+                            this.finalTargetX = undefined;
+                            this.finalTargetY = undefined;
+                        } else {
+                            this.moving = false;
+                            this.stayTime = 0;
+                            this.bubbleStartTime = 0;
+                            this.arrive();
+                        }
                     } else {
                         this.x += (dx / dist) * CONFIG.AGENT_SPEED;
                         this.y += (dy / dist) * CONFIG.AGENT_SPEED;
@@ -712,8 +838,33 @@ ${agent2.name}: "xxx"
                 if (!loc || this.currentLocation === locationId) return;
                 this.dialogueWith = null;
                 this.dialogueBubble = '';
-                this.targetX = (loc.x + 0.5 + Math.random()*(loc.w-1))*CONFIG.TILE_SIZE;
-                this.targetY = (loc.y + 0.5 + Math.random()*(loc.h-1))*CONFIG.TILE_SIZE;
+                
+                // 使用寻路算法
+                const startGridX = Math.floor(this.x / CONFIG.TILE_SIZE);
+                const startGridY = Math.floor(this.y / CONFIG.TILE_SIZE);
+                const endGridX = Math.floor((loc.x + loc.w / 2) / CONFIG.TILE_SIZE);
+                const endGridY = Math.floor((loc.y + loc.h / 2) / CONFIG.TILE_SIZE);
+                
+                // 找到路径
+                const path = findPath(startGridX, startGridY, endGridX, endGridY);
+                
+                if (path && path.length > 0) {
+                    // 沿着道路走 - 走第一个道路点
+                    const firstRoadPoint = path[0];
+                    this.targetX = firstRoadPoint.x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                    this.targetY = firstRoadPoint.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                    
+                    // 存储完整路径
+                    this.pathQueue = path.slice(1);
+                    this.finalTargetX = (loc.x + 0.5 + Math.random() * (loc.w - 1)) * CONFIG.TILE_SIZE;
+                    this.finalTargetY = (loc.y + 0.5 + Math.random() * (loc.h - 1)) * CONFIG.TILE_SIZE;
+                } else {
+                    // 如果没有找到道路，直接走
+                    this.targetX = (loc.x + 0.5 + Math.random() * (loc.w - 1)) * CONFIG.TILE_SIZE;
+                    this.targetY = (loc.y + 0.5 + Math.random() * (loc.h - 1)) * CONFIG.TILE_SIZE;
+                    this.pathQueue = [];
+                }
+                
                 this.currentLocation = locationId;
                 this.moving = true;
                 this.actionBubble = '';
@@ -850,7 +1001,7 @@ ${agent2.name}: "xxx"
             
             // 只显示地点名称标签（城市地图已有完整图像）
             ctx.fillStyle='#fff';ctx.font='bold 14px "Pixelify Sans",sans-serif';
-            ctx.strokeStyle='#000';ctx.lineWidth=4;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
+            ctx.strokeStyle='#000';ctx.lineWidth=4;// ctx.strokeText(loc.name,x+8,y+18);// ctx.fillText(loc.name,x+8,y+18);
         }
         function drawSchool(x,y,w,h){ctx.fillStyle='#87ceeb';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#4682b4';ctx.fillRect(x+14,y+18,w-20,20);ctx.fillStyle='#deb887';ctx.fillRect(x+24,y+h-18,w-40,14);for(let i=0;i<3;i++){ctx.fillStyle='#87ceeb';ctx.fillRect(x+30+i*30,y+40,22,20);}}
         function drawShop(x,y,w,h){['👕','🪑','🍳'].forEach((e,i)=>{ctx.fillStyle='#2a8a8a';ctx.fillRect(x+14+i*45,y+20,40,55);ctx.font='22px';ctx.fillText(e,x+22+i*45,y+48);});}
@@ -864,7 +1015,7 @@ ${agent2.name}: "xxx"
                 card.className=`agent-card ${selectedAgent===agent?'selected':''}`;
                 card.onclick=()=>selectAgent(agent);
                 const p=agent.personalityData;
-                card.innerHTML=`<div class="agent-header"><canvas class="agent-avatar" id="avatar-${agent.id}" width="44" height="44"></canvas><div><div class="agent-name">${agent.name}</div><div class="agent-personality">${p.emoji} ${p.name}</div></div></div><div class="agent-status"><span class="status-badge ${agent.mood>50?'high':agent.mood>25?'medium':'low'}">😊${Math.floor(agent.mood)}</span><span class="status-badge ${agent.energy>50?'high':agent.energy>25?'medium':'low'}">⚡${Math.floor(agent.energy)}</span><span class="status-badge">💰${agent.coins}</span></div>`;
+                card.innerHTML=`<div class="agent-header"><canvas class="agent-avatar" id="avatar-${agent.id}" width="44" height="44"></canvas><div><div class="agent-name">${agent.name}</div> --><div class="agent-personality">${p.emoji} ${p.name}</div></div></div><div class="agent-status"><span class="status-badge ${agent.mood>50?'high':agent.mood>25?'medium':'low'}">😊${Math.floor(agent.mood)}</span><span class="status-badge ${agent.energy>50?'high':agent.energy>25?'medium':'low'}">⚡${Math.floor(agent.energy)}</span><span class="status-badge">💰${agent.coins}</span></div>`;
                 list.appendChild(card);
                 const ac=document.getElementById(`avatar-${agent.id}`).getContext('2d');
                 drawAvatar(ac,agent);
