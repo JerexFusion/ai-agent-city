@@ -378,61 +378,62 @@
             '回家': 'home', '休息': 'home', '睡觉': 'home'
         };
         
-        // 道路网格系统
-        var ROAD_GRID = [];
-        var GRID_COLS = CONFIG.MAP_WIDTH;
-        var GRID_ROWS = CONFIG.MAP_HEIGHT;
-        
-        function initRoadGrid() {
-            for (var y = 0; y < GRID_ROWS; y++) {
-                ROAD_GRID[y] = [];
-                for (var x = 0; x < GRID_COLS; x++) {
-                    ROAD_GRID[y][x] = 0;
-                }
-            }
-            // 横向道路
-            for (var x = 0; x < GRID_COLS; x++) {
-                ROAD_GRID[6][x] = 1;
-                ROAD_GRID[20][x] = 1;
-            }
-            // 纵向道路
-            for (var y = 0; y < GRID_ROWS; y++) {
-                ROAD_GRID[y][7] = 1;
-                ROAD_GRID[y][21] = 1;
-            }
-        }
-        
-        function getNearestRoad(gx, gy) {
-            var dirs = [[0,-1],[0,1],[-1,0],[1,0]];
-            var queue = [{x: gx, y: gy, dist: 0}];
-            var visited = {};
-            
-            while (queue.length > 0) {
-                var curr = queue.shift();
-                var key = curr.x + ',' + curr.y;
-                if (visited[key]) continue;
-                visited[key] = true;
-                
-                if (ROAD_GRID[curr.y] && ROAD_GRID[curr.y][curr.x] === 1) {
-                    return {x: curr.x, y: curr.y};
-                }
-                
-                for (var i = 0; i < dirs.length; i++) {
-                    var dx = dirs[i][0];
-                    var dy = dirs[i][1];
-                    var nx = curr.x + dx;
-                    var ny = curr.y + dy;
-                    if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS) {
-                        queue.push({x: nx, y: ny, dist: curr.dist + 1});
-                    }
-                }
-            }
-            return null;
-        }
-        
-        initRoadGrid();
-        
         const WEATHER = ['☀️ 晴天', '🌧️ 小雨', '❄️ 小雪', '🌤️ 多云', '🌈 彩虹'];
+// 道路网格系统
+var ROAD_GRID = [];
+var GRID_COLS = CONFIG.MAP_WIDTH;
+var GRID_ROWS = CONFIG.MAP_HEIGHT;
+
+function initRoadGrid() {
+    for (var y = 0; y < GRID_ROWS; y++) {
+        ROAD_GRID[y] = [];
+        for (var x = 0; x < GRID_COLS; x++) {
+            ROAD_GRID[y][x] = 0;
+        }
+    }
+    // 横向道路
+    for (var x = 0; x < GRID_COLS; x++) {
+        ROAD_GRID[6][x] = 1;
+        ROAD_GRID[20][x] = 1;
+    }
+    // 纵向道路
+    for (var y = 0; y < GRID_ROWS; y++) {
+        ROAD_GRID[y][7] = 1;
+        ROAD_GRID[y][21] = 1;
+    }
+}
+
+function getNearestRoad(gx, gy) {
+    var dirs = [[0,-1],[0,1],[-1,0],[1,0]];
+    var queue = [{x: gx, y: gy, dist: 0}];
+    var visited = {};
+    
+    while (queue.length > 0) {
+        var curr = queue.shift();
+        var key = curr.x + ',' + curr.y;
+        if (visited[key]) continue;
+        visited[key] = true;
+        
+        if (ROAD_GRID[curr.y] && ROAD_GRID[curr.y][curr.x] === 1) {
+            return {x: curr.x, y: curr.y};
+        }
+        
+        for (var i = 0; i < dirs.length; i++) {
+            var dx = dirs[i][0];
+            var dy = dirs[i][1];
+            var nx = curr.x + dx;
+            var ny = curr.y + dy;
+            if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS) {
+                queue.push({x: nx, y: ny, dist: curr.dist + 1});
+            }
+        }
+    }
+    return null;
+}
+
+initRoadGrid();
+
+
         
         // ==================== 游戏状态 ====================
         let canvas, ctx;
@@ -780,7 +781,7 @@ ${agent2.name}: "xxx"
                 this.dialogueWith = null;
                 this.dialogueBubble = '';
                 
-                // 计算当前位置和目标位置的网格坐标
+                // 计算网格坐标
                 var currentGridX = Math.floor(this.x / CONFIG.TILE_SIZE);
                 var currentGridY = Math.floor(this.y / CONFIG.TILE_SIZE);
                 var targetGridX = Math.floor((loc.x + loc.w / 2) / CONFIG.TILE_SIZE);
@@ -791,7 +792,6 @@ ${agent2.name}: "xxx"
                 var targetRoad = getNearestRoad(targetGridX, targetGridY);
                 
                 if (currentRoad && targetRoad) {
-                    // 先走向当前最近的道路点
                     this.targetX = currentRoad.x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
                     this.targetY = currentRoad.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
                     this.intermediateTarget = {
@@ -799,7 +799,6 @@ ${agent2.name}: "xxx"
                         y: targetRoad.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2
                     };
                 } else {
-                    // 如果没有找到道路，直接走向目标
                     this.targetX = (loc.x + 0.5 + Math.random() * (loc.w - 1)) * CONFIG.TILE_SIZE;
                     this.targetY = (loc.y + 0.5 + Math.random() * (loc.h - 1)) * CONFIG.TILE_SIZE;
                     this.intermediateTarget = null;
@@ -942,7 +941,7 @@ ${agent2.name}: "xxx"
             const x=loc.x*CONFIG.TILE_SIZE,y=loc.y*CONFIG.TILE_SIZE,w=loc.w*CONFIG.TILE_SIZE,h=loc.h*CONFIG.TILE_SIZE;
             
             // 只显示地点名称标签（城市地图已有完整图像）
-            // ctx.fillStyle='#fff';ctx.font='bold 14px "Pixelify Sans",sans-serif';
+            ctx.fillStyle='#fff';ctx.font='bold 14px "Pixelify Sans",sans-serif';
             // ctx.strokeStyle='#000';ctx.lineWidth=4;ctx.strokeText(loc.name,x+8,y+18);ctx.fillText(loc.name,x+8,y+18);
         }
         function drawSchool(x,y,w,h){ctx.fillStyle='#87ceeb';ctx.fillRect(x+20,y+28,w-32,h-42);ctx.fillStyle='#4682b4';ctx.fillRect(x+14,y+18,w-20,20);ctx.fillStyle='#deb887';ctx.fillRect(x+24,y+h-18,w-40,14);for(let i=0;i<3;i++){ctx.fillStyle='#87ceeb';ctx.fillRect(x+30+i*30,y+40,22,20);}}
