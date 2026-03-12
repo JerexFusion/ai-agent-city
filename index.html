@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏙️ AgentCity - 像素都市</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
@@ -20,16 +18,22 @@
         
         body {
             font-family: 'Pixelify Sans', 'Noto Sans SC', sans-serif;
-           bg-dark);
-            color: var(-- background: var(--text-light);
+            background: var(--bg-dark);
+            color: var(--text-light);
             min-height: 100vh;
             overflow: hidden;
         }
         
-        .app-container { display: flex; height: 100vh; }
+        .app-container { 
+            display: flex; 
+            height: 100vh; 
+            width: 100vw;
+        }
         
+        /* 左侧面板 */
         .sidebar {
-            width: 300px;
+            width: 280px;
+            min-width: 280px;
             background: var(--bg-card);
             display: flex;
             flex-direction: column;
@@ -37,60 +41,62 @@
         }
         
         .sidebar-header {
-            padding: 15px;
+            padding: 12px;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
             text-align: center;
         }
         
-        .sidebar-header h1 { font-size: 24px; text-shadow: 2px 2px 0 #000; }
+        .sidebar-header h1 { font-size: 20px; text-shadow: 2px 2px 0 #000; }
         
         .city-stats {
             display: flex;
             justify-content: space-around;
-            padding: 10px;
+            padding: 8px;
             background: rgba(0,0,0,0.3);
-            font-size: 13px;
+            font-size: 12px;
+            flex-wrap: wrap;
         }
         
-        .stat-value { font-size: 18px; font-weight: bold; color: #ffd700; }
+        .stat-item { text-align: center; padding: 2px 5px; }
+        .stat-value { font-size: 16px; font-weight: bold; color: #ffd700; }
         
         .agent-list {
             flex: 1;
             overflow-y: auto;
-            padding: 10px;
+            padding: 8px;
         }
         
         .agent-card {
             background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 8px;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 6px;
             cursor: pointer;
             transition: all 0.3s;
             border: 2px solid transparent;
         }
         
-        .agent-card:hover { border-color: var(--accent-pink); transform: translateX(3px); }
-        .agent-card.selected { border-color: #ffd700; box-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .agent-card:hover { border-color: var(--accent-pink); }
+        .agent-card.selected { border-color: #ffd700; }
         
-        .agent-header { display: flex; align-items: center; gap: 8px; }
+        .agent-header { display: flex; align-items: center; gap: 6px; }
         
         .agent-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
             image-rendering: pixelated;
         }
         
-        .agent-name { font-weight: bold; font-size: 14px; }
-        .agent-personality { font-size: 11px; color: var(--text-dim); }
+        .agent-name { font-weight: bold; font-size: 13px; }
+        .agent-personality { font-size: 10px; color: var(--text-dim); }
         
-        .agent-status { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
+        .agent-status { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
         
         .status-badge {
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 8px;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 6px;
             background: rgba(255,255,255,0.1);
         }
         
@@ -98,16 +104,16 @@
         .status-badge.medium { background: #fbbf24; color: #000; }
         .status-badge.low { background: #f87171; color: #000; }
         
-        .control-panel { padding: 10px; background: rgba(0,0,0,0.4); border-top: 2px solid var(--accent-cyan); }
+        .control-panel { padding: 8px; background: rgba(0,0,0,0.4); border-top: 2px solid var(--accent-cyan); }
         
         .btn {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 6px;
+            padding: 8px;
+            margin-bottom: 4px;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             font-family: inherit;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             font-weight: 600;
         }
@@ -116,80 +122,90 @@
         .btn-secondary { background: linear-gradient(135deg, var(--accent-cyan), #0a2540); color: white; }
         .btn-gift { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
         
-        .quick-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+        .quick-actions { display: flex; gap: 3px; flex-wrap: wrap; }
         
         .quick-btn {
             flex: 1;
-            min-width: 70px;
-            padding: 6px;
-            font-size: 10px;
+            min-width: 60px;
+            padding: 5px;
+            font-size: 9px;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 4px;
+            border-radius: 3px;
             color: var(--text-light);
             cursor: pointer;
         }
         
         .quick-btn:hover { background: var(--accent-pink); }
         
-        .game-area { flex: 1; position: relative; display: flex; flex-direction: column; }
+        /* 游戏区域 */
+        .game-area { 
+            flex: 1; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column;
+            min-width: 0;
+        }
         
         .game-header {
-            padding: 8px 15px;
+            padding: 6px 12px;
             background: rgba(0,0,0,0.6);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
+            font-size: 12px;
         }
         
         #gameCanvas {
             flex: 1;
+            width: 100%;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
         }
         
         .location-panel {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
+            bottom: 12px;
+            left: 12px;
             background: rgba(22, 33, 62, 0.95);
-            border-radius: 12px;
-            padding: 12px 15px;
+            border-radius: 10px;
+            padding: 10px 12px;
             border: 2px solid var(--accent-cyan);
-            max-width: 280px;
+            max-width: 220px;
         }
         
-        .location-name { font-size: 16px; font-weight: bold; margin-bottom: 5px; color: var(--accent-pink); }
-        .location-desc { font-size: 12px; color: var(--text-dim); }
+        .location-name { font-size: 14px; font-weight: bold; margin-bottom: 3px; color: var(--accent-pink); }
+        .location-desc { font-size: 11px; color: var(--text-dim); }
         
         .activity-panel {
             position: absolute;
-            bottom: 15px;
-            right: 15px;
+            bottom: 12px;
+            right: 12px;
             background: rgba(22, 33, 62, 0.95);
-            border-radius: 12px;
-            padding: 12px 15px;
+            border-radius: 10px;
+            padding: 10px 12px;
             border: 2px solid var(--accent-pink);
-            min-width: 200px;
+            min-width: 160px;
         }
         
-        .activity-title { font-size: 12px; color: var(--text-dim); margin-bottom: 5px; }
-        .activity-text { font-size: 14px; font-weight: bold; }
+        .activity-title { font-size: 10px; color: var(--text-dim); margin-bottom: 3px; }
+        .activity-text { font-size: 12px; font-weight: bold; }
         
+        /* 成就弹窗 */
         .achievement-popup {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(22, 33, 62, 0.98);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 24px;
             border: 3px solid #ffd700;
             text-align: center;
             z-index: 1000;
             display: none;
-            min-width: 300px;
+            min-width: 280px;
+            max-width: 90vw;
         }
         
         .achievement-popup.show { display: block; animation: popIn 0.5s ease; }
@@ -199,9 +215,9 @@
             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
         
-        .achievement-emoji { font-size: 60px; margin-bottom: 15px; }
-        .achievement-title { font-size: 20px; font-weight: bold; color: #ffd700; margin-bottom: 10px; }
-        .achievement-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+        .achievement-emoji { font-size: 48px; margin-bottom: 12px; }
+        .achievement-title { font-size: 18px; font-weight: bold; color: #ffd700; margin-bottom: 8px; }
+        .achievement-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; white-space: pre-line; }
         
         .overlay {
             position: fixed;
@@ -216,33 +232,9 @@
         
         .overlay.show { display: block; }
         
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 3px; }
-        
-        /* 表情气泡 */
-        .speech-bubble {
-            position: absolute;
-            background: white;
-            border-radius: 12px;
-            padding: 6px 10px;
-            font-size: 16px;
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 8px 8px 0;
-            border-style: solid;
-            border-color: white transparent transparent;
-        }
     </style>
 </head>
 <body>
@@ -250,21 +242,21 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h1>🏙️ AgentCity</h1>
-                <div style="font-size: 12px; opacity: 0.9;">像素乌托邦</div>
+                <div style="font-size: 11px; opacity: 0.9;">像素乌托邦</div>
             </div>
             
             <div class="city-stats">
                 <div class="stat-item">
                     <div class="stat-value" id="dayDisplay">第1天</div>
-                    <div>游戏天数</div>
+                    <div>天数</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="timeDisplay">08:00</div>
-                    <div>游戏时间</div>
+                    <div>时间</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="happiness">75%</div>
-                    <div>幸福度</div>
+                    <div>幸福</div>
                 </div>
             </div>
             
@@ -286,7 +278,7 @@
         <div class="game-area">
             <div class="game-header">
                 <div class="weather-display" id="weatherDisplay">☀️ 晴天</div>
-                <div class="coins-display" id="coinsDisplay">💰 450 喵喵币</div>
+                <div class="coins-display" id="coinsDisplay">💰 450</div>
             </div>
             <canvas id="gameCanvas"></canvas>
             
@@ -305,51 +297,51 @@
     <!-- 成就弹窗 -->
     <div class="overlay" id="overlay" onclick="closeAchievement()"></div>
     <div class="achievement-popup" id="achievementPopup">
-        <div class="achievement-emoji" id="achievementEmoji">📸</div>
-        <div class="achievement-title" id="achievementTitle">拍照成功!</div>
-        <div class="achievement-desc" id="achievementDesc">内容</div>
+        <div class="achievement-emoji" id="AchievementEmoji">📸</div>
+        <div class="achievement-title" id="AchievementTitle">拍照成功!</div>
+        <div class="achievement-desc" id="AchievementDesc">内容</div>
     </div>
 
     <script>
         // ==================== 配置 ====================
         const CONFIG = {
             TILE_SIZE: 48,
-            MAP_WIDTH: 30,
-            MAP_HEIGHT: 18,
-            AGENT_SPEED: 1.2,
-            // 时间：24分钟 = 1天 = 1440分钟游戏时间
+            MAP_WIDTH: 28,
+            MAP_HEIGHT: 16,
+            AGENT_SPEED: 1.0,
+            // 时间：24分钟现实 = 1天游戏
             // 1分钟现实 = 1小时游戏时间
             // 24分钟现实 = 24小时游戏时间 = 1天
-            TIME_SCALE: 60, // 1秒现实 = 60分钟游戏时间
+            TIME_SCALE: 1, // 1秒现实 = 1分钟游戏时间
             DAY_DURATION: 24 * 60, // 一天1440分钟游戏时间
-            MIN_STAY_TIME: 300, // 最少停留5分钟游戏时间
+            MIN_STAY_TIME: 600, // 最少停留10分钟游戏时间
         };
         
         // 地点定义
         const LOCATIONS = {
-            home: { x: 2, y: 2, w: 4, h: 3, name: '🏠 住宅区', desc: 'Agent的温馨家园', color: '#8B4513', emoji: '🏠',
+            home: { x: 2, y: 2, w: 4, h: 3, name: '🏠 住宅区', desc: '睡觉吃饭休息', color: '#8B4513', emoji: '🏠',
                 activities: ['睡觉', '吃饭', '休息', '看电视剧'] },
-            park: { x: 20, y: 2, w: 8, h: 5, name: '🌸 樱花公园', desc: '休闲放松、偶遇新朋友', color: '#FFB7C5', emoji: '🌸',
+            park: { x: 18, y: 2, w: 8, h: 5, name: '🌸 樱花公园', desc: '休闲放松偶遇', color: '#FFB7C5', emoji: '🌸',
                 activities: ['欣赏樱花', '野餐', '喂鸽子', '放风筝', '拍照打卡', '偶遇朋友'], 
                 special: 'takePhoto'},
-            cafe: { x: 2, y: 8, w: 4, h: 4, name: '☕ 咖啡厅', desc: '社交聊天、交朋友', color: '#D2691E', emoji: '☕',
+            cafe: { x: 2, y: 8, w: 4, h: 4, name: '☕ 咖啡厅', desc: '社交聊天交友', color: '#D2691E', emoji: '☕',
                 activities: ['喝咖啡', '聊天', '看书', '约会'], 
                 menu: ['卡布奇诺', '抹茶拿铁', '水果茶', '隐藏菜单'],
                 special: 'socialize'},
-            library: { x: 8, y: 2, w: 4, h: 4, name: '📚 图书馆', desc: '阅读学习、获取知识', color: '#4169E1', emoji: '📚',
+            library: { x: 8, y: 2, w: 4, h: 4, name: '📚 图书馆', desc: '阅读学习知识', color: '#4169E1', emoji: '📚',
                 activities: ['阅读小说', '学习技术', '看传记', '做笔记', '写书评'],
-                books: ['《Python入门到实战》', '《javascript高级程序设计》', '《算法导论》', '《史蒂夫乔布斯传》', '《黑客与画家》'],
+                books: ['《Python入门》', '《JS高级》', '《算法导论》', '《乔布斯传》', '《黑客与画家》'],
                 special: 'read'},
-            arcade: { x: 8, y: 8, w: 4, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技、放松身心', color: '#9400D3', emoji: '🎮',
+            arcade: { x: 8, y: 8, w: 4, h: 4, name: '🎮 游戏机厅', desc: '娱乐竞技放松', color: '#9400D3', emoji: '🎮',
                 activities: ['街机赛车', '投篮大赛', '抓娃娃', '21点', '老虎机'],
                 special: 'play'},
-            beach: { x: 20, y: 10, w: 8, h: 6, name: '🏖️ 海滩', desc: '钓鱼休闲、享受阳光', color: '#F4A460', emoji: '🏖️',
+            beach: { x: 18, y: 10, w: 8, h: 5, name: '🏖️ 海滩', desc: '钓鱼休闲阳光', color: '#F4A460', emoji: '🏖️',
                 activities: ['钓鱼', '捡贝壳', '挖蛤蜊', '堆沙堡', '看日出', '游泳'],
                 fish: ['小黄鱼', '鲈鱼', '金枪鱼', '龙虾', '帝王蟹'],
                 special: 'fish'},
-            shop: { x: 2, y: 14, w: 6, h: 3, name: '🛒 商业街', desc: '购物消费、工作赚钱', color: '#20B2AA', emoji: '🛒',
+            shop: { x: 2, y: 14, w: 5, h: 2, name: '🛒 商业街', desc: '购物消费工作', color: '#20B2AA', emoji: '🛒',
                 activities: ['逛街', '买衣服', '买家具', '买食材', '买礼物'] },
-            job: { x: 15, y: 8, w: 3, h: 3, name: '💼 职业中心', desc: '打工赚钱、职业发展', color: '#708090', emoji: '💼',
+            job: { x: 14, y: 8, w: 3, h: 3, name: '💼 职业中心', desc: '打工赚钱发展', color: '#708090', emoji: '💼',
                 activities: ['店员', '管理员', '服务员', '农场帮工', '渔夫'],
                 special: 'work'},
         };
@@ -366,7 +358,7 @@
         let canvas, ctx;
         let agents = [];
         let selectedAgent = null;
-        let gameTime = 8 * 60; // 8:00
+        let gameTime = 8 * 60;
         let gameDay = 1;
         let weather = 0;
         let lastTime = Date.now();
@@ -396,9 +388,9 @@
                 this.currentLocation = 'home';
                 this.stayTime = 0;
                 this.currentActivity = '休息';
-                this.emoji = '😊';
-                this.actionQueue = [];
-                this.achievements = []; // 成就列表
+                this.currentEmoji = '😊';
+                this.actionBubble = '';
+                this.achievements = [];
                 
                 this.skinColor = ['#FFDDBB', '#CCAA88', '#8D5524', '#E6C2A3'][Math.floor(Math.random() * 4)];
                 this.hairColor = ['#2C1810', '#4A3728', '#8B4513', '#DAA520'][Math.floor(Math.random() * 4)];
@@ -406,18 +398,16 @@
             }
             
             update(deltaTime) {
-                // 状态自然变化
                 if (!this.moving) {
-                    this.hunger -= 0.002 * deltaTime;
-                    this.energy -= 0.001 * deltaTime;
-                    this.mood -= 0.0005 * deltaTime;
+                    this.hunger -= 0.001 * deltaTime;
+                    this.energy -= 0.0005 * deltaTime;
+                    this.mood -= 0.0002 * deltaTime;
                 }
                 
                 this.mood = Math.max(0, Math.min(100, this.mood));
                 this.energy = Math.max(0, Math.min(100, this.energy));
                 this.hunger = Math.max(0, Math.min(100, this.hunger));
                 
-                // 移动逻辑
                 if (this.moving) {
                     const dx = this.targetX - this.x;
                     const dy = this.targetY - this.y;
@@ -439,12 +429,12 @@
                             this.direction = dy > 0 ? 'down' : 'up';
                         }
                         
-                        this.walkFrame = (this.walkFrame + 0.15) % 4;
-                        this.currentActivity = '行走中';
-                        this.emoji = '🚶';
+                        this.walkFrame = (this.walkFrame + 0.1) % 4;
+                        this.currentActivity = '🚶 行走中';
+                        this.currentEmoji = '🚶';
+                        this.actionBubble = '';
                     }
                 } else {
-                    // 停留时执行活动
                     this.stayTime++;
                     this.performActivity();
                 }
@@ -453,104 +443,105 @@
             performActivity() {
                 const loc = LOCATIONS[this.currentLocation];
                 const activity = loc.activities[Math.floor(Math.random() * loc.activities.length)];
-                this.currentActivity = activity;
                 
-                // 根据地点执行不同活动
                 if (this.currentLocation === 'home') {
                     if (this.energy < 50) {
-                        this.currentActivity = '💤 睡觉中...';
-                        this.emoji = '😴';
-                        this.energy += 0.02;
+                        this.currentActivity = '💤 睡觉中';
+                        this.currentEmoji = '😴';
+                        this.actionBubble = '睡觉恢复精力...';
+                        this.energy += 0.015;
                     } else if (this.hunger < 40) {
-                        this.currentActivity = '🍽️ 吃饭中...';
-                        this.emoji = '🍚';
-                        this.hunger += 0.015;
+                        this.currentActivity = '🍽️ 吃饭中';
+                        this.currentEmoji = '🍚';
+                        this.actionBubble = '在家吃饭...';
+                        this.hunger += 0.01;
                     } else {
                         this.currentActivity = '🏠 休息中';
-                        this.emoji = '😊';
+                        this.currentEmoji = '😊';
+                        this.actionBubble = '在家放松...';
                     }
                 } else if (this.currentLocation === 'park') {
-                    this.currentActivity = '🌸 欣赏樱花...';
-                    this.emoji = '🌸';
-                    this.mood += 0.008;
+                    this.currentActivity = '🌸 欣赏樱花';
+                    this.currentEmoji = '🌸';
+                    this.actionBubble = `${activity}...`;
+                    this.mood += 0.005;
                     
-                    // 随机触发拍照
-                    if (this.stayTime === 100) {
-                        this.takePhoto();
-                    }
+                    if (this.stayTime === 200) this.takePhoto();
+                    
                 } else if (this.currentLocation === 'cafe') {
                     const drinks = loc.menu;
                     const drink = drinks[Math.floor(Math.random() * drinks.length)];
-                    this.currentActivity = `☕ 喝${drink}...`;
-                    this.emoji = '☕';
-                    this.mood += 0.01;
+                    this.currentActivity = `☕ 喝${drink}`;
+                    this.currentEmoji = '☕';
+                    this.actionBubble = `品尝${drink}...`;
+                    this.mood += 0.008;
                     
-                    if (this.stayTime === 100) {
-                        this.socialize();
-                    }
+                    if (this.stayTime === 200) this.socialize();
+                    
                 } else if (this.currentLocation === 'library') {
                     const books = loc.books;
                     const book = books[Math.floor(Math.random() * books.length)];
-                    this.currentActivity = `📖 阅读《${book}》...`;
-                    this.emoji = '📚';
-                    this.mood += 0.006;
+                    this.currentActivity = `📖 阅读中`;
+                    this.currentEmoji = '📚';
+                    this.actionBubble = `阅读《${book}》...`;
                     
-                    if (this.stayTime === 150) {
-                        this.readBook(book);
-                    }
+                    if (this.stayTime === 250) this.readBook(book);
+                    
                 } else if (this.currentLocation === 'arcade') {
                     const games = ['🏎️ 赛车', '🏀 投篮', '🎮 抓娃娃', '🃏 21点', '🎰 老虎机'];
                     const game = games[Math.floor(Math.random() * games.length)];
-                    this.currentActivity = `${game}中...`;
-                    this.emoji = '🎮';
+                    this.currentActivity = game;
+                    this.currentEmoji = '🎮';
+                    this.actionBubble = `${game}中...`;
                     
-                    if (Math.random() < 0.02) {
+                    if (Math.random() < 0.015) {
                         const reward = Math.floor(Math.random() * 30) + 10;
                         this.coins += reward;
                         this.mood += 5;
                     }
-                } else if (this.currentLocation === 'beach') {
-                    const beachActs = ['🎣 钓鱼中...', '🏖️ 晒太阳...', '🐚 捡贝壳...', '🏰 堆沙堡...'];
-                    this.currentActivity = beachActs[Math.floor(Math.random() * beachActs.length)];
-                    this.emoji = Math.random() > 0.5 ? '🎣' : '🏖️';
                     
-                    if (Math.random() < 0.01) {
+                } else if (this.currentLocation === 'beach') {
+                    const acts = ['🎣 钓鱼', '🏖️ 晒太阳', '🐚 捡贝壳', '🏰 堆沙堡'];
+                    const act = acts[Math.floor(Math.random() * acts.length)];
+                    this.currentActivity = act;
+                    this.currentEmoji = act.includes('钓鱼') ? '🎣' : '🏖️';
+                    this.actionBubble = `${act}...`;
+                    
+                    if (Math.random() < 0.008) {
                         const fish = loc.fish[Math.floor(Math.random() * loc.fish.length)];
                         const value = loc.fish.indexOf(fish) * 20 + 20;
                         this.coins += value;
                         showAchievement('🎣', '钓鱼成功!', `${this.name}钓到了${fish}，获得${value}喵喵币!`);
                     }
-                    this.mood += 0.005;
+                    this.mood += 0.003;
+                    
                 } else if (this.currentLocation === 'job') {
-                    this.currentActivity = '💼工作中...';
-                    this.emoji = '💼';
+                    this.currentActivity = '💼工作中';
+                    this.currentEmoji = '💼';
+                    this.actionBubble = '努力工作中...';
                     const wage = Math.floor(Math.random() * 10) + 15;
                     this.coins += wage;
-                    this.energy -= 0.01;
+                    this.energy -= 0.008;
+                    
                 } else if (this.currentLocation === 'shop') {
-                    this.currentActivity = '🛒 逛街购物...';
-                    this.emoji = '🛒';
+                    this.currentActivity = '🛒 逛街中';
+                    this.currentEmoji = '🛒';
+                    this.actionBubble = '浏览商品...';
                 }
                 
-                // 检查是否应该离开
-                if (this.stayTime > CONFIG.MIN_STAY_TIME && Math.random() < 0.005) {
+                // 停留足够后离开
+                if (this.stayTime > CONFIG.MIN_STAY_TIME && Math.random() < 0.003) {
                     this.think();
                 }
             }
             
-            // 各地点特殊功能
             takePhoto() {
                 const scenes = ['樱花树下', '湖边', '喷泉旁', '长椅上', '公园入口'];
                 const scene = scenes[Math.floor(Math.random() * scenes.length)];
-                const poses = ['比心', '剪刀手', '微笑', '背影', '眺望'];
+                const poses = ['比心', '剪刀手', '微笑', '背影'];
                 const pose = poses[Math.floor(Math.random() * poses.length)];
                 
-                const photos = [
-                    `🌸 ${scene} - ${pose}\nAgent: ${this.name}\n😊 心情: ${Math.floor(this.mood)}`,
-                    `今天的樱花真美呀! 🌸\n摄于${scene}\n${this.name}的游客照📸`,
-                ];
-                
-                const photo = photos[Math.floor(Math.random() * photos.length)];
+                const photo = `📸 ${scene} - ${pose}\nAgent: ${this.name}\n😊 心情: ${Math.floor(this.mood)}`;
                 showAchievement('📸', '拍照成功!', photo);
                 
                 if (!this.achievements.includes('first_photo')) {
@@ -571,36 +562,34 @@
                     this.mood += 20;
                     this.coins += 10;
                     
-                    const topics = ['最近在做什么?', '喜欢什么游戏?', '有什么爱好?', '你觉得生活有意义吗?'];
+                    const topics = ['最近在做什么?', '喜欢什么游戏?', '有什么爱好?'];
                     const topic = topics[Math.floor(Math.random() * topics.length)];
                     
                     showAchievement('💬', '认识新朋友!', 
-                        `${this.name}和${friend.name}聊了"${topic}"，两人成为了朋友! 👋\n获得10喵喵币奖励!`);
+                        `${this.name}和${friend.name}聊了"${topic}"，成为朋友! 👋\n+10喵喵币`);
                 }
             }
             
             readBook(book) {
                 const insights = [
-                    `"这本书让我明白了函数封装的重要性..."`,
-                    `"读完后我对编程有了新的理解..."`,
-                    `"作者的观点很有启发性..."`,
+                    '这本书让我明白了函数封装的重要性...',
+                    '读完后我对编程有了新的理解...',
+                    '作者的观点很有启发性...',
                 ];
                 const insight = insights[Math.floor(Math.random() * insights.length)];
                 const rating = Math.floor(Math.random() * 3) + 7;
                 
                 showAchievement('📖', '读书心得!', 
-                    `书籍: ${book}\n读者: ${this.name}\n💡 ${insight}\n⭐ 评分: ${rating}/10`);
+                    `📚 ${book}\n读者: ${this.name}\n💡 ${insight}\n⭐ 评分: ${rating}/10`);
             }
             
             think() {
                 const hour = Math.floor(gameTime / 60);
                 
-                // 基础需求
                 if (this.hunger < 15) { this.goToLocation('home'); return; }
                 if (this.energy < 10) { this.goToLocation('home'); return; }
                 if (this.mood < 15) { this.goToLocation('arcade'); return; }
                 
-                // 时间段行为
                 if (hour >= 22 || hour < 6) {
                     this.goToLocation('home');
                 } else if (hour >= 6 && hour < 8) {
@@ -680,17 +669,26 @@
                 ctx.fillStyle = '#c44';
                 ctx.fillRect(px + 21, py + 22, 4, 2);
                 
-                // 表情气泡
-                if (!this.moving && this.emoji) {
-                    ctx.font = '20px sans-serif';
-                    ctx.fillText(this.emoji, px + 10, py - 10);
+                // 气泡 - 文字+emoji
+                if (!this.moving && this.actionBubble) {
+                    ctx.font = 'bold 11px "Pixelify Sans", sans-serif';
+                    const text = this.currentEmoji + ' ' + this.actionBubble;
+                    const textWidth = ctx.measureText(text).width;
+                    
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath();
+                    ctx.roundRect(px + size/2 - textWidth/2 - 6, py - 28, textWidth + 12, 18, 4);
+                    ctx.fill();
+                    
+                    ctx.fillStyle = '#333';
+                    ctx.fillText(text, px + size/2 - textWidth/2, py - 14);
                 }
                 
                 // 选中标记
                 if (selectedAgent === this) {
                     ctx.fillStyle = '#FFD700';
-                    ctx.font = 'bold 14px sans-serif';
-                    ctx.fillText('★', px + 20, py - 25);
+                    ctx.font = 'bold 12px sans-serif';
+                    ctx.fillText('★', px + 20, py - 35);
                 }
             }
         }
@@ -708,9 +706,9 @@
             ctx.fillRect(0, 0, w, h);
             
             // 草地纹理
-            for (let i = 0; i < w; i += CONFIG.TILE_SIZE/2) {
-                for (let j = 0; j < h; j += CONFIG.TILE_SIZE/2) {
-                    if ((i + j) % 32 === 0) {
+            for (let i = 0; i < w; i += 24) {
+                for (let j = 0; j < h; j += 24) {
+                    if ((i + j) % 48 === 0) {
                         ctx.fillStyle = Math.random() > 0.5 ? '#4d7a36' : '#5a8f3e';
                         ctx.fillRect(i + 2, j + 2, 4, 6);
                     }
@@ -721,16 +719,14 @@
             ctx.fillStyle = '#6a6a6a';
             ctx.fillRect(0, 7 * CONFIG.TILE_SIZE, w, 2 * CONFIG.TILE_SIZE);
             ctx.fillRect(7 * CONFIG.TILE_SIZE, 0, 2 * CONFIG.TILE_SIZE, h);
-            ctx.fillRect(18 * CONFIG.TILE_SIZE, 0, 2 * CONFIG.TILE_SIZE, h);
+            ctx.fillRect(17 * CONFIG.TILE_SIZE, 0, 2 * CONFIG.TILE_SIZE, h);
             
-            // 道路边线
+            // 道路线
             ctx.fillStyle = '#888';
             for (let i = 0; i < w; i += CONFIG.TILE_SIZE) {
                 ctx.fillRect(i + 20, 7 * CONFIG.TILE_SIZE + 8, 8, 4);
-                ctx.fillRect(i + 20, 8 * CONFIG.TILE_SIZE + 8, 8, 4);
             }
             
-            // 绘制地点
             Object.entries(LOCATIONS).forEach(([id, loc]) => drawLocation(id, loc));
         }
         
@@ -759,11 +755,11 @@
             else if (id === 'job') drawJobCenter(x, y, w, h);
             
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 12px "Pixelify Sans", sans-serif';
+            ctx.font = 'bold 11px "Pixelify Sans", sans-serif';
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
-            ctx.strokeText(loc.name, x + 8, y + 18);
-            ctx.fillText(loc.name, x + 8, y + 18);
+            ctx.strokeText(loc.name, x + 8, y + 16);
+            ctx.fillText(loc.name, x + 8, y + 16);
         }
         
         function drawPark(x, y, w, h) {
@@ -771,8 +767,6 @@
             trees.forEach(([tx, ty]) => drawCherryTree(x + tx * CONFIG.TILE_SIZE, y + ty * CONFIG.TILE_SIZE));
             ctx.fillStyle = '#5dabeb';
             ctx.fillRect(x + 120, y + 60, 100, 80);
-            ctx.fillStyle = '#7ec5f5';
-            ctx.fillRect(x + 130, y + 70, 80, 60);
         }
         
         function drawCherryTree(x, y) {
@@ -799,8 +793,8 @@
             ctx.fillRect(x + 100, y + 60, 25, 30);
             ctx.fillStyle = '#4a3728';
             ctx.fillRect(x + 70, y + 90, 30, 40);
-            ctx.font = '20px sans-serif';
-            ctx.fillText('☕', x + 85, y + 35);
+            ctx.font = '18px sans-serif';
+            ctx.fillText('☕', x + 80, y + 35);
         }
         
         function drawLibrary(x, y, w, h) {
@@ -815,11 +809,8 @@
             ctx.fill();
             ctx.fillStyle = '#5c3d2e';
             ctx.fillRect(x + 60, y + 70, 50, 60);
-            ctx.fillStyle = '#87ceeb';
-            ctx.fillRect(x + 40, y + 45, 15, 25);
-            ctx.fillRect(x + 115, y + 45, 15, 25);
-            ctx.font = '20px sans-serif';
-            ctx.fillText('📚', x + 75, y + 28);
+            ctx.font = '18px sans-serif';
+            ctx.fillText('📚', x + 72, y + 28);
         }
         
         function drawArcade(x, y, w, h) {
@@ -827,18 +818,15 @@
             ctx.fillRect(x + 30, y + 35, w - 50, h - 55);
             ctx.fillStyle = '#ff69b4';
             ctx.fillRect(x + 35, y + 40, w - 60, 15);
-            ctx.font = 'bold 14px sans-serif';
+            ctx.font = 'bold 12px sans-serif';
             ctx.fillStyle = '#fff';
-            ctx.fillText('GAME', x + 55, y + 52);
+            ctx.fillText('GAME', x + 50, y + 52);
             ctx.fillStyle = '#2a0a4a';
             for (let i = 0; i < 3; i++) {
                 ctx.fillRect(x + 40 + i * 35, y + 70, 28, 35);
-                ctx.fillStyle = '#00ff00';
-                ctx.fillRect(x + 43 + i * 35, y + 73, 22, 15);
-                ctx.fillStyle = '#2a0a4a';
             }
-            ctx.font = '20px sans-serif';
-            ctx.fillText('🎮', x + 80, y + 30);
+            ctx.font = '18px sans-serif';
+            ctx.fillText('🎮', x + 75, y + 30);
         }
         
         function drawHomes(x, y, w, h) {
@@ -857,9 +845,6 @@
                 ctx.fill();
                 ctx.fillStyle = '#4a3020';
                 ctx.fillRect(hx + 15, hy + 18, 12, 17);
-                ctx.fillStyle = '#87ceeb';
-                ctx.fillRect(hx + 5, hy + 8, 10, 10);
-                ctx.fillRect(hx + 27, hy + 8, 10, 10);
             }
         }
         
@@ -868,15 +853,8 @@
             ctx.fillRect(x, y, w, h);
             ctx.fillStyle = '#4a90b5';
             ctx.fillRect(x, y + h - 50, w, 50);
-            ctx.fillStyle = '#6ab0d0';
-            for (let i = 0; i < w; i += 25) {
-                ctx.beginPath();
-                ctx.arc(x + i + 12, y + h - 50, 12, 0, Math.PI);
-                ctx.fill();
-            }
             drawPalmTree(x + 40, y + 50);
-            drawPalmTree(x + 180, y + 70);
-            drawPalmTree(x + 250, y + 40);
+            drawPalmTree(x + 160, y + 60);
         }
         
         function drawPalmTree(x, y) {
@@ -893,14 +871,12 @@
         function drawShops(x, y, w, h) {
             const shops = ['👕', '🪑', '🍳'];
             shops.forEach((emoji, i) => {
-                const sx = x + 15 + i * 55;
-                const sy = y + 20;
+                const sx = x + 15 + i * 45;
+                const sy = y + 15;
                 ctx.fillStyle = '#2a8a8a';
-                ctx.fillRect(sx, sy, 45, 60);
-                ctx.fillStyle = '#1a5a5a';
-                ctx.fillRect(sx + 5, sy + 5, 35, 25);
-                ctx.font = '22px sans-serif';
-                ctx.fillText(emoji, sx + 12, sy + 48);
+                ctx.fillRect(sx, sy, 40, 50);
+                ctx.font = '18px sans-serif';
+                ctx.fillText(emoji, sx + 10, sy + 35);
             });
         }
         
@@ -909,8 +885,8 @@
             ctx.fillRect(x + 15, y + 25, w - 25, h - 40);
             ctx.fillStyle = '#3a4a5a';
             ctx.fillRect(x + 10, y + 20, w - 15, 20);
-            ctx.font = '22px sans-serif';
-            ctx.fillText('💼', x + 35, y + 55);
+            ctx.font = '18px sans-serif';
+            ctx.fillText('💼', x + 30, y + 50);
         }
         
         // ==================== UI函数 ====================
@@ -927,17 +903,17 @@
                 
                 card.innerHTML = `
                     <div class="agent-header">
-                        <canvas class="agent-avatar" id="avatar-${agent.id}" width="36" height="36"></canvas>
+                        <canvas class="agent-avatar" id="avatar-${agent.id}" width="32" height="32"></canvas>
                         <div>
                             <div class="agent-name">${agent.name}</div>
                             <div class="agent-personality">${p.emoji} ${p.name}</div>
                         </div>
                     </div>
                     <div class="agent-status">
-                        <span class="status-badge ${agent.mood > 50 ? 'high' : agent.mood > 25 ? 'medium' : 'low'}">😊 ${Math.floor(agent.mood)}</span>
-                        <span class="status-badge ${agent.energy > 50 ? 'high' : agent.energy > 25 ? 'medium' : 'low'}">⚡ ${Math.floor(agent.energy)}</span>
-                        <span class="status-badge ${agent.hunger > 50 ? 'high' : agent.hunger > 25 ? 'medium' : 'low'}">🍽️ ${Math.floor(agent.hunger)}</span>
-                        <span class="status-badge">💰 ${agent.coins}</span>
+                        <span class="status-badge ${agent.mood > 50 ? 'high' : agent.mood > 25 ? 'medium' : 'low'}">😊${Math.floor(agent.mood)}</span>
+                        <span class="status-badge ${agent.energy > 50 ? 'high' : agent.energy > 25 ? 'medium' : 'low'}">⚡${Math.floor(agent.energy)}</span>
+                        <span class="status-badge ${agent.hunger > 50 ? 'high' : agent.hunger > 25 ? 'medium' : 'low'}">🍽️${Math.floor(agent.hunger)}</span>
+                        <span class="status-badge">💰${agent.coins}</span>
                     </div>
                 `;
                 
@@ -951,16 +927,16 @@
         
         function drawAvatar(ctx, agent) {
             ctx.fillStyle = '#333';
-            ctx.fillRect(12, 20, 12, 12);
+            ctx.fillRect(12, 18, 8, 10);
             ctx.fillStyle = agent.skinColor;
-            ctx.fillRect(10, 8, 16, 14);
+            ctx.fillRect(10, 8, 12, 12);
             ctx.fillStyle = agent.hairColor;
-            ctx.fillRect(9, 5, 18, 8);
+            ctx.fillRect(9, 5, 14, 6);
             ctx.fillStyle = '#000';
-            ctx.fillRect(12, 12, 3, 3);
-            ctx.fillRect(21, 12, 3, 3);
+            ctx.fillRect(11, 11, 2, 2);
+            ctx.fillRect(15, 11, 2, 2);
             ctx.fillStyle = agent.clothesColor;
-            ctx.fillRect(10, 22, 16, 10);
+            ctx.fillRect(10, 20, 12, 8);
         }
         
         function selectAgent(agent) {
@@ -987,7 +963,7 @@
             document.getElementById('happiness').textContent = avgHappiness + '%';
             
             const totalCoins = agents.reduce((sum, a) => sum + a.coins, 0);
-            document.getElementById('coinsDisplay').textContent = `💰 ${totalCoins} 喵喵币`;
+            document.getElementById('coinsDisplay').textContent = `💰 ${totalCoins}`;
             
             document.getElementById('weatherDisplay').textContent = WEATHER[weather];
             
@@ -998,12 +974,11 @@
         }
         
         function showAchievement(emoji, title, desc) {
-            document.getElementById('achievementEmoji').textContent = emoji;
-            document.getElementById('achievementTitle').textContent = title;
-            document.getElementById('achievementDesc').textContent = desc;
+            document.getElementById('AchievementEmoji').textContent = emoji;
+            document.getElementById('AchievementTitle').textContent = title;
+            document.getElementById('AchievementDesc').textContent = desc;
             document.getElementById('achievementPopup').classList.add('show');
             document.getElementById('overlay').classList.add('show');
-            
             setTimeout(() => closeAchievement(), 5000);
         }
         
@@ -1012,7 +987,6 @@
             document.getElementById('overlay').classList.remove('show');
         }
         
-        // ==================== 交互函数 ====================
         function claimAgent() {
             if (!selectedAgent) { alert('请先选择一个Agent'); return; }
             showAchievement('❤️', '认领成功!', `你认领了 ${selectedAgent.name}！\n现在你是它的主人了!`);
@@ -1061,22 +1035,20 @@
         // ==================== 游戏循环 ====================
         function gameLoop() {
             const now = Date.now();
-            const deltaTime = (now - lastTime) / 1000; // 秒
+            const deltaTime = (now - lastTime) / 1000;
             lastTime = now;
             
-            // 更新时间 (1秒现实 = 60分钟游戏时间)
-            // 24秒现实 = 24分钟游戏时间 = 1天
+            // 时间：1秒现实 = 1分钟游戏时间
+            // 24分钟现实 = 1440分钟游戏时间 = 1天
             gameTime += deltaTime * CONFIG.TIME_SCALE;
             
-            // 一天结束
             if (gameTime >= CONFIG.DAY_DURATION) {
                 gameTime = 0;
                 gameDay++;
                 showAchievement('🌅', '新的一天!', `欢迎来到第${gameDay}天!`);
             }
             
-            // 随机天气
-            if (Math.random() < 0.0001) {
+            if (Math.random() < 0.00005) {
                 weather = Math.floor(Math.random() * WEATHER.length);
             }
             
@@ -1099,10 +1071,9 @@
             canvas = document.getElementById('gameCanvas');
             ctx = canvas.getContext('2d');
             
-            canvas.width = window.innerWidth - 300;
-            canvas.height = window.innerHeight;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
             
-            // 3个Agent
             const names = ['小明', '小红', '小刚'];
             const personalities = ['gentle', 'energetic', 'scholar'];
             
@@ -1110,7 +1081,6 @@
                 agents.push(new Agent(`agent_${i}`, name, personalities[i]));
             });
             
-            // 初始位置
             agents[0].goToLocation('park');
             agents[1].goToLocation('cafe');
             agents[2].goToLocation('library');
@@ -1118,8 +1088,8 @@
             renderAgentList();
             
             window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth - 300;
-                canvas.height = window.innerHeight;
+                canvas.width = canvas.parentElement.clientWidth;
+                canvas.height = canvas.parentElement.clientHeight;
             });
             
             canvas.addEventListener('click', (e) => {
@@ -1129,9 +1099,7 @@
                 
                 agents.forEach(agent => {
                     const dist = Math.sqrt((agent.x - x) ** 2 + (agent.y - y) ** 2);
-                    if (dist < 40) {
-                        selectAgent(agent);
-                    }
+                    if (dist < 40) selectAgent(agent);
                 });
             });
             
