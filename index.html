@@ -585,10 +585,26 @@ ${agent2.name}: "xxx"
                 
                 this.setInitialLocation();
                 
-                const colors = ['#FFDDBB', '#CCAA88', '#8D5524', '#E6C2A3'];
-                this.skinColor = colors[Math.floor(Math.random() * colors.length)];
-                this.hairColor = ['#2C1810', '#4A3728', '#8B4513', '#DAA520'][Math.floor(Math.random() * 4)];
-                this.clothesColor = ['#E94560', '#0F3460', '#4ADE80', '#FBBF24'][Math.floor(Math.random() * 4)];
+                // 根据性格设置不同的默认外观
+                if (this.personality === 'gentle') {
+                    // 温柔型 - 粉色头发，白皙皮肤，粉色衣服
+                    this.skinColor = '#FAD7C3';
+                    this.hairColor = '#E8A0BF';  // 粉色头发
+                    this.clothesColor = '#FFB6C1';  // 粉色衣服
+                    this.shirtDetail = '#FF69B4';
+                } else if (this.personality === 'energetic') {
+                    // 活力型 - 橙色头发，健康肤色，橙色衣服
+                    this.skinColor = '#E8B88A';
+                    this.hairColor = '#FF6B35';  // 橙色头发
+                    this.clothesColor = '#FF8C00';  // 橙色衣服
+                    this.shirtDetail = '#FFD700';
+                } else {
+                    // 学者型 - 黑色/棕色头发，白皮肤，蓝色衣服
+                    this.skinColor = '#F5DEB3';
+                    this.hairColor = '#2C1810';  // 深棕色头发
+                    this.clothesColor = '#4169E1';  // 蓝色衣服
+                    this.shirtDetail = '#FFFFFF';
+                }
             }
             
             setInitialLocation() {
@@ -817,34 +833,72 @@ ${agent2.name}: "xxx"
                 const px = this.x, py = this.y, size = CONFIG.TILE_SIZE;
                 
                 // 阴影
-                ctx.fillStyle='rgba(0,0,0,0.25)';
-                ctx.beginPath();ctx.ellipse(px+size/2,py+size-5,size/3,6,0,0,Math.PI*2);ctx.fill();
+                ctx.fillStyle='rgba(0,0,0,0.3)';
+                ctx.beginPath();ctx.ellipse(px+size/2,py+size-3,size/2.5,5,0,0,Math.PI*2);ctx.fill();
                 
-                // 身体
+                // 腿部 (更精细)
+                ctx.fillStyle='#2d2d2d';
+                const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*4:0;
+                // 左腿
+                ctx.fillRect(px+18,py+38,6,12+lo);
+                // 右腿  
+                ctx.fillRect(px+28,py+38,6,12-lo);
+                
+                // 身体/衣服 (更有设计感)
                 ctx.fillStyle=this.clothesColor;
-                ctx.fillRect(px+16,py+26,20,22);
+                ctx.fillRect(px+14,py+22,24,18);
+                // 衣服细节
+                ctx.fillStyle=this.shirtDetail || '#ffffff';
+                ctx.fillRect(px+18,py+24,4,4);
+                ctx.fillRect(px+30,py+24,4,4);
                 
-                // 腿部
-                ctx.fillStyle='#333';
-                const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*3:0;
-                ctx.fillRect(px+16,py+44,6,8+lo);ctx.fillRect(px+30,py+44,6,8-lo);
-                
-                // 头
+                // 手臂
                 ctx.fillStyle=this.skinColor;
-                ctx.fillRect(px+16,py+8,20,18);
+                const armOffset=this.moving?Math.sin(this.walkFrame*Math.PI/2)*2:0;
+                ctx.fillRect(px+10,py+24,5,14+armOffset);
+                ctx.fillRect(px+37,py+24,5,14-armOffset);
                 
-                // 头发
+                // 头 (更大更精致)
+                ctx.fillStyle=this.skinColor;
+                ctx.fillRect(px+14,py+4,24,20);
+                
+                // 头发 (更有层次)
                 ctx.fillStyle=this.hairColor;
-                ctx.fillRect(px+14,py+4,24,10);ctx.fillRect(px+16,py+14,4,6);ctx.fillRect(px+34,py+14,4,6);
+                // 主体头发
+                ctx.fillRect(px+12,py+0,28,10);
+                // 刘海
+                ctx.fillRect(px+14,py+6,6,4);
+                ctx.fillRect(px+22,py+6,4,4);
+                ctx.fillRect(px+32,py+6,6,4);
+                // 鬓角
+                ctx.fillRect(px+12,py+10,3,6);
+                ctx.fillRect(px+37,py+10,3,6);
                 
-                // 眼睛
-                ctx.fillStyle='#222';
-                if(this.direction==='left')ctx.fillRect(px+18,py+16,3,3);
-                else if(this.direction==='right')ctx.fillRect(px+33,py+16,3,3);
-                else{ctx.fillRect(px+19,py+16,3,3);ctx.fillRect(px+30,py+16,3,3);}
+                // 眼睛 (更有神)
+                ctx.fillStyle='#1a1a1a';
+                if(this.direction==='left'){
+                    ctx.fillRect(px+17,py+14,4,4);
+                    ctx.fillStyle='#fff';ctx.fillRect(px+17,py+14,2,2);
+                }else if(this.direction==='right'){
+                    ctx.fillRect(px+31,py+14,4,4);
+                    ctx.fillStyle='#fff';ctx.fillRect(px+33,py+14,2,2);
+                }else{
+                    ctx.fillRect(px+17,py+14,4,4);ctx.fillRect(px+31,py+14,4,4);
+                    ctx.fillStyle='#fff';ctx.fillRect(px+17,py+14,2,2);ctx.fillRect(px+31,py+14,2,2);
+                }
                 
                 // 嘴巴
-                ctx.fillStyle='#c44';ctx.fillRect(px+24,py+22,4,2);
+                ctx.fillStyle='#d35a5a';
+                if(this.moving){
+                    ctx.fillRect(px+24,py+20,4,2);
+                }else{
+                    ctx.fillRect(px+23,py+20,6,2);
+                }
+                
+                // 腮红
+                ctx.fillStyle='rgba(255,150,150,0.3)';
+                ctx.fillRect(px+15,py+18,4,3);
+                ctx.fillRect(px+33,py+18,4,3);
                 
                 // 优先显示对话气泡
                 if(!this.moving && this.dialogueBubble) {
