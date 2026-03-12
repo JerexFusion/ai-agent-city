@@ -797,6 +797,7 @@ ${agent2.name}: "xxx"
         // ==================== 渲染函数 ====================
         // 城市地图背景
         let CITY_MAP_IMAGE = null;
+        const CITY_MAP_SCALE = 0.7; // 缩放70%（缩小30%）
         const cityMapImg = new Image();
         cityMapImg.onload = () => { CITY_MAP_IMAGE = cityMapImg; console.log('✅ 城市地图加载成功'); };
         cityMapImg.onerror = () => { console.warn('城市地图加载失败，使用程序化背景'); };
@@ -808,8 +809,10 @@ ${agent2.name}: "xxx"
             
             // 尝试使用城市地图背景
             if (CITY_MAP_IMAGE) {
-                // 拉伸以覆盖整个画布
-                ctx.drawImage(CITY_MAP_IMAGE, 0, 0, w, h);
+                // 缩放城市地图（左上角锚点）
+                const sw = CITY_MAP_IMAGE.width * CITY_MAP_SCALE;
+                const sh = CITY_MAP_IMAGE.height * CITY_MAP_SCALE;
+                ctx.drawImage(CITY_MAP_IMAGE, 0, 0, CITY_MAP_IMAGE.width, CITY_MAP_IMAGE.height, 0, 0, sw, sh);
             } else {
                 // 草地背景
                 const grad=ctx.createLinearGradient(0,0,0,h);
