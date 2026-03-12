@@ -795,36 +795,49 @@ ${agent2.name}: "xxx"
         }
         
         // ==================== 渲染函数 ====================
+        // 城市地图背景
+        let CITY_MAP_IMAGE = null;
+        const cityMapImg = new Image();
+        cityMapImg.onload = () => { CITY_MAP_IMAGE = cityMapImg; console.log('✅ 城市地图加载成功'); };
+        cityMapImg.onerror = () => { console.warn('城市地图加载失败，使用程序化背景'); };
+        cityMapImg.src = 'art-resources/city-map.png';
+        
         function drawMap() {
             const w = CONFIG.MAP_WIDTH*CONFIG.TILE_SIZE;
             const h = CONFIG.MAP_HEIGHT*CONFIG.TILE_SIZE;
             
-            // 草地背景
-            const grad=ctx.createLinearGradient(0,0,0,h);
-            grad.addColorStop(0,'#5a8f3e');grad.addColorStop(1,'#4a7c3f');
-            ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
-            
-            // 草地纹理
-            for(let i=0;i<CONFIG.MAP_WIDTH;i++){
-                for(let j=0;j<CONFIG.MAP_HEIGHT;j++){
-                    const idx=i+j*CONFIG.MAP_WIDTH;
-                    if(idx<grassPattern.length){
-                        ctx.fillStyle=grassPattern[idx];
-                        ctx.fillRect(i*CONFIG.TILE_SIZE+12,j*CONFIG.TILE_SIZE+12,6,8);
+            // 尝试使用城市地图背景
+            if (CITY_MAP_IMAGE) {
+                // 拉伸以覆盖整个画布
+                ctx.drawImage(CITY_MAP_IMAGE, 0, 0, w, h);
+            } else {
+                // 草地背景
+                const grad=ctx.createLinearGradient(0,0,0,h);
+                grad.addColorStop(0,'#5a8f3e');grad.addColorStop(1,'#4a7c3f');
+                ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+                
+                // 草地纹理
+                for(let i=0;i<CONFIG.MAP_WIDTH;i++){
+                    for(let j=0;j<CONFIG.MAP_HEIGHT;j++){
+                        const idx=i+j*CONFIG.MAP_WIDTH;
+                        if(idx<grassPattern.length){
+                            ctx.fillStyle=grassPattern[idx];
+                            ctx.fillRect(i*CONFIG.TILE_SIZE+12,j*CONFIG.TILE_SIZE+12,6,8);
+                        }
                     }
                 }
+                
+                // 道路
+                ctx.fillStyle='#6a6a6a';
+                ctx.fillRect(7*CONFIG.TILE_SIZE, 0, 2*CONFIG.TILE_SIZE, h);
+                ctx.fillRect(0, 6*CONFIG.TILE_SIZE, w, 2*CONFIG.TILE_SIZE);
+                ctx.fillRect(21*CONFIG.TILE_SIZE, 0, 2*CONFIG.TILE_SIZE, h);
+                ctx.fillRect(0, 20*CONFIG.TILE_SIZE, w, 2*CONFIG.TILE_SIZE);
+                
+                // 道路线
+                ctx.fillStyle='#888';
+                for(let i=0;i<w;i+=CONFIG.TILE_SIZE*2){ctx.fillRect(i+24,6*CONFIG.TILE_SIZE+8,8,4);}
             }
-            
-            // 道路
-            ctx.fillStyle='#6a6a6a';
-            ctx.fillRect(7*CONFIG.TILE_SIZE, 0, 2*CONFIG.TILE_SIZE, h);
-            ctx.fillRect(0, 6*CONFIG.TILE_SIZE, w, 2*CONFIG.TILE_SIZE);
-            ctx.fillRect(21*CONFIG.TILE_SIZE, 0, 2*CONFIG.TILE_SIZE, h);
-            ctx.fillRect(0, 20*CONFIG.TILE_SIZE, w, 2*CONFIG.TILE_SIZE);
-            
-            // 道路线
-            ctx.fillStyle='#888';
-            for(let i=0;i<w;i+=CONFIG.TILE_SIZE*2){ctx.fillRect(i+24,6*CONFIG.TILE_SIZE+8,8,4);}
             
             Object.entries(LOCATIONS).forEach(([id,loc])=>drawLocation(id,loc));
         }
