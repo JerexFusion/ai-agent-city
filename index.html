@@ -1154,11 +1154,12 @@ ${agent2.name}: "xxx"
             Promise.all([preloadTiles(), preloadCharacterSprites()]).then(() => {
                 console.log('✅ 像素素材加载完成');
                 console.log('✅ 角色Sprite加载完成:', Object.keys(CHARACTER_SPRITES).length, '个角色');
+                // 等素材加载完成后再创建Agent
+                agents.push(new Agent('a0','小明','gentle'));
+                agents.push(new Agent('a1','小红','energetic'));
+                agents.push(new Agent('a2','小刚','scholar'));
+                renderAgentList();
             });
-            agents.push(new Agent('a0','小明','gentle'));
-            agents.push(new Agent('a1','小红','energetic'));
-            agents.push(new Agent('a2','小刚','scholar'));
-            renderAgentList();
             window.addEventListener('resize',()=>{canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;});
             canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;agents.forEach(a=>{if(Math.sqrt((a.x-x)**2+(a.y-y)**2<45))selectAgent(a);});});
             document.getElementById('goalInput').addEventListener('keypress',e=>{if(e.key==='Enter')submitGoal();});
