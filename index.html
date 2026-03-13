@@ -486,6 +486,7 @@ initRoadGrid();
         // ==================== 角色Sprite素材 ====================
         const CHARACTER_SPRITES = {};
         const SPRITE_BASE = 'art-resources/characters/';
+        const SPRITE_FRAME_SIZE = 32;  // 每帧 32x32 像素
         // 角色名到图片文件的映射
         const CHARACTER_FILES = {
             'Isabella_Rodriguez': 'Isabella_Rodriguez.png',
@@ -513,6 +514,23 @@ initRoadGrid();
             'Tamara_Taylor': 'Tamara_Taylor.png',
             'Wolfgang_Schulz': 'Wolfgang_Schulz.png',
         };
+        
+        // 方向对应的行号（atlas.json 定义）
+        const DIRECTION_ROWS = {
+            'down': 0,   // 第1行 y=0
+            'left': 1,   // 第2行 y=32
+            'right': 2,  // 第3行 y=64
+            'up': 3      // 第4行 y=96
+        };
+        
+        // 获取当前帧的x坐标（列）
+        function getFrameX(walkFrame, moving) {
+            if (!moving) return 1; // 静止帧在第2列 (x=32)
+            // 循环播放 0 -> 1 -> 2 -> 1 -> 0 ...
+            const frame = Math.floor(walkFrame * 4) % 4;
+            if (frame === 3) return 1; // 第3帧回到中间
+            return frame;
+        }
         
         function preloadCharacterSprites() {
             const promises = Object.entries(CHARACTER_FILES).map(([charName, filename]) => {
@@ -885,73 +903,53 @@ ${agent2.name}: "xxx"
                 ctx.fillStyle='rgba(0,0,0,0.3)';
                 ctx.beginPath();ctx.ellipse(px+size/2,py+size-3,size/2.5,5,0,0,Math.PI*2);ctx.fill();
                 
-                // 行走动画偏移（上下浮动）
-                const walkBob = this.moving ? Math.sin(this.walkFrame * Math.PI / 2) * 2 : 0;
-                
-                // 使用Canvas绘制像素角色
-                // 腿部 (更精细)
-                ctx.fillStyle='#2d2d2d';
-                const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*4:0;
-                // 左腿
-                ctx.fillRect(px+18,py+38,6,12+lo);
-                // 右腿  
-                ctx.fillRect(px+28,py+38,6,12-lo);
-                
-                // 身体/衣服 (更有设计感)
-                ctx.fillStyle=this.clothesColor;
-                ctx.fillRect(px+14,py+22,24,18);
-                // 衣服细节
-                ctx.fillStyle=this.shirtDetail || '#ffffff';
-                ctx.fillRect(px+18,py+24,4,4);
-                ctx.fillRect(px+30,py+24,4,4);
-                
-                // 手臂
-                ctx.fillStyle=this.skinColor;
-                const armOffset=this.moving?Math.sin(this.walkFrame*Math.PI/2)*2:0;
-                ctx.fillRect(px+10,py+24,5,14+armOffset);
-                ctx.fillRect(px+37,py+24,5,14-armOffset);
-                
-                // 头 (更大更精致)
-                ctx.fillStyle=this.skinColor;
-                ctx.fillRect(px+14,py+4,24,20);
+                // 使用Sprite Sheet动画渲染角色
+                if (this.characterSprite) {
+                    // 计算当前帧
+                    const dir = this.direction || 'down';
+                    const row = DIRECTION_ROWS[dir] || 0;
+                    const frameX = getFrameX(this.walkFrame, this.moving);
                     
-                    // 头发 (更有层次)
+                    // 源图像中的裁剪区域 (32x32 像素/帧)
+                    const srcX = frameX * SPRITE_FRAME_SIZE;
+                    const srcY = row * SPRITE_FRAME_SIZE;
+                    const srcW = SPRITE_FRAME_SIZE;
+                    const srcH = SPRITE_FRAME_SIZE;
+                    
+                    // 目标大小（放大显示，32x32 -> 48x48）
+                    const dstScale = 1.5;
+                    const dstW = srcW * dstScale;
+                    const dstH = srcH * dstScale;
+                    
+                    // 居中绘制，底部对齐
+                    const offsetX = (size - dstW) / 2;
+                    const offsetY = size - dstW - 2;
+                    
+                    // 水平翻转（向左走时）
+                    ctx.save();
+                    if (dir === 'left') {
+                        ctx.translate(px + offsetX + dstW, py + offsetY);
+                        ctx.scale(-1, 1);
+                        ctx.drawImage(this.characterSprite, srcX, srcY, srcW, srcH, 0, 0, dstW, dstH);
+                    } else {
+                        ctx.drawImage(this.characterSprite, srcX, srcY, srcW, srcH, px + offsetX, py + offsetY, dstW, dstH);
+                    }
+                    ctx.restore();
+                } else {
+                    // 后备：Canvas绘制
+                    ctx.fillStyle='#2d2d2d';
+                    const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*4:0;
+                    ctx.fillRect(px+18,py+38,6,12+lo);
+                    ctx.fillRect(px+28,py+38,6,12-lo);
+                    ctx.fillStyle=this.clothesColor;
+                    ctx.fillRect(px+14,py+22,24,18);
+                    ctx.fillStyle=this.skinColor;
+                    ctx.fillRect(px+10,py+24,5,14);
+                    ctx.fillRect(px+37,py+24,5,14);
+                    ctx.fillStyle=this.skinColor;
+                    ctx.fillRect(px+14,py+4,24,20);
                     ctx.fillStyle=this.hairColor;
-                    // 主体头发
                     ctx.fillRect(px+12,py+0,28,10);
-                    // 刘海
-                    ctx.fillRect(px+14,py+6,6,4);
-                    ctx.fillRect(px+22,py+6,4,4);
-                    ctx.fillRect(px+32,py+6,6,4);
-                    // 鬓角
-                    ctx.fillRect(px+12,py+10,3,6);
-                    ctx.fillRect(px+37,py+10,3,6);
-                    
-                    // 眼睛 (更有神)
-                    ctx.fillStyle='#1a1a1a';
-                    if(this.direction==='left'){
-                        ctx.fillRect(px+17,py+14,4,4);
-                        ctx.fillStyle='#fff';ctx.fillRect(px+17,py+14,2,2);
-                    }else if(this.direction==='right'){
-                        ctx.fillRect(px+31,py+14,4,4);
-                        ctx.fillStyle='#fff';ctx.fillRect(px+33,py+14,2,2);
-                    }else{
-                        ctx.fillRect(px+17,py+14,4,4);ctx.fillRect(px+31,py+14,4,4);
-                        ctx.fillStyle='#fff';ctx.fillRect(px+17,py+14,2,2);ctx.fillRect(px+31,py+14,2,2);
-                    }
-                    
-                    // 嘴巴
-                    ctx.fillStyle='#d35a5a';
-                    if(this.moving){
-                        ctx.fillRect(px+24,py+20,4,2);
-                    }else{
-                        ctx.fillRect(px+23,py+20,6,2);
-                    }
-                    
-                    // 腮红
-                    ctx.fillStyle='rgba(255,150,150,0.3)';
-                    ctx.fillRect(px+15,py+18,4,3);
-                    ctx.fillRect(px+33,py+18,4,3);
                 }
                 
                 // 优先显示对话气泡
