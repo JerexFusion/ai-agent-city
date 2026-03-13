@@ -925,16 +925,8 @@ ${agent2.name}: "xxx"
                     const offsetX = (size - dstW) / 2;
                     const offsetY = size - dstW - 2;
                     
-                    // 水平翻转（向左走时）
-                    ctx.save();
-                    if (dir === 'left') {
-                        ctx.translate(px + offsetX + dstW, py + offsetY);
-                        ctx.scale(-1, 1);
-                        ctx.drawImage(this.characterSprite, srcX, srcY, srcW, srcH, 0, 0, dstW, dstH);
-                    } else {
-                        ctx.drawImage(this.characterSprite, srcX, srcY, srcW, srcH, px + offsetX, py + offsetY, dstW, dstH);
-                    }
-                    ctx.restore();
+                    // 直接绘制（sprite sheet 中各方向已经正确）
+                    ctx.drawImage(this.characterSprite, srcX, srcY, srcW, srcH, px + offsetX, py + offsetY, dstW, dstH);
                 } else {
                     // 后备：Canvas绘制
                     ctx.fillStyle='#2d2d2d';
