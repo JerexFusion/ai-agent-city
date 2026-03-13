@@ -728,7 +728,7 @@ ${agent2.name}: "xxx"
                         if (Math.abs(dx) > Math.abs(dy)) this.direction = dx > 0 ? 'right' : 'left';
                         else this.direction = dy > 0 ? 'down' : 'up';
                         
-                        this.walkFrame = (this.walkFrame + 0.1) % 4;
+                        this.walkFrame = (this.walkFrame + 0.03) % 4;
                         this.currentActivity = '🚶 行走中';
                         this.currentEmoji = '🚶';
                         this.actionBubble = '';
