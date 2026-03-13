@@ -483,6 +483,49 @@ initRoadGrid();
             'arcade': 'GuttyKreum_CleanCity_016.png',
         };
         
+        // ==================== 角色Sprite素材 ====================
+        const CHARACTER_SPRITES = {};
+        const SPRITE_BASE = 'art-resources/characters/';
+        // 角色名到图片文件的映射
+        const CHARACTER_FILES = {
+            'Isabella_Rodriguez': 'Isabella_Rodriguez.png',
+            'Klaus_Mueller': 'Klaus_Mueller.png',
+            'Maria_Lopez': 'Maria_Lopez.png',
+            'John_Lin': 'John_Lin.png',
+            'Jane_Moreno': 'Jane_Moreno.png',
+            'Jennifer_Moore': 'Jennifer_Moore.png',
+            'Sam_Moore': 'Sam_Moore.png',
+            'Tom_Moreno': 'Tom_Moreno.png',
+            'Ryan_Park': 'Ryan_Park.png',
+            'Hailey_Johnson': 'Hailey_Johnson.png',
+            'Abigail_Chen': 'Abigail_Chen.png',
+            'Adam_Smith': 'Adam_Smith.png',
+            'Arthur_Burton': 'Arthur_Burton.png',
+            'Ayesha_Khan': 'Ayesha_Khan.png',
+            'Carlos_Gomez': 'Carlos_Gomez.png',
+            'Carmen_Ortiz': 'Carmen_Ortiz.png',
+            'Eddy_Lin': 'Eddy_Lin.png',
+            'Francisco_Lopez': 'Francisco_Lopez.png',
+            'Giorgio_Rossi': 'Giorgio_Rossi.png',
+            'Latoya_Williams': 'Latoya_Williams.png',
+            'Mei_Lin': 'Mei_Lin.png',
+            'Rajiv_Patel': 'Rajiv_Patel.png',
+            'Tamara_Taylor': 'Tamara_Taylor.png',
+            'Wolfgang_Schulz': 'Wolfgang_Schulz.png',
+        };
+        
+        function preloadCharacterSprites() {
+            const promises = Object.entries(CHARACTER_FILES).map(([charName, filename]) => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => { CHARACTER_SPRITES[charName] = img; resolve(); };
+                    img.onerror = () => { console.warn(`Failed to load character: ${filename}`); resolve(); };
+                    img.src = SPRITE_BASE + filename;
+                });
+            });
+            return Promise.all(promises);
+        }
+        
         function preloadTiles() {
             const promises = Object.entries(TILE_FILES).map(([key, filename]) => {
                 return new Promise((resolve) => {
@@ -592,19 +635,25 @@ ${agent2.name}: "xxx"
                     this.hairColor = '#E8A0BF';  // 粉色头发
                     this.clothesColor = '#FFB6C1';  // 粉色衣服
                     this.shirtDetail = '#FF69B4';
+                    this.characterKey = 'Isabella_Rodriguez'; // 默认使用 Isabella
                 } else if (this.personality === 'energetic') {
                     // 活力型 - 橙色头发，健康肤色，橙色衣服
                     this.skinColor = '#E8B88A';
                     this.hairColor = '#FF6B35';  // 橙色头发
                     this.clothesColor = '#FF8C00';  // 橙色衣服
                     this.shirtDetail = '#FFD700';
+                    this.characterKey = 'Klaus_Mueller'; // 默认使用 Klaus
                 } else {
                     // 学者型 - 黑色/棕色头发，白皮肤，蓝色衣服
                     this.skinColor = '#F5DEB3';
                     this.hairColor = '#2C1810';  // 深棕色头发
                     this.clothesColor = '#4169E1';  // 蓝色衣服
                     this.shirtDetail = '#FFFFFF';
+                    this.characterKey = 'Maria_Lopez'; // 默认使用 Maria
                 }
+                
+                // 尝试加载对应的角色Sprite
+                this.characterSprite = CHARACTER_SPRITES[this.characterKey] || null;
             }
             
             setInitialLocation() {
@@ -836,69 +885,101 @@ ${agent2.name}: "xxx"
                 ctx.fillStyle='rgba(0,0,0,0.3)';
                 ctx.beginPath();ctx.ellipse(px+size/2,py+size-3,size/2.5,5,0,0,Math.PI*2);ctx.fill();
                 
-                // 腿部 (更精细)
-                ctx.fillStyle='#2d2d2d';
-                const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*4:0;
-                // 左腿
-                ctx.fillRect(px+18,py+38,6,12+lo);
-                // 右腿  
-                ctx.fillRect(px+28,py+38,6,12-lo);
+                // 行走动画偏移（上下浮动）
+                const walkBob = this.moving ? Math.sin(this.walkFrame * Math.PI / 2) * 2 : 0;
                 
-                // 身体/衣服 (更有设计感)
-                ctx.fillStyle=this.clothesColor;
-                ctx.fillRect(px+14,py+22,24,18);
-                // 衣服细节
-                ctx.fillStyle=this.shirtDetail || '#ffffff';
-                ctx.fillRect(px+18,py+24,4,4);
-                ctx.fillRect(px+30,py+24,4,4);
-                
-                // 手臂
-                ctx.fillStyle=this.skinColor;
-                const armOffset=this.moving?Math.sin(this.walkFrame*Math.PI/2)*2:0;
-                ctx.fillRect(px+10,py+24,5,14+armOffset);
-                ctx.fillRect(px+37,py+24,5,14-armOffset);
-                
-                // 头 (更大更精致)
-                ctx.fillStyle=this.skinColor;
-                ctx.fillRect(px+14,py+4,24,20);
-                
-                // 头发 (更有层次)
-                ctx.fillStyle=this.hairColor;
-                // 主体头发
-                ctx.fillRect(px+12,py+0,28,10);
-                // 刘海
-                ctx.fillRect(px+14,py+6,6,4);
-                ctx.fillRect(px+22,py+6,4,4);
-                ctx.fillRect(px+32,py+6,6,4);
-                // 鬓角
-                ctx.fillRect(px+12,py+10,3,6);
-                ctx.fillRect(px+37,py+10,3,6);
-                
-                // 眼睛 (更有神)
-                ctx.fillStyle='#1a1a1a';
-                if(this.direction==='left'){
-                    ctx.fillRect(px+17,py+14,4,4);
-                    ctx.fillStyle='#fff';ctx.fillRect(px+17,py+14,2,2);
-                }else if(this.direction==='right'){
-                    ctx.fillRect(px+31,py+14,4,4);
-                    ctx.fillStyle='#fff';ctx.fillRect(px+33,py+14,2,2);
-                }else{
-                    ctx.fillRect(px+17,py+14,4,4);ctx.fillRect(px+31,py+14,4,4);
-                    ctx.fillStyle='#fff';ctx.fillRect(px+17,py+14,2,2);ctx.fillRect(px+31,py+14,2,2);
+                // 如果有角色Sprite图片，使用图片渲染
+                if (this.characterSprite) {
+                    // 原始图片是 96x128，格子是 48x48，缩放比例约为 0.5
+                    const scale = 0.5;
+                    const srcW = this.characterSprite.width;
+                    const srcH = this.characterSprite.height;
+                    const dstW = srcW * scale;  // 48
+                    const dstH = srcH * scale;  // 64
+                    
+                    // 计算居中位置
+                    const offsetX = (size - dstW) / 2;
+                    const offsetY = -dstH + size + walkBob - 5; // 让角色底部对齐格子底部
+                    
+                    // 水平翻转（根据方向）
+                    ctx.save();
+                    if (this.direction === 'left') {
+                        ctx.translate(px + offsetX + dstW, py + offsetY);
+                        ctx.scale(-1, 1);
+                        ctx.drawImage(this.characterSprite, 0, 0, srcW, srcH, 0, 0, dstW, dstH);
+                    } else if (this.direction === 'right') {
+                        ctx.drawImage(this.characterSprite, 0, 0, srcW, srcH, px + offsetX, py + offsetY, dstW, dstH);
+                    } else {
+                        // 向下/向前 - 正常绘制
+                        ctx.drawImage(this.characterSprite, 0, 0, srcW, srcH, px + offsetX, py + offsetY, dstW, dstH);
+                    }
+                    ctx.restore();
+                } else {
+                    // 使用Canvas绘制（后备方案）
+                    // 腿部 (更精细)
+                    ctx.fillStyle='#2d2d2d';
+                    const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*4:0;
+                    // 左腿
+                    ctx.fillRect(px+18,py+38,6,12+lo);
+                    // 右腿  
+                    ctx.fillRect(px+28,py+38,6,12-lo);
+                    
+                    // 身体/衣服 (更有设计感)
+                    ctx.fillStyle=this.clothesColor;
+                    ctx.fillRect(px+14,py+22,24,18);
+                    // 衣服细节
+                    ctx.fillStyle=this.shirtDetail || '#ffffff';
+                    ctx.fillRect(px+18,py+24,4,4);
+                    ctx.fillRect(px+30,py+24,4,4);
+                    
+                    // 手臂
+                    ctx.fillStyle=this.skinColor;
+                    const armOffset=this.moving?Math.sin(this.walkFrame*Math.PI/2)*2:0;
+                    ctx.fillRect(px+10,py+24,5,14+armOffset);
+                    ctx.fillRect(px+37,py+24,5,14-armOffset);
+                    
+                    // 头 (更大更精致)
+                    ctx.fillStyle=this.skinColor;
+                    ctx.fillRect(px+14,py+4,24,20);
+                    
+                    // 头发 (更有层次)
+                    ctx.fillStyle=this.hairColor;
+                    // 主体头发
+                    ctx.fillRect(px+12,py+0,28,10);
+                    // 刘海
+                    ctx.fillRect(px+14,py+6,6,4);
+                    ctx.fillRect(px+22,py+6,4,4);
+                    ctx.fillRect(px+32,py+6,6,4);
+                    // 鬓角
+                    ctx.fillRect(px+12,py+10,3,6);
+                    ctx.fillRect(px+37,py+10,3,6);
+                    
+                    // 眼睛 (更有神)
+                    ctx.fillStyle='#1a1a1a';
+                    if(this.direction==='left'){
+                        ctx.fillRect(px+17,py+14,4,4);
+                        ctx.fillStyle='#fff';ctx.fillRect(px+17,py+14,2,2);
+                    }else if(this.direction==='right'){
+                        ctx.fillRect(px+31,py+14,4,4);
+                        ctx.fillStyle='#fff';ctx.fillRect(px+33,py+14,2,2);
+                    }else{
+                        ctx.fillRect(px+17,py+14,4,4);ctx.fillRect(px+31,py+14,4,4);
+                        ctx.fillStyle='#fff';ctx.fillRect(px+17,py+14,2,2);ctx.fillRect(px+31,py+14,2,2);
+                    }
+                    
+                    // 嘴巴
+                    ctx.fillStyle='#d35a5a';
+                    if(this.moving){
+                        ctx.fillRect(px+24,py+20,4,2);
+                    }else{
+                        ctx.fillRect(px+23,py+20,6,2);
+                    }
+                    
+                    // 腮红
+                    ctx.fillStyle='rgba(255,150,150,0.3)';
+                    ctx.fillRect(px+15,py+18,4,3);
+                    ctx.fillRect(px+33,py+18,4,3);
                 }
-                
-                // 嘴巴
-                ctx.fillStyle='#d35a5a';
-                if(this.moving){
-                    ctx.fillRect(px+24,py+20,4,2);
-                }else{
-                    ctx.fillRect(px+23,py+20,6,2);
-                }
-                
-                // 腮红
-                ctx.fillStyle='rgba(255,150,150,0.3)';
-                ctx.fillRect(px+15,py+18,4,3);
-                ctx.fillRect(px+33,py+18,4,3);
                 
                 // 优先显示对话气泡
                 if(!this.moving && this.dialogueBubble) {
@@ -1010,10 +1091,23 @@ ${agent2.name}: "xxx"
                 card.className=`agent-card ${selectedAgent===agent?'selected':''}`;
                 card.onclick=()=>selectAgent(agent);
                 const p=agent.personalityData;
-                card.innerHTML=`<div class="agent-header"><canvas class="agent-avatar" id="avatar-${agent.id}" width="44" height="44"></canvas><div><div class="agent-name">${agent.name}</div><div class="agent-personality">${p.emoji} ${p.name}</div></div></div><div class="agent-status"><span class="status-badge ${agent.mood>50?'high':agent.mood>25?'medium':'low'}">😊${Math.floor(agent.mood)}</span><span class="status-badge ${agent.energy>50?'high':agent.energy>25?'medium':'low'}">⚡${Math.floor(agent.energy)}</span><span class="status-badge">💰${agent.coins}</span></div>`;
+                
+                // 如果有角色Sprite，使用图片头像
+                let avatarHtml;
+                if (agent.characterSprite) {
+                    avatarHtml = `<img class="agent-avatar" src="${agent.characterSprite.src}" alt="${agent.name}">`;
+                } else {
+                    avatarHtml = `<canvas class="agent-avatar" id="avatar-${agent.id}" width="44" height="44"></canvas>`;
+                }
+                
+                card.innerHTML=`<div class="agent-header">${avatarHtml}<div><div class="agent-name">${agent.name}</div><div class="agent-personality">${p.emoji} ${p.name}</div></div></div><div class="agent-status"><span class="status-badge ${agent.mood>50?'high':agent.mood>25?'medium':'low'}">😊${Math.floor(agent.mood)}</span><span class="status-badge ${agent.energy>50?'high':agent.energy>25?'medium':'low'}">⚡${Math.floor(agent.energy)}</span><span class="status-badge">💰${agent.coins}</span></div>`;
                 list.appendChild(card);
-                const ac=document.getElementById(`avatar-${agent.id}`).getContext('2d');
-                drawAvatar(ac,agent);
+                
+                // 如果没有角色Sprite，使用Canvas绘制后备头像
+                if (!agent.characterSprite) {
+                    const ac = document.getElementById(`avatar-${agent.id}`).getContext('2d');
+                    drawAvatar(ac, agent);
+                }
             });
         }
         function drawAvatar(ctx,a){ctx.fillStyle='#333';ctx.fillRect(16,24,12,16);ctx.fillStyle=a.skinColor;ctx.fillRect(12,10,20,16);ctx.fillStyle=a.hairColor;ctx.fillRect(10,6,24,8);ctx.fillStyle='#000';ctx.fillRect(14,16,3,3);ctx.fillRect(22,16,3,3);ctx.fillStyle=a.clothesColor;ctx.fillRect(12,28,20,12);}
@@ -1057,8 +1151,9 @@ ${agent2.name}: "xxx"
             canvas=document.getElementById('gameCanvas');ctx=canvas.getContext('2d');
             canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;
             initGrassPattern();
-            preloadTiles().then(() => {
+            Promise.all([preloadTiles(), preloadCharacterSprites()]).then(() => {
                 console.log('✅ 像素素材加载完成');
+                console.log('✅ 角色Sprite加载完成:', Object.keys(CHARACTER_SPRITES).length, '个角色');
             });
             agents.push(new Agent('a0','小明','gentle'));
             agents.push(new Agent('a1','小红','energetic'));
