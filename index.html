@@ -888,59 +888,32 @@ ${agent2.name}: "xxx"
                 // 行走动画偏移（上下浮动）
                 const walkBob = this.moving ? Math.sin(this.walkFrame * Math.PI / 2) * 2 : 0;
                 
-                // 如果有角色Sprite图片，使用图片渲染
-                if (this.characterSprite) {
-                    // 原始图片是 96x128，格子是 48x48，缩放比例约为 0.5
-                    const scale = 0.5;
-                    const srcW = this.characterSprite.width;
-                    const srcH = this.characterSprite.height;
-                    const dstW = srcW * scale;  // 48
-                    const dstH = srcH * scale;  // 64
-                    
-                    // 计算居中位置
-                    const offsetX = (size - dstW) / 2;
-                    const offsetY = -dstH + size + walkBob - 5; // 让角色底部对齐格子底部
-                    
-                    // 水平翻转（根据方向）
-                    ctx.save();
-                    if (this.direction === 'left') {
-                        ctx.translate(px + offsetX + dstW, py + offsetY);
-                        ctx.scale(-1, 1);
-                        ctx.drawImage(this.characterSprite, 0, 0, srcW, srcH, 0, 0, dstW, dstH);
-                    } else if (this.direction === 'right') {
-                        ctx.drawImage(this.characterSprite, 0, 0, srcW, srcH, px + offsetX, py + offsetY, dstW, dstH);
-                    } else {
-                        // 向下/向前 - 正常绘制
-                        ctx.drawImage(this.characterSprite, 0, 0, srcW, srcH, px + offsetX, py + offsetY, dstW, dstH);
-                    }
-                    ctx.restore();
-                } else {
-                    // 使用Canvas绘制（后备方案）
-                    // 腿部 (更精细)
-                    ctx.fillStyle='#2d2d2d';
-                    const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*4:0;
-                    // 左腿
-                    ctx.fillRect(px+18,py+38,6,12+lo);
-                    // 右腿  
-                    ctx.fillRect(px+28,py+38,6,12-lo);
-                    
-                    // 身体/衣服 (更有设计感)
-                    ctx.fillStyle=this.clothesColor;
-                    ctx.fillRect(px+14,py+22,24,18);
-                    // 衣服细节
-                    ctx.fillStyle=this.shirtDetail || '#ffffff';
-                    ctx.fillRect(px+18,py+24,4,4);
-                    ctx.fillRect(px+30,py+24,4,4);
-                    
-                    // 手臂
-                    ctx.fillStyle=this.skinColor;
-                    const armOffset=this.moving?Math.sin(this.walkFrame*Math.PI/2)*2:0;
-                    ctx.fillRect(px+10,py+24,5,14+armOffset);
-                    ctx.fillRect(px+37,py+24,5,14-armOffset);
-                    
-                    // 头 (更大更精致)
-                    ctx.fillStyle=this.skinColor;
-                    ctx.fillRect(px+14,py+4,24,20);
+                // 使用Canvas绘制像素角色
+                // 腿部 (更精细)
+                ctx.fillStyle='#2d2d2d';
+                const lo=this.moving?Math.sin(this.walkFrame*Math.PI/2)*4:0;
+                // 左腿
+                ctx.fillRect(px+18,py+38,6,12+lo);
+                // 右腿  
+                ctx.fillRect(px+28,py+38,6,12-lo);
+                
+                // 身体/衣服 (更有设计感)
+                ctx.fillStyle=this.clothesColor;
+                ctx.fillRect(px+14,py+22,24,18);
+                // 衣服细节
+                ctx.fillStyle=this.shirtDetail || '#ffffff';
+                ctx.fillRect(px+18,py+24,4,4);
+                ctx.fillRect(px+30,py+24,4,4);
+                
+                // 手臂
+                ctx.fillStyle=this.skinColor;
+                const armOffset=this.moving?Math.sin(this.walkFrame*Math.PI/2)*2:0;
+                ctx.fillRect(px+10,py+24,5,14+armOffset);
+                ctx.fillRect(px+37,py+24,5,14-armOffset);
+                
+                // 头 (更大更精致)
+                ctx.fillStyle=this.skinColor;
+                ctx.fillRect(px+14,py+4,24,20);
                     
                     // 头发 (更有层次)
                     ctx.fillStyle=this.hairColor;
